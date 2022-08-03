@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:onyourmarks/Chat/ChatPage.dart';
-import 'package:onyourmarks/Components/components.dart';
+import 'Chat/ChatPage.dart';
+import 'package:onyourmarks/Utilities/components.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {

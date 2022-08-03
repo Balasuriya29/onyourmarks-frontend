@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/staticNames.dart';
 
-import '../../Components/components.dart';
+import '../../Utilities/components.dart';
 
 class StudentCard extends StatefulWidget {
   const StudentCard({Key? key}) : super(key: key);

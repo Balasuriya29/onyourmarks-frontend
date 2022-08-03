@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../ApiHandler/Teacher/apiHandler.dart';
-import '../Models/ChatModel.dart';
-
+import '../../../ApiHandler/Student/ChatAPIs.dart';
+import '../../../Utilities/components.dart';
+import '../../../Models/Student Models/ChatModel.dart';
 
 class MessageScreen extends StatefulWidget {
   final String chat_id;
@@ -36,13 +36,15 @@ class _MessageScreenState extends State<MessageScreen> {
       }
       setState(() {
         messages = messages1;
+        // messageController.dispose();
+        messageController.text = "";
       });
     });
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: getAppBar("Messeges"),
       body: Column(
         children: [
           Expanded(
@@ -53,14 +55,14 @@ class _MessageScreenState extends State<MessageScreen> {
                 itemCount:messages.length ,
                 itemBuilder: (BuildContext context, int index) {
                   return Column(
-                    crossAxisAlignment: (messages.elementAt(index).person == "teacher")?CrossAxisAlignment.end:CrossAxisAlignment.start,
+                    crossAxisAlignment: (messages.elementAt(index).person == "student")?CrossAxisAlignment.end:CrossAxisAlignment.start,
                     children: [
                           Container(
                             decoration: BoxDecoration(
                               color:Colors.grey,
                               borderRadius: BorderRadius.only(
-                                topRight: (messages.elementAt(index).person == "teacher")?Radius.zero:Radius.circular(18),
-                                topLeft: (messages.elementAt(index).person == "teacher")?Radius.circular(18):Radius.zero,
+                                topRight: (messages.elementAt(index).person == "student")?Radius.zero:Radius.circular(18),
+                                topLeft: (messages.elementAt(index).person == "student")?Radius.circular(18):Radius.zero,
                                 bottomLeft: Radius.circular(18),
                                 bottomRight: Radius.circular(18),
                               ),
@@ -92,8 +94,9 @@ class _MessageScreenState extends State<MessageScreen> {
                     onPressed: () async {
                       await postMessage(
                           messageController.text, widget.chat_id,
-                          "teacher").then((v){
+                          "student").then((v){
                         setState(() {
+                          messageController.text = "";
                         });
                       });
                     },

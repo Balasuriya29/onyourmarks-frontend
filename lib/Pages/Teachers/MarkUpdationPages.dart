@@ -4,13 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:onyourmarks/ApiHandler/Teacher/apiHandler.dart';
-import 'package:onyourmarks/Models/ExamModel.dart';
-import 'package:onyourmarks/Models/StudentModel.dart';
+import 'package:onyourmarks/Models/Teacher%20Models/ExamModel.dart';
 import 'package:onyourmarks/staticNames.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../Components/components.dart';
+import '../../Utilities/components.dart';
+import '../../Models/Teacher Models/StudentModel.dart';
 
 class ExamViewPage extends StatefulWidget{
   const ExamViewPage({Key? key}) : super(key: key);
@@ -301,7 +301,7 @@ class _ShowStudentsToUpdateMarksState extends State<ShowStudentsToUpdateMarks> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Students Marks of Standard "+widget.std_name,
+                  "Student Models Marks of Standard "+widget.std_name,
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,

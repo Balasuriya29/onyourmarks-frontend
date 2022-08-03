@@ -1,10 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/ApiHandler/Teacher/apiHandler.dart';
+import 'package:onyourmarks/LoginPage.dart';
 import 'package:onyourmarks/Pages/Teachers/TeacherHome.dart';
 import 'package:onyourmarks/staticNames.dart';
 
-import 'Components/components.dart';
+import 'Utilities/components.dart';
 import 'Pages/Students/StudentCard.dart';
 
 void main() async{
@@ -22,7 +23,6 @@ void main() async{
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const LoginPage(),
     );
   }
 }
@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage>{
   @override
   void initState() {
     super.initState();
-    meFunc();
+    getTeacherMe();
   }
 
   @override

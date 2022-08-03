@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:onyourmarks/ApiHandler/Teacher/apiHandler.dart';
-import 'package:onyourmarks/Models/StudentModel.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Components/components.dart';
+import '../../../ApiHandler/Student/ChatAPIs.dart';
+import '../../../Utilities/components.dart';
+import '../../../Models/Student Models/TeacherModel.dart';
 import 'MessageScreen.dart';
+
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -15,16 +15,14 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-
-
    @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: FutureBuilder<List<StudentModel>>(
-          future: getStudentsWithoutChat(),
+        appBar: getAppBar("Chat"),
+        body: FutureBuilder<List<TeacherModel>>(
+          future: getTeachersWithoutChat(),
             builder: (BuildContext context,
-                AsyncSnapshot<List<StudentModel>> snapshot) {
+                AsyncSnapshot<List<TeacherModel>> snapshot) {
               List<Widget> children = [];
               if (snapshot.hasError) {
                 children = <Widget>[
@@ -41,38 +39,35 @@ class _ChatPageState extends State<ChatPage> {
               }
               else if (snapshot.hasData) {
                 children = [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal:20),
-                      child: ListView.builder(
-                        itemCount: snapshot.data?.length,
-                        shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                              child: Card(
-                                child: Container(
-                                  height: 60,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(snapshot.data?.elementAt(index).firstName ?? " "),
-                                        Text(snapshot.data?.elementAt(index).rollNo ?? " ")
-                                      ],
-                                    ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal:20),
+                    child: ListView.builder(
+                      itemCount: snapshot.data?.length,
+                      shrinkWrap: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            child: Card(
+                              child: Container(
+                                height: 60,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(snapshot.data?.elementAt(index).name ?? " "),
+                                      Text(snapshot.data?.elementAt(index).degree ?? " ")
+                                    ],
                                   ),
                                 ),
                               ),
-                              onTap: () async{
-                                SharedPreferences pref= await SharedPreferences.getInstance();
-                                await postNewChat(pref.getString("id").toString(),snapshot.data?.elementAt(index).id ?? ' ').then((v)=>{
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen("")))
-                                });
-                              },
-                            );
-                          }),
-                    ),
+                            ),
+                            onTap: () async{
+                              await postNewChat(snapshot.data?.elementAt(index).id ?? " ","62de30c1bc6a3da7659b816c").then((v)=>{
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen("")))
+                              });
+                            },
+                          );
+                        }),
                   )
                 ];
               }
@@ -99,11 +94,6 @@ class _ChatPageState extends State<ChatPage> {
         ),
     );
   }
-
-   @override
-  void initState() {
-      //getStudentsWithoutChat();
-  }
 }
 
 class mychats extends StatefulWidget {
@@ -117,10 +107,10 @@ class _mychatsState extends State<mychats> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body:FutureBuilder<List<StudentModel>>(
+      appBar: getAppBar("MyChat"),
+      body:FutureBuilder<List<TeacherModel>>(
         future: getMyChats(),
-        builder: (BuildContext context,AsyncSnapshot<List<StudentModel>> snapshot){
+        builder: (BuildContext context,AsyncSnapshot<List<TeacherModel>> snapshot){
           List<Widget> children = [];
           if(snapshot.hasError){
             children=[
@@ -144,7 +134,7 @@ class _mychatsState extends State<mychats> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(snapshot.data?.elementAt(index).firstName ?? " ",
+                              Text(snapshot.data?.elementAt(index).name ?? " ",
                                   style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),
                               ),
                             ],

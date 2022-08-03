@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/ApiHandler/Teacher/apiHandler.dart';
-import 'package:onyourmarks/Components/components.dart';
+import 'package:onyourmarks/Utilities/components.dart';
 import 'package:onyourmarks/staticNames.dart';
 
 class MyStudents extends StatefulWidget {
@@ -37,7 +37,7 @@ class _MyStudentsState extends State<MyStudents> {
           Padding(
             padding: const EdgeInsets.only(left: 30.0,top: 30.0,right: 30.0,bottom: 15.0),
             child: Text(
-              "Your Students 👨‍🎓👩‍🎓",
+              "Your Student Models 👨‍🎓👩‍🎓",
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,

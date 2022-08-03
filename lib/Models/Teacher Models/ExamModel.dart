@@ -1,4 +1,4 @@
-import 'package:onyourmarks/Models/SubjectModel.dart';
+import 'SubjectModel.dart';
 
 class ExamModel{
   String? _exam_id;
