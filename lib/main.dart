@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/ApiHandler/Teacher/apiHandler.dart';
 import 'package:onyourmarks/Pages/Teachers/TeacherHome.dart';
@@ -6,7 +7,15 @@ import 'package:onyourmarks/staticNames.dart';
 import 'Components/components.dart';
 import 'Pages/Students/StudentCard.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+          appId: "1:269652040859:android:49fa2700f8def261e1fa3e",
+          messagingSenderId: "269652040859",
+          projectId: "onyourmarks-60696",
+          apiKey: 'AIzaSyD6WZ4OWlfjUrBw4B8d6tWJPWB23E6s114')
+  );
   runApp(const MyApp());
 }
 

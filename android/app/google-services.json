@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "269652040859",
+    "project_id": "onyourmarks-60696",
+    "storage_bucket": "onyourmarks-60696.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:269652040859:android:49fa2700f8def261e1fa3e",
+        "android_client_info": {
+          "package_name": "com.example.onyourmarks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "269652040859-es0vtqnf3vbtk8bomie021do8an40v4c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6WZ4OWlfjUrBw4B8d6tWJPWB23E6s114"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "269652040859-es0vtqnf3vbtk8bomie021do8an40v4c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

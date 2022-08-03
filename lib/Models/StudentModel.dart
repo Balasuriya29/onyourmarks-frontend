@@ -2,6 +2,14 @@ class StudentModel{
   String? _firstName;
   String? _rollNo;
   String? _id;
+  String? _chat_id;
+
+
+  String? get chat_id => _chat_id;
+
+  set chat_id(String? value){
+    _chat_id = value;
+  }
 
   String? get firstName => _firstName;
 
@@ -22,6 +30,8 @@ class StudentModel{
   }
 
   StudentModel(this._firstName, this._rollNo, this._id);
+
+  StudentModel.forChat(this._id,this._firstName,this._chat_id);
 
   factory StudentModel.fromJson(Map<String,dynamic> json){
     return StudentModel(json["first_name"], json["roll_no"], json["_id"]);

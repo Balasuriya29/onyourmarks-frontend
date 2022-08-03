@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:onyourmarks/Chat/ChatPage.dart';
 import 'package:onyourmarks/Components/components.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -162,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
        ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>mychats()));
         },
         child: Icon(Icons.chat_rounded),
       ),
