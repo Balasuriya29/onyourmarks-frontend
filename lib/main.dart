@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/ApiHandler/Teacher/apiHandler.dart';
-import 'package:onyourmarks/LoginPage.dart';
+import 'package:onyourmarks/Pages/LoginPage.dart';
 import 'package:onyourmarks/Pages/Teachers/TeacherHome.dart';
-import 'package:onyourmarks/staticNames.dart';
+import 'package:onyourmarks/Utilities/staticNames.dart';
 
 import 'Utilities/components.dart';
 import 'Pages/Students/StudentCard.dart';
@@ -46,7 +46,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>{
 
-  var pages = [StudentCard(), TeacherHome()];
+  var pages = [StudentCard(), TeacherHome(0)];
   var pagesName = [Text("Student Details Page"), Text("Teacher Home Page")];
 
   @override

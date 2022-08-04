@@ -22,8 +22,8 @@ class _GetStudentInterestState extends State<GetStudentInterest> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
+      appBar: getAppBar("Give Your Interests!!!"),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,

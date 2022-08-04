@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/Models/Teacher%20Models/ExamModel.dart';
 import 'package:onyourmarks/Pages/Teachers/MarkUpdationPages.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Models/Student Models/CCAModel.dart';
+import '../Pages/Students/CCA/CCAForm.dart';
 
 AppBar getAppBar(String name){
   return AppBar(
@@ -165,77 +166,153 @@ class _BuildChoiceChipsState extends State<BuildChoiceChips> {
   }
 }
 
-ListView populateCCAObjectToListView(BuildContext context, List<CCAModel> activities, String type){
+Widget populateCCAObjectToListView(BuildContext context, List<CCAModel> activities, String type){
   var color = (type == "pending")
       ?Colors.blue
       :(type == "accepted")
-      ?Colors.green
-      :Colors.amber;
+        ?Colors.green
+        :Colors.amber;
+  
+  int len = activities.length-1;
   return ListView.separated(
       itemBuilder: (BuildContext context, int index) {
-        return GestureDetector(
-          // onTap: (){
-          //   Navigator.push(context, MaterialPageRoute(builder: (context) => ExamDetailsView(exams.elementAt(index),color)));
-          // },
+        return (type == "pending" && index == len)
+          ?GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                    children: [
+                      Card(
+                        child: SizedBox(
+                          height: 175,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 18.0,left: 18.0,right: 18.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 3,
+                                        child: getTheStyledTextForCCAList(activities.elementAt(index).name.toString(),20)),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text("")
+                                    ),
+                                    Expanded(
+                                        flex: 3,
+                                        child: getTheStyledTextForCCAList(activities.elementAt(index).status.toString(),20))
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 18.0),
+                                    child: getTheStyledTextForCCAList("Type : ", 15),
+                                  ),
+                                  getTheStyledTextForCCAList(activities.elementAt(index).type ?? ' ', 15),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 18.0),
+                                    child: getTheStyledTextForCCAList("Status : ", 15),
+                                  ),
+                                  getTheStyledTextForCCAList(activities.elementAt(index).isVerified ?? ' ', 15)
+                                ],
+                              ),
+
+                            ],
+                          ),
+                        ),
+                        color: color,
+                      ),
+                      SizedBox(height: 20,),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(17.5)
+                        ),
+                          onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => StudentCCAForm()));
+                      }, child: Icon(CupertinoIcons.add))
+                    ],
+                  ),
+              ),
+            )
+          :GestureDetector(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Card(
-              child: SizedBox(
-                height: 150,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 18.0,left: 18.0,right: 18.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                              flex: 3,
-                              child: getTheStyledTextForCCAList(activities.elementAt(index).name.toString(),20)),
-                          Expanded(
-                              flex: 1,
-                              child: Text("")
+            child: Column(
+              children: [
+                Card(
+                  child: SizedBox(
+                    height: 175,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 18.0,left: 18.0,right: 18.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  flex: 3,
+                                  child: getTheStyledTextForCCAList(activities.elementAt(index).name.toString(),20)),
+                              Expanded(
+                                  flex: 1,
+                                  child: Text("")
+                              ),
+                              Expanded(
+                                  flex: 3,
+                                  child: getTheStyledTextForCCAList(activities.elementAt(index).status.toString(),20))
+                            ],
                           ),
-                          Expanded(
-                              flex: 3,
-                              child: getTheStyledTextForCCAList(activities.elementAt(index).status.toString(),20))
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 18.0),
-                          child: getTheStyledTextForCCAList("Type : ", 15),
                         ),
-                        getTheStyledTextForCCAList(activities.elementAt(index).type ?? ' ', 15),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 18.0),
+                              child: getTheStyledTextForCCAList("Type : ", 15),
+                            ),
+                            getTheStyledTextForCCAList(activities.elementAt(index).type ?? ' ', 15),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 18.0),
+                              child: getTheStyledTextForCCAList("Status : ", 15),
+                            ),
+                            getTheStyledTextForCCAList(activities.elementAt(index).isVerified ?? ' ', 15)
+                          ],
+                        ),
                       ],
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 18.0),
-                          child: getTheStyledTextForCCAList("Status : ", 15),
-                        ),
-                        getTheStyledTextForCCAList(activities.elementAt(index).isVerified ?? ' ', 15)
-                      ],
-                    )
-                  ],
+                  ),
+                  color: color,
                 ),
-              ),
-              color: color,
+              ],
             ),
           ),
         );
-
       }
       , separatorBuilder: (BuildContext context, int index){
     return SizedBox(
@@ -247,6 +324,106 @@ ListView populateCCAObjectToListView(BuildContext context, List<CCAModel> activi
 
 Text getTheStyledTextForCCAList(String? field, double fontSize){
   return Text(field ?? ' ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),);
+}
+
+Padding getsideCards(Icon icon, String title2, BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
+      child: Material(
+        borderRadius: BorderRadius.circular(10.0),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 15,
+              child: icon,
+            ),
+            Expanded(
+              child: ListTile(
+              title: Text(title2),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+}
+
+List<Widget> getImageSlider(List<String> imagesList){
+  List<Widget> imageSliders = imagesList
+      .map((item) => Container(
+    margin: EdgeInsets.all(5.0),
+    child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        child: Stack(
+          children: <Widget>[
+            Image.network(item, fit: BoxFit.cover, width: 1000.0),
+            Positioned(
+              bottom: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(200, 0, 0, 0),
+                      Color.fromARGB(0, 0, 0, 0)
+                    ],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 20.0),
+                child: Text(
+                  'No. image',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        )),
+  ))
+      .toList();
+  return imageSliders;
+}
+
+SizedBox populateTheEvents(String title, String content){
+  return SizedBox(
+      width: 200,
+      height: 180,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  height: 160,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 10,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  width: 100,
+                  height: 50,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ],
+        ),
+      )
+  );
 }
 
 

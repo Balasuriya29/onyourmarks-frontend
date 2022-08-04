@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import '../../Utilities/functions.dart';
 import '../../Models/Student Models/ChatModel.dart';
 import '../../Models/Student Models/TeacherModel.dart';
-import '../../staticNames.dart';
+import '../../Utilities/staticNames.dart';
 
 
 Future<List<TeacherModel>> getTeachersWithoutChat() async{

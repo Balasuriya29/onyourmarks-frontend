@@ -30,4 +30,5 @@ class UserModel{
 
   UserModel(this._username, this._user_id, this._isAdmin, this._isRegistered);
 
+  UserModel.empty(this._username,this._isRegistered);
 }

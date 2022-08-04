@@ -40,9 +40,7 @@ class _MyCCAState extends State<MyCCA> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: getAppBar("My Curricular Acitivities"),
-      body:(isFetching)
+    return (isFetching)
         ?Center(child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -97,7 +95,6 @@ class _MyCCAState extends State<MyCCA> with TickerProviderStateMixin{
             ),
           )
         ],
-      )
-    );
+      );
   }
 }

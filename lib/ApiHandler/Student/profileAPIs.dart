@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Utilities/functions.dart';
 import '../../Models/Student Models/SubjectModel.dart';
 import '../../Models/Student Models/TeacherModel.dart';
-import '../../staticNames.dart';
+import '../../Utilities/staticNames.dart';
 
 void getStudentMe() async {
   var token = await getToken();
@@ -18,8 +18,8 @@ void getStudentMe() async {
   // print(res.body);
   var me = json.decode(res.body);
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setString("id", me["_id"].toString());
-  preferences.setString("personalDetails", res.body);
+  preferences.setString("student-id", me["_id"].toString());
+  preferences.setString("student-personalDetails", res.body);
 }
 
 Future<List<TeacherModel>> getMyTeachers(String stdId) async{

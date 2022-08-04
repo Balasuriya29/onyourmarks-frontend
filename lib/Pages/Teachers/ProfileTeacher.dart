@@ -21,7 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
   var size = 0;
   getMyDetails() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    myDetails = json.decode(preferences.getString("personalDetails") ?? " ");
+    myDetails = json.decode(preferences.getString("teacher-personalDetails") ?? " ");
     var temp = json.decode(preferences.getString("teacherStandardObjects") ?? " ");
     var temp2 = json.decode(preferences.getString("teacherSubjectsObjects") ?? " ");
 

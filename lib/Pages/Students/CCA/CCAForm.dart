@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onyourmarks/Pages/Students/StudentHome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cool_dropdown/cool_dropdown.dart';
 import 'package:intl/intl.dart';
@@ -323,7 +324,7 @@ class _StudentCCAFormState extends State<StudentCCAForm> {
                         setState(() {
 
                         });
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StudentCCAForm()));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StudentHome(3)));
                       });
                     }
 

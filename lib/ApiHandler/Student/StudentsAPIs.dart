@@ -8,7 +8,7 @@ import '../../Models/Student Models/ExamModel.dart';
 import '../../Models/Student Models/MarksModel.dart';
 import '../../Models/Student Models/SubjectModel.dart';
 import '../../Models/Student Models/TeacherModel.dart';
-import '../../staticNames.dart';
+import '../../Utilities/staticNames.dart';
 
 
 // Future<List<TeacherModel>> getMyTeachers(String stdId) async{

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../ApiHandler/Student/profileAPIs.dart';
-import '../../../Utilities/components.dart';
 import '../../../Models/Student Models/TeacherModel.dart';
 
 class MyTeachers extends StatefulWidget {
@@ -15,15 +14,26 @@ class MyTeachers extends StatefulWidget {
 }
 
 class _MyTeachersState extends State<MyTeachers> {
-
   List<TeacherModel> teachers = [];
   var isFetching = true;
 
+  getMyTeachersFunc() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var stdId = jsonDecode(preferences.get("personalDetails").toString())["std_id"]["_id"].toString();
+    teachers = await getMyTeachers(stdId);
+    setState(() {
+      isFetching = false;
+    });
+  }
+
+  @override
+  void initState() {
+    getMyTeachersFunc();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: getAppBar("My Teachers"),
-      body: Column(
+    return Column(
           children: [
               Padding(
               padding: const EdgeInsets.only(left: 30.0,top: 30.0,right: 30.0,bottom: 15.0),
@@ -88,21 +98,6 @@ class _MyTeachersState extends State<MyTeachers> {
             }, itemCount: teachers.length),
           ),
         ]
-      )
-    );
-  }
-
-  getMyTeachersFunc() async{
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    var stdId = jsonDecode(preferences.get("personalDetails").toString())["std_id"]["_id"].toString();
-    teachers = await getMyTeachers(stdId);
-    setState(() {
-      isFetching = false;
-    });
-  }
-
-  @override
-  void initState() {
-    getMyTeachersFunc();
+      );
   }
 }

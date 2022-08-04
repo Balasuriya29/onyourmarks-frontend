@@ -11,7 +11,7 @@ class MyExams extends StatefulWidget {
   State<MyExams> createState() => _MyExamsState();
 }
 
-class _MyExamsState extends State<MyExams> with TickerProviderStateMixin{
+class _MyExamsState extends State<MyExams> with TickerProviderStateMixin {
   late TabController _tabController = TabController(length: 3, vsync: this);
   List<ExamModel> exams = [];
   List<ExamModel> upcoming = [];
@@ -34,11 +34,20 @@ class _MyExamsState extends State<MyExams> with TickerProviderStateMixin{
       // print("finished"+finished.toString());
     });
   }
+
+  Widget getCenterText(String text){
+    return Center(
+      child: Text(text),
+    );
+  }
+  @override
+  void initState() {
+    getExamsFunc();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: getAppBar("My Exams"),
-      body: (isFetching)
+    return (isFetching)
         ?loadingPage()
         :Column(
         children: [
@@ -140,16 +149,6 @@ class _MyExamsState extends State<MyExams> with TickerProviderStateMixin{
             ),
           ))
         ],
-      )
-    );
-  }
-  Widget getCenterText(String text){
-    return Center(
-      child: Text(text),
-    );
-  }
-  @override
-  void initState() {
-    getExamsFunc();
+      );
   }
 }

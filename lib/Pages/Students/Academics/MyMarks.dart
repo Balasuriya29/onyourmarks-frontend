@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import '../../../ApiHandler/Student/StudentsAPIs.dart';
 import '../../../Utilities/components.dart';
@@ -30,45 +28,44 @@ class _MyMarksState extends State<MyMarks> {
     });
 
   }
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: getAppBar("My Completed Exams"),
-      body: (isFetching)
-      ?loadingPage()
-            :Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Column(
-        children: [
-          Expanded(
-              child: ListView.separated(itemBuilder: (BuildContext context,int index){
-                return GestureDetector(
-                  child: Card(
-                    child: Container(
-                      height: 100,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(exam_names.elementAt(index),style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),),
-                      ),
-                    ),
-                  ),
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>MarksScreen(map[exam_names.elementAt(index)])));
-                  },
-                );
-              }, separatorBuilder: (BuildContext context,int index){
-                return SizedBox(height: 10,);
-              }, itemCount: exam_names.length),
-          ),
-        ],
-      ),
-            )
-
-    );
-  }
 
   @override
   void initState() {
     fetchingMarks();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return (isFetching)
+      ?loadingPage()
+      :(exam_names.isEmpty)
+        ?Center(child: Text("No Results to Show"),)
+            :Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Column(
+                children: [
+                  Expanded(
+                      child: ListView.separated(itemBuilder: (BuildContext context,int index){
+                        return GestureDetector(
+                          child: Card(
+                            child: Container(
+                              height: 100,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(exam_names.elementAt(index),style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),),
+                              ),
+                            ),
+                          ),
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>MarksScreen(map[exam_names.elementAt(index)])));
+                          },
+                        );
+                      }, separatorBuilder: (BuildContext context,int index){
+                        return SizedBox(height: 10,);
+                      }, itemCount: exam_names.length),
+                  ),
+                ],
+              ),
+            );
   }
 }

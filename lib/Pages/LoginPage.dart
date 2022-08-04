@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/Utilities/functions.dart';
-import 'Utilities/components.dart';
-import 'Models/Student Models/UserModel.dart';
+import '../Utilities/components.dart';
+import '../Models/Student Models/UserModel.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -117,12 +117,18 @@ class _LoginPageState extends State<LoginPage> {
                         if(check){
                           user = await checkMe(username.text, password.text);
                           isChecking = false;
-                          if(!(user.isRegistered ?? false)){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => PasswordChangePage(user)));
-                          }
-                          else
-                            goToRespectiveHomeScreen(context);
+                          setState(() {
 
+                          });
+                          if(user.username != "Error") {
+                            if (!(user.isRegistered ?? false)) {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) =>
+                                      PasswordChangePage(user)));
+                            }
+                            else
+                              goToRespectiveHomeScreen(context);
+                          }
                         }
 
                       }, child: Text("Login")),

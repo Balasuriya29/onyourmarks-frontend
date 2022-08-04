@@ -1,7 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:onyourmarks/staticNames.dart';
+import 'package:onyourmarks/Utilities/staticNames.dart';
 
 import '../../Utilities/components.dart';
 

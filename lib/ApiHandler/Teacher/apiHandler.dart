@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:onyourmarks/Models/Teacher%20Models/ExamModel.dart';
 import 'package:http/http.dart' as http;
-import 'package:onyourmarks/staticNames.dart';
+import 'package:onyourmarks/Utilities/staticNames.dart';
 
 import '../../Models/Teacher Models/StudentModel.dart';
 import '../../Models/Teacher Models/SubjectModel.dart';
@@ -106,7 +106,7 @@ void getTeacherMe() async {
   );
   var me = json.decode(res.body);
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setString("id", me[0]["_id"].toString());
+  preferences.setString("teacher-id", me[0]["_id"].toString());
   var teacherRelation = me[1];
   List<String> teacherSubjects = [];
   List<String> teacherSubjectsIds = [];
@@ -116,7 +116,7 @@ void getTeacherMe() async {
     teacherStandards.add(json.encode(i["std_id"]));
     teacherSubjectsIds.add(i["subject_id"]["_id"]);
   }
-  preferences.setString("personalDetails", json.encode(me[0]));
+  preferences.setString("teacher-personalDetails", json.encode(me[0]));
   preferences.setString("teacherSubjects", json.encode(teacherSubjectsIds));
   preferences.setString("teacherSubjectsObjects", json.encode(teacherSubjects));
   preferences.setString("teacherStandardObjects", json.encode(teacherStandards));

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/ApiHandler/Teacher/apiHandler.dart';
 import 'package:onyourmarks/Utilities/components.dart';
-import 'package:onyourmarks/staticNames.dart';
 
 class MyStudents extends StatefulWidget {
   const MyStudents({Key? key}) : super(key: key);
@@ -27,17 +26,14 @@ class _MyStudentsState extends State<MyStudents> {
   void initState() {
     getStudents();
   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: getAppBar(APP_NAME),
-      body: Column(
+    return Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 30.0,top: 30.0,right: 30.0,bottom: 15.0),
             child: Text(
-              "Your Student Models 👨‍🎓👩‍🎓",
+              "Your Students 👨‍🎓👩‍🎓",
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
@@ -86,7 +82,6 @@ class _MyStudentsState extends State<MyStudents> {
                 }, itemCount: students?.length ?? 0),
           )
         ],
-      ),
-    );
+      );
   }
 }

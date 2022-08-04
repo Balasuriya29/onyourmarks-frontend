@@ -291,7 +291,7 @@ class _MyDetailsState extends State<MyDetails> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
       ),
         ),
