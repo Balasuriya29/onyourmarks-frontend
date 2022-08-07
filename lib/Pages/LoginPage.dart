@@ -119,11 +119,11 @@ class _LoginPageState extends State<LoginPage> {
 
                         if(check){
                           user = await checkMe(username.text, password.text);
-                          isChecking = false;
                           setState(() {
 
                           });
                           if(user.username != "Error") {
+                            isChecking = false;
                             if (!(user.isRegistered ?? false)) {
                               Navigator.push(context, MaterialPageRoute(
                                   builder: (context) =>

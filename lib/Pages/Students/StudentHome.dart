@@ -8,7 +8,6 @@ import 'package:onyourmarks/Pages/Students/CCA/MyCCA.dart';
 import 'package:onyourmarks/Pages/Students/Profile/MyTeachers.dart';
 import 'package:onyourmarks/Utilities/components.dart';
 import 'package:onyourmarks/Utilities/staticNames.dart';
-import 'package:onyourmarks/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../ApiHandler/Student/profileAPIs.dart';
 import '../HomePage.dart';

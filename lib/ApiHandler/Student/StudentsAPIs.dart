@@ -27,8 +27,10 @@ import '../../Utilities/staticNames.dart';
 
 getMyExams() async{
   var token = await getToken();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  var stdId = jsonDecode(preferences.getString("student-personalDetails").toString());
   List<ExamModel> exams = [];
-  var res = await http.get(Uri.parse(API_LINK+"api/student/myexams/"+"62dd3885881d7ff0608758b6"),
+  var res = await http.get(Uri.parse(API_LINK+"api/student/myexams/"+stdId["std_id"]["_id"]),
       headers: {
         "x-auth-token" : token,
         "content-type" : "application/json"
