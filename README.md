@@ -1,6 +1,6 @@
 # onyourmarks
 
-A new Flutter project.
+Flutter project to track the students in real time
 
 ## Getting Started
 
