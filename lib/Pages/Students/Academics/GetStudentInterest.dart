@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:onyourmarks/ApiHandler/Student/StudentsAPIs.dart';
+import 'package:onyourmarks/Pages/Students/StudentHome.dart';
+import 'package:onyourmarks/Utilities/functions.dart';
+import 'package:onyourmarks/Utilities/staticNames.dart';
 
 import '../../../Utilities/components.dart';
 
@@ -23,7 +27,7 @@ class _GetStudentInterestState extends State<GetStudentInterest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar("Give Your Interests!!!"),
+      appBar: getAppBar(APP_NAME),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -37,8 +41,22 @@ class _GetStudentInterestState extends State<GetStudentInterest> {
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: ElevatedButton(
-                onPressed: (){
-              debugPrint(selectedReportList.toString());
+                onPressed: () async {
+                  List<int> selectedCount = List.filled(selectedReportList.length, 0);
+                  debugPrint(selectedReportList.toString());
+                  debugPrint(selectedCount.toString());
+                  print("Before Posted");
+                  var posted = await postInterests(selectedReportList, selectedCount,'post');
+                  print("After Posted"+ posted.toString());
+                  if(posted){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StudentHomeM()));
+                  }
+                  else{
+                    toast("Error Occurred, Please Select this Again");
+                    new Future.delayed(Duration(seconds: 5), () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => GetStudentInterest()));
+                    });
+                  }
             }, child: Text("Show Interest")),
           )
         ],

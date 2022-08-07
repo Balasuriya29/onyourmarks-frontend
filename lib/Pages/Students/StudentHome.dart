@@ -15,6 +15,7 @@ import '../HomePage.dart';
 import 'Chat/ChatPage.dart';
 
 import 'Profile/MyDetails.dart';
+import 'StudentDashBoard.dart';
 
 class StudentHomeM extends StatelessWidget {
   const StudentHomeM({Key? key}) : super(key: key);
@@ -41,7 +42,7 @@ class StudentHome extends StatefulWidget {
 
 class _StudentHomeState extends State<StudentHome> {
 
-  var pages = [HomePage(), MyTeachers(), MyExams(), MyMarks(), MyCCA()];
+  var pages = [HomePage(), StudentDashBoard() ,MyTeachers(), MyExams(), MyMarks(), MyCCA()];
   var index;
   var me;
   bool isFetching = true;
@@ -74,7 +75,7 @@ class _StudentHomeState extends State<StudentHome> {
                   height: MediaQuery.of(context).size.height / 3,
                   color: Colors.deepPurple,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
+                    padding: const EdgeInsets.only(left: 20.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,64 +101,63 @@ class _StudentHomeState extends State<StudentHome> {
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height / 2,
-                child: Column(
-                  children: [
-                    GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            index = 0;
-                          });
-                        },
-                        child: getsideCards(Icon(CupertinoIcons.home) , 'Home', context)
-                    ),
-                    GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            index = 1;
-                          });
-                        },
-                        child: getsideCards(Icon(CupertinoIcons.person_crop_rectangle_fill) , 'My Class Teachers', context)
-                    ),
-                    GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            index = 2;
-                          });
-                        },
-                        child: getsideCards(Icon(CupertinoIcons.pencil) , 'My Exams', context)
-                    ),
-                    GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            index = 3;
-                          });
-                        },
-                        child: getsideCards(Icon(Icons.check_circle) , 'My Marks', context)
-                    ),
-                    GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            index = 4;
-                          });
-                        },
-                        child: getsideCards(Icon(Icons.format_list_numbered_rounded) , 'My CCA', context)
-                    ),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              index = 0;
+                            });
+                          },
+                          child: getsideCards(Icon(CupertinoIcons.home) , 'Home', context)
+                      ),
+                      GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              index = 1;
+                            });
+                          },
+                          child: getsideCards(Icon(Icons.dashboard) , 'Student DashBoard', context)
+                      ),
+                      GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              index = 2;
+                            });
+                          },
+                          child: getsideCards(Icon(CupertinoIcons.person_crop_rectangle_fill) , 'My Class Teachers', context)
+                      ),
+                      GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              index = 3;
+                            });
+                          },
+                          child: getsideCards(Icon(CupertinoIcons.pencil) , 'My Exams', context)
+                      ),
+                      GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              index = 4;
+                            });
+                          },
+                          child: getsideCards(Icon(Icons.check_circle) , 'My Marks', context)
+                      ),
+                      GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              index = 5;
+                            });
+                          },
+                          child: getsideCards(Icon(Icons.format_list_numbered_rounded) , 'My CCA', context)
+                      ),
+                    ],
+                  ),
                 ),
               ),
-
-              GestureDetector(
-                  onTap: (){
-
-                  },
-                  child: getsideCards(Icon(Icons.settings) , 'Settings', context)
-              ),
-              GestureDetector(
-                  onTap: (){
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
-                  },
-                  child: getsideCards(Icon(Icons.logout) , 'Log Out', context)
-              ),
+              getBottomDrawerNavigation(context),
             ],
           ),
         ),

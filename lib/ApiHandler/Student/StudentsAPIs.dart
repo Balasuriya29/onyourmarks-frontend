@@ -1,16 +1,13 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:onyourmarks/Utilities/functions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Models/Student Models/ExamModel.dart';
 import '../../Models/Student Models/MarksModel.dart';
 import '../../Models/Student Models/SubjectModel.dart';
-import '../../Models/Student Models/TeacherModel.dart';
 import '../../Utilities/staticNames.dart';
-
-
 // Future<List<TeacherModel>> getMyTeachers(String stdId) async{
 //   var token = await getToken();
 //   List<TeacherModel> teachers = [];
@@ -90,5 +87,42 @@ Future<Map<String, List<MarksModel>>> getMyMarks() async{
   }
   // debugPrint("After models");
   return map;
+}
+
+Future<bool> postInterests(List<String> interests, List<int> counts, String reqType) async{
+  var token = await getToken();
+  var check = true;
+  var body = (reqType == 'post')
+      ?jsonEncode({
+         "interests" : interests,
+         "counts":counts
+      })
+      :jsonEncode({
+         "counts":counts
+      });
+
+  debugPrint(body.toString());
+  await http.put(
+    Uri.parse(API_LINK+"api/student/interests"),
+    headers: {
+      "x-auth-token" : token,
+      "content-type":"application/json"
+    },
+    body: body
+  )
+  .then((v) async {
+    debugPrint("Response"+v.body.toString());
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString("student-interest",jsonEncode(interests));
+    preferences.setString("student-interestCounts",jsonEncode(counts));
+    print("At the End of Then");
+    check = true;
+  })
+  .catchError((err) {
+    debugPrint(err);
+    check = false;
+  });
+  print("At the End");
+  return check;
 }
 

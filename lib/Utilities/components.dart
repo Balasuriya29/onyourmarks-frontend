@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/Models/Teacher%20Models/ExamModel.dart';
 import 'package:onyourmarks/Pages/Teachers/MarkUpdationPages.dart';
 
 import '../Models/Student Models/CCAModel.dart';
 import '../Pages/Students/CCA/CCAForm.dart';
+import '../main.dart';
 
 AppBar getAppBar(String name){
   return AppBar(
@@ -391,7 +393,7 @@ List<Widget> getImageSlider(List<String> imagesList){
   return imageSliders;
 }
 
-SizedBox populateTheEvents(String title, String content){
+SizedBox populateTheEvents(String? title, String? content, String? category){
   return SizedBox(
       width: 200,
       height: 180,
@@ -403,21 +405,36 @@ SizedBox populateTheEvents(String title, String content){
               alignment: Alignment.bottomCenter,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  height: 160,
-                  color: Colors.white,
+                child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: 160,
+                      minWidth: 400
+                    ),
+                    child: Container(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 38.0,top: 8.0,right: 38.0,bottom: 38.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Category: " + category!,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                              Text(""),
+                              Text(title ?? "" , style: TextStyle(fontWeight: FontWeight.bold),maxLines: 1,overflow: TextOverflow.ellipsis,),
+                              Text(content ?? "",overflow: TextOverflow.ellipsis,maxLines: 2,),
+                            ],
+                          ),
+                        )
+                    )
                 ),
               ),
             ),
             Positioned(
+              top: 5,
               left: 10,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  width: 100,
-                  height: 50,
-                  color: Colors.red,
-                ),
+              child: Icon(
+                  CupertinoIcons.bookmark_fill,
+                  color: Colors.deepOrange,
               ),
             ),
           ],
@@ -426,4 +443,37 @@ SizedBox populateTheEvents(String title, String content){
   );
 }
 
+Padding getBottomDrawerNavigation(context){
+  return Padding(
+    padding: const EdgeInsets.only(left: 8.0),
+    child: Column(
+      children: [
+        GestureDetector(
+            onTap: (){
 
+            },
+            child: getsideCards(Icon(Icons.settings) , 'Settings', context)
+        ),
+        GestureDetector(
+            onTap: (){
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
+            },
+            child: getsideCards(Icon(Icons.logout) , 'Log Out', context)
+        ),
+      ],
+    ),
+  );
+}
+
+Row customPaddedRowWidget(Row mainRow){
+  return Row(
+    children: [
+      Expanded(child: Text("")),
+      Expanded(
+        flex: 10,
+        child: mainRow,
+      ),
+      Expanded(child: Text(""))
+    ],
+  );
+}

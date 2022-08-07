@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:onyourmarks/Pages/Students/Academics/GetStudentInterest.dart';
 import 'package:onyourmarks/Utilities/functions.dart';
+import 'package:onyourmarks/Utilities/staticNames.dart';
+import 'package:rive/rive.dart';
 import '../Utilities/components.dart';
 import '../Models/Student Models/UserModel.dart';
 
@@ -22,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar("OnYourMarks"),
+      appBar: getAppBar(APP_NAME),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -136,11 +139,15 @@ class _LoginPageState extends State<LoginPage> {
                       ?Center(child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CircularProgressIndicator(),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text("Loading Data")
+                          placeASizedBoxHere(30),
+                          Container(
+                            width: 150,
+                            height: 150,
+                            child: RiveAnimation.network(
+                              'https://cdn.rive.app/animations/vehicles.riv',
+                              animations: const ['idle', 'curves'],
+                            ),
+                          )
                         ],
                       ))
                       :Text(""),
@@ -178,148 +185,150 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: getAppBar("Change Password"),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 100,
-          ),
-          Row(
-            children: [
-              Expanded(child: Text("")),
-              Expanded(
-                flex: 3,
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: newPassword,
-                      obscureText: password1InVisibility,
-                      decoration: InputDecoration(
-                        errorText: (invalidPassword1)?"Invalid":null,
-                        border: UnderlineInputBorder(),
-                        labelText: "New Password",
-                        suffixIcon:
-                        password1InVisibility
-                            ?IconButton(
-                          color: Colors.grey,
-                          onPressed: () {
-                            password1InVisibility = !password1InVisibility;
-                            setState(() {
-
-                            });
-                          },
-                          icon: Icon(Icons.remove_red_eye),
-                        )
-                            :IconButton(
-                          color: Colors.blue,
-                            onPressed: (){
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 100,
+            ),
+            Row(
+              children: [
+                Expanded(child: Text("")),
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: newPassword,
+                        obscureText: password1InVisibility,
+                        decoration: InputDecoration(
+                          errorText: (invalidPassword1)?"Invalid":null,
+                          border: UnderlineInputBorder(),
+                          labelText: "New Password",
+                          suffixIcon:
+                          password1InVisibility
+                              ?IconButton(
+                            color: Colors.grey,
+                            onPressed: () {
                               password1InVisibility = !password1InVisibility;
                               setState(() {
 
                               });
                             },
-                            icon: Icon(Icons.remove_red_eye)
+                            icon: Icon(Icons.remove_red_eye),
+                          )
+                              :IconButton(
+                            color: Colors.blue,
+                              onPressed: (){
+                                password1InVisibility = !password1InVisibility;
+                                setState(() {
+
+                                });
+                              },
+                              icon: Icon(Icons.remove_red_eye)
+                          ),
                         ),
+                        onChanged: (s){
+                          invalidPassword1 = false;
+                          setState(() {
+
+                          });
+                        },
                       ),
-                      onChanged: (s){
-                        invalidPassword1 = false;
-                        setState(() {
-
-                        });
-                      },
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    TextField(
-                      controller: confirmPassword,
-                      obscureText: password2InVisibility,
-                      decoration: InputDecoration(
-                        errorText: (invalidPassword2)?"Invalid":null,
-                        border: UnderlineInputBorder(),
-                        labelText: "Confirm Password",
-                        suffixIcon:
-                        password2InVisibility
-                            ?IconButton(
-                          color: Colors.grey,
-                          onPressed: () {
-                            password2InVisibility = !password2InVisibility;
-                            setState(() {
-
-                            });
-                          },
-                          icon: Icon(Icons.remove_red_eye),
-                        )
-                            :IconButton(
-                            onPressed: (){
+                      SizedBox(
+                        height: 50,
+                      ),
+                      TextField(
+                        controller: confirmPassword,
+                        obscureText: password2InVisibility,
+                        decoration: InputDecoration(
+                          errorText: (invalidPassword2)?"Invalid":null,
+                          border: UnderlineInputBorder(),
+                          labelText: "Confirm Password",
+                          suffixIcon:
+                          password2InVisibility
+                              ?IconButton(
+                            color: Colors.grey,
+                            onPressed: () {
                               password2InVisibility = !password2InVisibility;
                               setState(() {
 
                               });
                             },
-                            icon: Icon(Icons.remove_red_eye)
+                            icon: Icon(Icons.remove_red_eye),
+                          )
+                              :IconButton(
+                              onPressed: (){
+                                password2InVisibility = !password2InVisibility;
+                                setState(() {
+
+                                });
+                              },
+                              icon: Icon(Icons.remove_red_eye)
+                          ),
                         ),
+                        onChanged: (s){
+                          invalidPassword2 = false;
+                          setState(() {
+
+                          });
+                        },
                       ),
-                      onChanged: (s){
-                        invalidPassword2 = false;
+                      SizedBox(
+                        height: 60,
+                      ),
+                      ElevatedButton(onPressed: () async{
+                        setState(() {
+                          isChecking = true;
+                        });
+                        var check = true;
+                        if(newPassword.text == ""){
+                          invalidPassword1 = true;
+                          check = false;
+                          isChecking = false;
+                        }
+                        if(confirmPassword.text == ""){
+                          invalidPassword2 = true;
+                          check = false;
+                          isChecking = false;
+                        }
+                        if(confirmPassword.text != newPassword.text){
+                          invalidPassword2 = true;
+                          invalidPassword1 = true;
+                          check = false;
+                          isChecking = false;
+                        }
+                        if(check){
+                          var isRegistered = await changePassword(widget.user.username ?? '', confirmPassword.text);
+                          isChecking = false;
+                          if(isRegistered){
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => GetStudentInterest()));
+                          }
+                        }
                         setState(() {
 
                         });
-                      },
-                    ),
-                    SizedBox(
-                      height: 60,
-                    ),
-                    ElevatedButton(onPressed: () async{
-                      setState(() {
-                        isChecking = true;
-                      });
-                      var check = true;
-                      if(newPassword.text == ""){
-                        invalidPassword1 = true;
-                        check = false;
-                        isChecking = false;
-                      }
-                      if(confirmPassword.text == ""){
-                        invalidPassword2 = true;
-                        check = false;
-                        isChecking = false;
-                      }
-                      if(confirmPassword.text != newPassword.text){
-                        invalidPassword2 = true;
-                        invalidPassword1 = true;
-                        check = false;
-                        isChecking = false;
-                      }
-                      if(check){
-                        var isRegistered = await changePassword(widget.user.username ?? '', confirmPassword.text);
-                        isChecking = false;
-                        if(isRegistered){
-                          goToRespectiveHomeScreen(context);
-                        }
-                      }
-                      setState(() {
-
-                      });
-                    }, child: Text("Change")),
-                    (isChecking)
-                        ?Center(child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text("Loading Data")
-                      ],
-                    ))
-                        :Text(""),
-                  ],
+                      }, child: Text("Change")),
+                      (isChecking)
+                          ?Center(child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text("Loading Data")
+                        ],
+                      ))
+                          :Text(""),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(child: Text("")),
-            ],
-          ),
-        ],
+                Expanded(child: Text("")),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

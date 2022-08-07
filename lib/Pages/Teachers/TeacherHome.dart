@@ -72,7 +72,7 @@ class _TeacherHomeState extends State<TeacherHome> {
                 height: MediaQuery.of(context).size.height / 3,
                 color: Colors.deepPurple,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
+                  padding: const EdgeInsets.only(left: 20.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,48 +98,39 @@ class _TeacherHomeState extends State<TeacherHome> {
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height / 2,
-              child: Column(
-                children: [
-                  GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          index = 0;
-                        });
-                      },
-                      child: getsideCards(Icon(CupertinoIcons.home) , 'Home', context)
-                  ),
-                  GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          index = 1;
-                        });
-                      },
-                      child: getsideCards(Icon(CupertinoIcons.person_crop_rectangle_fill) , 'My Class Students', context)
-                  ),
-                  GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          index = 2;
-                        });
-                      },
-                      child: getsideCards(Icon(CupertinoIcons.pencil) , 'Update Student Exams', context)
-                  ),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            index = 0;
+                          });
+                        },
+                        child: getsideCards(Icon(CupertinoIcons.home) , 'Home', context)
+                    ),
+                    GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            index = 1;
+                          });
+                        },
+                        child: getsideCards(Icon(CupertinoIcons.person_crop_rectangle_fill) , 'My Class Students', context)
+                    ),
+                    GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            index = 2;
+                          });
+                        },
+                        child: getsideCards(Icon(CupertinoIcons.pencil) , 'Update Student Exams', context)
+                    ),
+                  ],
+                ),
               ),
             ),
-
-            GestureDetector(
-                onTap: (){
-
-                },
-                child: getsideCards(Icon(Icons.settings) , 'Settings', context)
-            ),
-            GestureDetector(
-                onTap: (){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
-                },
-                child: getsideCards(Icon(Icons.logout) , 'Log Out', context)
-            ),
+            getBottomDrawerNavigation(context)
           ],
         ),
       ),

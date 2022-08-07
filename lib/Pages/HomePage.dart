@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:onyourmarks/Pages/rssScreen.dart';
 
 import '../Utilities/components.dart';
 
@@ -39,24 +40,8 @@ class _HomePageState extends State<HomePage> {
           items: getImageSliderForStudent(),
         ),
         placeASizedBoxHere(30),
-        Expanded(
-          child: Row(
-            children: [
-              placeAExpandedHere(1),
-              Expanded(
-                flex: 20,
-                child: ListView.separated(
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index){
-                      return populateTheEvents("", "");
-                    }, separatorBuilder: (BuildContext context, int index){
-                  return placeASizedBoxHere(20);
-                }, itemCount: 3),
-              ),
-              placeAExpandedHere(1),
-            ],
-          ),
-        )
+        rssScreen(),
+        placeASizedBoxHere(50)
       ],
     );
   }
