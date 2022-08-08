@@ -138,7 +138,7 @@ class _TeacherHomeState extends State<TeacherHome> {
       floatingActionButton: FloatingActionButton(
         child: Icon(CupertinoIcons.chat_bubble_text_fill),
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>mychats()));
         },
       ),
     );
@@ -146,8 +146,7 @@ class _TeacherHomeState extends State<TeacherHome> {
 
   @override
   void initState() {
-    getTeacherMe();
-    getMyInfo();
+    getTeacherMe().then((v) => getMyInfo());
   }
 }
 

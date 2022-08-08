@@ -96,7 +96,7 @@ void postStudentMarks(String student_id,String exam_id,String subject_id,int obt
   });
 }
 
-void getTeacherMe() async {
+ getTeacherMe() async {
   var token = await getToken();
   var res = await http.get(
     Uri.parse(API_LINK+"api/admin/me"),

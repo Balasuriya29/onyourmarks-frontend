@@ -377,7 +377,7 @@ List<Widget> getImageSlider(List<String> imagesList){
                 padding: EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 20.0),
                 child: Text(
-                  'No. image',
+                  "",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,
@@ -414,27 +414,23 @@ SizedBox populateTheEvents(String? title, String? content, String? category){
                         color: Colors.white,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 38.0,top: 8.0,right: 38.0,bottom: 38.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Category: " + category!,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                              Text(""),
-                              Text(title ?? "" , style: TextStyle(fontWeight: FontWeight.bold),maxLines: 1,overflow: TextOverflow.ellipsis,),
-                              Text(content ?? "",overflow: TextOverflow.ellipsis,maxLines: 2,),
-                            ],
+                          child: ListTile(
+                            title: Text(title ?? "",  style: TextStyle(fontWeight: FontWeight.bold),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                            subtitle: Text(content ?? ""),
                           ),
                         )
+
                     )
                 ),
               ),
             ),
             Positioned(
-              top: 5,
+              top: 10,
               left: 10,
               child: Icon(
                   CupertinoIcons.bookmark_fill,
                   color: Colors.deepOrange,
+                  size: 30,
               ),
             ),
           ],
@@ -465,13 +461,13 @@ Padding getBottomDrawerNavigation(context){
   );
 }
 
-Row customPaddedRowWidget(Row mainRow){
+Row customPaddedRowWidget(Widget mainWidget){
   return Row(
     children: [
       Expanded(child: Text("")),
       Expanded(
         flex: 10,
-        child: mainRow,
+        child: mainWidget,
       ),
       Expanded(child: Text(""))
     ],

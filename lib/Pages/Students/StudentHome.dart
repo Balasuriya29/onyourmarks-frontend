@@ -25,6 +25,7 @@ class StudentHomeM extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
+
       ),
       home: const StudentHome(0),
     );
