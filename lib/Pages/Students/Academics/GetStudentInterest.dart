@@ -45,9 +45,9 @@ class _GetStudentInterestState extends State<GetStudentInterest> {
                   List<int> selectedCount = List.filled(selectedReportList.length, 0);
                   debugPrint(selectedReportList.toString());
                   debugPrint(selectedCount.toString());
-                  print("Before Posted");
+                  // print("Before Posted");
                   var posted = await postInterests(selectedReportList, selectedCount,'post');
-                  print("After Posted"+ posted.toString());
+                  // print("After Posted"+ posted.toString());
                   if(posted){
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StudentHomeM()));
                   }

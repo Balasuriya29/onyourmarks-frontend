@@ -117,14 +117,15 @@ Future<bool> postInterests(List<String> interests, List<int> counts, String reqT
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("student-interest",jsonEncode(interests));
     preferences.setString("student-interestCounts",jsonEncode(counts));
-    print("At the End of Then");
+    // print("At the End of Then");
     check = true;
   })
   .catchError((err) {
     debugPrint(err);
     check = false;
   });
-  print("At the End");
+  // print("At the End");
   return check;
 }
+
 

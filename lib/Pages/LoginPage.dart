@@ -3,8 +3,10 @@ import 'package:onyourmarks/Pages/Students/Academics/GetStudentInterest.dart';
 import 'package:onyourmarks/Utilities/functions.dart';
 import 'package:onyourmarks/Utilities/staticNames.dart';
 import 'package:rive/rive.dart';
-import '../Utilities/components.dart';
+
 import '../Models/Student Models/UserModel.dart';
+import '../Utilities/components.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -41,7 +43,6 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       TextField(
                         controller: username,
-
                         decoration: InputDecoration(
                           errorText: (invalidUsername)?"Invalid":null,
                           border: UnderlineInputBorder(),
@@ -50,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                         onChanged: (s){
                           invalidUsername = false;
                           setState(() {
-                            
+
                           });
                         },
                       ),
@@ -65,26 +66,26 @@ class _LoginPageState extends State<LoginPage> {
                           border: UnderlineInputBorder(),
                           labelText: "Password",
                           suffixIcon:
-                            passwordInVisibility
-                                ?IconButton(
-                                  color: Colors.grey,
-                                  onPressed: () {
-                                    passwordInVisibility = !passwordInVisibility;
-                                    setState(() {
+                          passwordInVisibility
+                              ?IconButton(
+                            color: Colors.grey,
+                            onPressed: () {
+                              passwordInVisibility = !passwordInVisibility;
+                              setState(() {
 
-                                    });
-                                  },
-                                  icon: Icon(Icons.remove_red_eye),
-                                )
-                                :IconButton(
-                                  onPressed: (){
-                                    passwordInVisibility = !passwordInVisibility;
-                                    setState(() {
+                              });
+                            },
+                            icon: Icon(Icons.remove_red_eye),
+                          )
+                              :IconButton(
+                              onPressed: (){
+                                passwordInVisibility = !passwordInVisibility;
+                                setState(() {
 
-                                    });
-                                  },
-                                  icon: Icon(Icons.remove_red_eye)
-                                ),
+                                });
+                              },
+                              icon: Icon(Icons.remove_red_eye)
+                          ),
                         ),
                         onChanged: (s){
                           invalidPassword = false;
@@ -136,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       }, child: Text("Login")),
                       (isChecking)
-                      ?Center(child: Column(
+                          ?Center(child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           placeASizedBoxHere(30),
@@ -150,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                           )
                         ],
                       ))
-                      :Text(""),
+                          :Text(""),
                     ],
                   ),
                 ),
@@ -218,7 +219,7 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                             icon: Icon(Icons.remove_red_eye),
                           )
                               :IconButton(
-                            color: Colors.blue,
+                              color: Colors.blue,
                               onPressed: (){
                                 password1InVisibility = !password1InVisibility;
                                 setState(() {

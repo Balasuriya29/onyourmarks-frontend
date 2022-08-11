@@ -33,7 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     setState(() {
-      print(myDetails["gender"]);
+      // print(myDetails["gender"]);
       if(myDetails["gender"] == 'Male') appBarEmote = "👨‍🏫";
       if(myDetails["gender"] == 'Female') appBarEmote = "👩‍🏫";
       isFetching = false;

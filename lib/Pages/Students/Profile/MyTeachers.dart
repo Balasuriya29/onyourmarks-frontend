@@ -19,7 +19,7 @@ class _MyTeachersState extends State<MyTeachers> {
 
   getMyTeachersFunc() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    var stdId = jsonDecode(preferences.get("personalDetails").toString())["std_id"]["_id"].toString();
+    var stdId = jsonDecode(preferences.get("student-personalDetails").toString())["std_id"]["_id"].toString();
     teachers = await getMyTeachers(stdId);
     setState(() {
       isFetching = false;

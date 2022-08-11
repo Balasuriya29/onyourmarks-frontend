@@ -7,7 +7,7 @@ import '../../Models/Student Models/SubjectModel.dart';
 import '../../Models/Student Models/TeacherModel.dart';
 import '../../Utilities/staticNames.dart';
 
-void getStudentMe() async {
+getStudentMe() async {
   var token = await getToken();
   var res = await http.get(
       Uri.parse("${API_LINK}api/admin/me"),

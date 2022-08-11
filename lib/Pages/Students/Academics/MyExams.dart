@@ -17,15 +17,21 @@ class _MyExamsState extends State<MyExams> with TickerProviderStateMixin {
   var calenderController = CalendarController();
   List<ExamModel> exams = [];
   List<List<SubjectModel>> subjects = [];
-  DateTime? futureFirstDate;
+  DateTime futureFirstDate = DateTime.now();
   bool isFetching = true;
+  bool flag = true;
   getExamsFunc() async {
     exams = await getMyExams();
-    futureFirstDate = DateTime.parse(exams.first.subjects?.first.date ?? "");
     for(var i in exams){
       List<SubjectModel> tempList = [];
-      if(DateTime.parse(i.subjects?.first.date ?? "").compareTo(futureFirstDate!) == -1){
-        futureFirstDate = DateTime.parse(tempList.first.date ?? "");
+
+      if(futureFirstDate.compareTo(DateTime.parse(i.subjects?.first.date ?? "")) == -1 && flag){
+        futureFirstDate = DateTime.parse(i.subjects?.first.date ?? "");
+        flag = false;
+      }
+      if(futureFirstDate.compareTo(DateTime.parse(i.subjects?.first.date ?? "")) == -1 && flag){
+        futureFirstDate = DateTime.parse(i.subjects?.first.date ?? "");
+        flag = false;
       }
       tempList.addAll(i.subjects ?? []);
       subjects.add(tempList);
@@ -79,12 +85,12 @@ List<Meeting> _getDataSource(List<List<SubjectModel>>? subjects, List<ExamModel>
   final List<Meeting> meetings = <Meeting>[];
   int examCounter = 0;
   for(var i in subjects!){
-    int dateInc = 0;
-    final DateTime today = DateTime.parse(i.first.date ?? "");
     var examName = exams.elementAt(examCounter++).examName;
+
     for(var j in i){
       var subName = j.subName ?? "";
-      DateTime startTime = DateTime(today.year, today.month, today.day + dateInc++, 9, 0, 0);
+      var date = DateTime.parse(j.date ?? "");
+      DateTime startTime = DateTime(date.year, date.month, date.day, 9, 0, 0);
       DateTime endTime = startTime.add(const Duration(hours: 3));
       meetings.add(
           Meeting(examName!+ " - "+subName, startTime, endTime, Colors.green.shade900, false)

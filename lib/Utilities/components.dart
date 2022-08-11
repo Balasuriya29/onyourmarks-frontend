@@ -3,8 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/Models/Teacher%20Models/ExamModel.dart';
 import 'package:onyourmarks/Pages/Teachers/MarkUpdationPages.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../Models/Student Models/CCAModel.dart';
+import '../Models/Student Models/MarksModel.dart';
 import '../Pages/Students/CCA/CCAForm.dart';
 import '../main.dart';
 
@@ -358,7 +360,7 @@ List<Widget> getImageSlider(List<String> imagesList){
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
         child: Stack(
           children: <Widget>[
-            Image.network(item, fit: BoxFit.cover, width: 1000.0),
+            Image.asset(item, fit: BoxFit.cover, width: 1000.0,alignment: Alignment.center),
             Positioned(
               bottom: 0.0,
               left: 0.0,
@@ -407,16 +409,16 @@ SizedBox populateTheEvents(String? title, String? content, String? category){
                 borderRadius: BorderRadius.circular(20),
                 child: ConstrainedBox(
                     constraints: BoxConstraints(
-                      minHeight: 160,
+                      minHeight: 150,
                       minWidth: 400
                     ),
                     child: Container(
                         color: Colors.white,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 38.0,top: 8.0,right: 38.0,bottom: 38.0),
+                          padding: const EdgeInsets.only(left: 38.0,top: 8.0,right: 38.0),
                           child: ListTile(
                             title: Text(title ?? "",  style: TextStyle(fontWeight: FontWeight.bold),maxLines: 2,overflow: TextOverflow.ellipsis,),
-                            subtitle: Text(content ?? ""),
+                            subtitle: Text(content ?? "", maxLines: 3,),
                           ),
                         )
 
@@ -461,15 +463,252 @@ Padding getBottomDrawerNavigation(context){
   );
 }
 
-Row customPaddedRowWidget(Widget mainWidget){
+Row customPaddedRowWidget(Widget mainWidget, int customFlex){
   return Row(
     children: [
       Expanded(child: Text("")),
       Expanded(
-        flex: 10,
+        flex: customFlex,
         child: mainWidget,
       ),
       Expanded(child: Text(""))
     ],
   );
+}
+
+TableRow getTableRow(String? field, String? value){
+  return TableRow(
+    decoration: const BoxDecoration(
+      color: Colors.transparent,
+    ),
+    children: <Widget>[
+      ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: 128,
+          minHeight: 54,
+        ),
+        child: Row(
+
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(field ?? "", style: TextStyle(fontWeight: FontWeight.bold),),
+            ),
+          ],
+        ),
+      ),
+      ConstrainedBox(
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(value ?? "",  style: TextStyle(fontWeight: FontWeight.w500),),
+            ),
+          ],
+        ),
+        constraints: BoxConstraints(
+          minWidth: 128,
+          minHeight: 54
+        )
+      )
+    ],
+  );
+}
+
+Padding getSubjectMarksStack(String subjectName, String subjectPercent, int sizePercent){
+  return Padding(
+    padding: const EdgeInsets.all(18.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(subjectName.toUpperCase(), style: TextStyle(
+            fontWeight: FontWeight.bold,
+            // fontSize: 17.5,
+        ),),
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          children: [
+            Expanded(
+              flex: 6,
+              child: ColoredBox(
+                color: Colors.blue.shade900,
+                child: SizedBox(
+                  width:100,
+                  height: 25,
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Row(
+                          children: [
+                            Expanded(
+                                flex: sizePercent,
+                                child: Container(
+                                  color: Colors.orange,
+                                  height: 20,
+                                )
+                            ),
+                            Expanded(
+                                flex: 10 - sizePercent,
+                                child: Text("")
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(child: Text(subjectPercent + "%",style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 17.5
+            ),))
+          ],
+        )
+      ],
+    ),
+  );
+}
+
+class CircularChart extends StatefulWidget {
+  final marks;
+  const CircularChart(this.marks,{Key? key}) : super(key: key);
+
+  @override
+  State<CircularChart> createState() => _CircularChartState();
+}
+
+class _CircularChartState extends State<CircularChart> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 100,
+      height: 100,
+      child: SfCircularChart(
+          margin: EdgeInsets.all(0),
+          title: ChartTitle(text:''),
+          series: _getDefaultDoughnutSeries(widget.marks),
+          tooltipBehavior:TooltipBehavior(enable: true, format: 'point.x : point.y%'),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+
+  }
+}
+
+List<DoughnutSeries<ChartSampleData, String>> _getDefaultDoughnutSeries(List<MarksModel> marks) {
+  return <DoughnutSeries<ChartSampleData, String>>[
+    DoughnutSeries<ChartSampleData, String>(
+        radius: '80%',
+        explode: true,
+        // strokeWidth: 1000,
+        explodeOffset: '10%',
+        dataSource: getTheChartSegments(marks),
+        xValueMapper: (ChartSampleData data, _) => data.x as String,
+        yValueMapper: (ChartSampleData data, _) => data.y,
+        dataLabelMapper: (ChartSampleData data, _) => data.text,
+        dataLabelSettings: const DataLabelSettings(isVisible: true))
+  ];
+}
+
+List<ChartSampleData> getTheChartSegments(List<MarksModel> marks){
+  List<ChartSampleData> list = [];
+
+  for(int i=0;i<marks.length;i++){
+    var valueY = int.parse(marks[i].obtained_marks!)/6;
+    list.add(ChartSampleData(x: marks[i].sub_name, y: valueY,text: ' ',));
+  }
+
+  return list;
+}
+
+class ChartSampleData {
+  /// Holds the datapoint values like x, y, etc.,
+  ChartSampleData(
+      {this.x,
+        this.y,
+        this.xValue,
+        this.yValue,
+        this.secondSeriesYValue,
+        this.thirdSeriesYValue,
+        this.pointColor,
+        this.size,
+        this.text,
+        this.open,
+        this.close,
+        this.low,
+        this.high,
+        this.volume});
+
+  /// Holds x value of the datapoint
+  final dynamic x;
+
+  /// Holds y value of the datapoint
+  final num? y;
+
+  /// Holds x value of the datapoint
+  final dynamic xValue;
+
+  /// Holds y value of the datapoint
+  final num? yValue;
+
+  /// Holds y value of the datapoint(for 2nd series)
+  final num? secondSeriesYValue;
+
+  /// Holds y value of the datapoint(for 3nd series)
+  final num? thirdSeriesYValue;
+
+  /// Holds point color of the datapoint
+  final Color? pointColor;
+
+  /// Holds size of the datapoint
+  final num? size;
+
+  /// Holds datalabel/text value mapper of the datapoint
+  final String? text;
+
+  /// Holds open value of the datapoint
+  final num? open;
+
+  /// Holds close value of the datapoint
+  final num? close;
+
+  /// Holds low value of the datapoint
+  final num? low;
+
+  /// Holds high value of the datapoint
+  final num? high;
+
+  /// Holds open value of the datapoint
+  final num? volume;
+}
+
+List<Widget> getAllStackSubjects(Map<String, List<MarksModel>> currentMarks){
+  List<Widget> list = [];
+  var marksObject = currentMarks.values.toList();
+
+  for(var i=0;i<marksObject[0].length;i++){
+    var mark = marksObject[0].elementAt(i).obtained_marks ?? "0";
+    var markInt = int.parse(mark);
+    var sizePercent = (markInt > 50)
+            ?(markInt/10).floor()
+            :(markInt/10).ceil();
+    var subjectName = marksObject[0].elementAt(i).sub_name?.indexOf(new RegExp(r'[0-9]')) ?? "";
+
+
+    list.add(getSubjectMarksStack(
+        marksObject[0].elementAt(i).sub_name ?? "",
+        mark,
+        sizePercent));
+  }
+  return list;
 }

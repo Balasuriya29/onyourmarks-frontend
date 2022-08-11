@@ -42,8 +42,8 @@ class StudentHome extends StatefulWidget {
 
 class _StudentHomeState extends State<StudentHome> {
 
-  var pages = [HomePage(), StudentDashBoard() ,MyTeachers(), MyExams(), MyMarks(), MyCCA()];
-  var index;
+  var pages = [HomePage(), StudentDashboard() ,MyTeachers(), MyExams(), MyMarks(), MyCCA()];
+  var index = 0;
   var me;
   bool isFetching = true;
 
@@ -62,7 +62,7 @@ class _StudentHomeState extends State<StudentHome> {
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade50,
       appBar: getAppBar(APP_NAME),
-      body: pages[index ?? 0],
+      body: (isFetching)?loadingPage():pages[index],
       drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -173,7 +173,7 @@ class _StudentHomeState extends State<StudentHome> {
 
   @override
   void initState() {
-    getStudentMe();
-    getMyInfo();
+    index = widget.index;
+    getStudentMe().then((v) => getMyInfo());
   }
 }

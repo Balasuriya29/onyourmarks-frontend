@@ -14,9 +14,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<String> imgLists = [
-    'https://image2.commarts.com/images1/3/8/8/0/1/1088327_102_600_LTE4NDY1MTQ3OTMtOTkyODgyMzc0.jpg',
-    'https://www.infodesigners.eu/immagine_coppia/Art-On-Climate-2022-International-Illustration-Competition.png',
-    'https://img.freepik.com/free-vector/teams-competing-prize-people-playing-tug-war-pulling-rope-with-golden-cup-flat-vector-illustration-competition-contest-concept_74855-10163.jpg?w=2000',
+    'Images/Image-HomePage-1.png',
+    'Images/Image-HomePage-2.png',
+    'Images/Image-HomePage-3.png'
   ];
 
   getImageSliderForStudent(){

@@ -320,11 +320,11 @@ class _StudentCCAFormState extends State<StudentCCAForm> {
 
                     if(check){
                       SharedPreferences preferences = await SharedPreferences.getInstance();
-                      await postActivity(preferences.get("id").toString(),actNameController.text,actTypeController,actStatusController,actStartController.text.substring(0,10),actEndController.text.substring(0,10)).then((v)  {
+                      await postActivity(preferences.get("student-id").toString(),actNameController.text,actTypeController,actStatusController,actStartController.text.substring(0,10),actEndController.text.substring(0,10)).then((v)  {
                         setState(() {
 
                         });
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StudentHome(3)));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StudentHome(5)));
                       });
                     }
 

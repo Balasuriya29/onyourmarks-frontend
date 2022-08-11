@@ -19,7 +19,7 @@ class _MyDetailsState extends State<MyDetails> {
 
   getMyDetails() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    myDetails = jsonDecode(preferences.get("personalDetails").toString());
+    myDetails = jsonDecode(preferences.get("student-personalDetails").toString());
     setState(() {
       isFetching = false;
     });

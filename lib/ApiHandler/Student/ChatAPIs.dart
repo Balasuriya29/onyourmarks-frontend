@@ -66,7 +66,7 @@ Future<List<Chat>> getMessagesFromFB1(String chat_id) async{
       messages.add(chat);
     }
   });
-  print(messages.toString());
+  // print(messages.toString());
   return messages;
 
 }
@@ -107,7 +107,7 @@ postNewChat(String teacher_id,String student_id) async{
       "x-auth-token":token
     },
   ).then((value) {
-    print("Chat added");
+    // print("Chat added");
   });
 }
 
@@ -120,8 +120,8 @@ postMessage(String message,String chat_id,String person) async{
     "time" : DateTime.now().millisecondsSinceEpoch.toString()
   };
   ref.add(body).then((value){
-    print(value);
-    print("Added");
+    // print(value);
+    // print("Added");
   });
 
   // await http.post(Uri.parse(apiLink.apilink+"api/chat/message"),
