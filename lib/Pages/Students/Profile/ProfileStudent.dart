@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../Utilities/components.dart';
+import '../../../Utilities/Components/functional.dart';
 import 'MyDetails.dart';
 import 'MyTeachers.dart';
 

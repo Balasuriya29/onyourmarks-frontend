@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/Models/Teacher%20Models/ExamModel.dart';
 import 'package:onyourmarks/Pages/Teachers/MarkUpdationPages.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../Models/Student Models/CCAModel.dart';
-import '../Models/Student Models/MarksModel.dart';
-import '../Pages/Students/CCA/CCAForm.dart';
-import '../main.dart';
+import '../../Models/Student Models/CCAModel.dart';
+import '../../Models/Student Models/MarksModel.dart';
+import '../../Pages/Students/CCA/CCAForm.dart';
+import '../../main.dart';
+import 'class.dart';
 
 AppBar getAppBar(String name){
   return AppBar(
@@ -42,73 +42,73 @@ Row populateCardsWithSubjectDetails(String field,double fieldSize,String? value,
 
 ListView populateExamsObjectToListView(BuildContext context, List<ExamModel> exams, String type){
   var color = (type == "upcoming")
-                ?Colors.blue
-                :(type == "in progress")
-                  ?Colors.green
-                  :Colors.amber;
+      ?Colors.blue
+      :(type == "in progress")
+      ?Colors.green
+      :Colors.amber;
   return ListView.separated(
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ExamDetailsView(exams.elementAt(index),color)));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Card(
-                          child: SizedBox(
-                            height: 150,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left:18.0),
-                                      child: getTheStyledTextForExamsList(exams.elementAt(index).examName.toString(),20)
-                                    ),
-                                    SizedBox(
-                                      width: 75,
-                                    ),
-                                    getTheStyledTextForExamsList(exams.elementAt(index).std_name.toString(),20)
-                                  ],
-                                ),
-                                placeASizedBoxHere(20),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 18.0),
-                                      child: getTheStyledTextForExamsList("From : ", 15),
-                                    ),
-                                    getTheStyledTextForExamsList(exams.elementAt(index).subjects?.first.date?.substring(0,10) ?? ' ', 15),
-                                  ],
-                                ),
-                                placeASizedBoxHere(10),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 18.0),
-                                      child: getTheStyledTextForExamsList("To : ", 15),
-                                    ),
-                                    getTheStyledTextForExamsList(exams.elementAt(index).subjects?.last.date?.substring(0,10) ?? ' ', 15)
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          color: color,
-                      ),
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ExamDetailsView(exams.elementAt(index),color)));
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Card(
+              child: SizedBox(
+                height: 150,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.only(left:18.0),
+                            child: getTheStyledTextForExamsList(exams.elementAt(index).examName.toString(),20)
+                        ),
+                        SizedBox(
+                          width: 75,
+                        ),
+                        getTheStyledTextForExamsList(exams.elementAt(index).std_name.toString(),20)
+                      ],
                     ),
-                  );
+                    placeASizedBoxHere(20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18.0),
+                          child: getTheStyledTextForExamsList("From : ", 15),
+                        ),
+                        getTheStyledTextForExamsList(exams.elementAt(index).subjects?.first.date?.substring(0,10) ?? ' ', 15),
+                      ],
+                    ),
+                    placeASizedBoxHere(10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18.0),
+                          child: getTheStyledTextForExamsList("To : ", 15),
+                        ),
+                        getTheStyledTextForExamsList(exams.elementAt(index).subjects?.last.date?.substring(0,10) ?? ' ', 15)
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              color: color,
+            ),
+          ),
+        );
 
-                }
-                , separatorBuilder: (BuildContext context, int index){
-              return SizedBox(
-                height: 20,
-              );
-            }
-            , itemCount: exams.length);
+      }
+      , separatorBuilder: (BuildContext context, int index){
+    return SizedBox(
+      height: 20,
+    );
+  }
+      , itemCount: exams.length);
 }
 
 Text getTheStyledTextForExamsList(String? field, double fontSize){
@@ -126,135 +126,91 @@ Center loadingPage(){
   ));
 }
 
-class BuildChoiceChips extends StatefulWidget {
-  final List<String> items;
-  final Function(List<String>) onSelectionChanged;
-  const BuildChoiceChips(this.items,{required this.onSelectionChanged});
-
-  @override
-  State<BuildChoiceChips> createState() => _BuildChoiceChipsState();
-}
-
-class _BuildChoiceChipsState extends State<BuildChoiceChips> {
-
-  List<String> selectedChoices = [];
-  buildChoiceChips(){
-    List<Widget> choices = [];
-    widget.items.forEach((item) {
-      choices.add(Container(
-        padding: const EdgeInsets.all(2.0),
-        child: ChoiceChip(
-          label: Text(item),
-          selected: selectedChoices.contains(item),
-          selectedColor: Colors.blue,
-          onSelected: (selected) {
-            setState(() {
-              selectedChoices.contains(item)
-                  ? selectedChoices.remove(item)
-                  : selectedChoices.add(item);
-              widget.onSelectionChanged(selectedChoices); // +added
-            });
-          },
-        ),
-      ));
-    });
-    return choices;
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      children: buildChoiceChips(),
-    );
-  }
-}
-
 Widget populateCCAObjectToListView(BuildContext context, List<CCAModel> activities, String type){
   var color = (type == "pending")
       ?Colors.blue
       :(type == "accepted")
-        ?Colors.green
-        :Colors.amber;
-  
+      ?Colors.green
+      :Colors.amber;
+
   int len = activities.length-1;
   return ListView.separated(
       itemBuilder: (BuildContext context, int index) {
         return (type == "pending" && index == len)
-          ?GestureDetector(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                    children: [
-                      Card(
-                        child: SizedBox(
-                          height: 175,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+            ?GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+                Card(
+                  child: SizedBox(
+                    height: 175,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 18.0,left: 18.0,right: 18.0),
+                          child: Row(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 18.0,left: 18.0,right: 18.0),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 3,
-                                        child: getTheStyledTextForCCAList(activities.elementAt(index).name.toString(),20)),
-                                    Expanded(
-                                        flex: 1,
-                                        child: Text("")
-                                    ),
-                                    Expanded(
-                                        flex: 3,
-                                        child: getTheStyledTextForCCAList(activities.elementAt(index).status.toString(),20))
-                                  ],
-                                ),
+                              Expanded(
+                                  flex: 3,
+                                  child: getTheStyledTextForCCAList(activities.elementAt(index).name.toString(),20)),
+                              Expanded(
+                                  flex: 1,
+                                  child: Text("")
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 18.0),
-                                    child: getTheStyledTextForCCAList("Type : ", 15),
-                                  ),
-                                  getTheStyledTextForCCAList(activities.elementAt(index).type ?? ' ', 15),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 18.0),
-                                    child: getTheStyledTextForCCAList("Status : ", 15),
-                                  ),
-                                  getTheStyledTextForCCAList(activities.elementAt(index).isVerified ?? ' ', 15)
-                                ],
-                              ),
-
+                              Expanded(
+                                  flex: 3,
+                                  child: getTheStyledTextForCCAList(activities.elementAt(index).status.toString(),20))
                             ],
                           ),
                         ),
-                        color: color,
-                      ),
-                      SizedBox(height: 20,),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(17.5)
+                        SizedBox(
+                          height: 10,
                         ),
-                          onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => StudentCCAForm()));
-                      }, child: Icon(CupertinoIcons.add))
-                    ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 18.0),
+                              child: getTheStyledTextForCCAList("Type : ", 15),
+                            ),
+                            getTheStyledTextForCCAList(activities.elementAt(index).type ?? ' ', 15),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 18.0),
+                              child: getTheStyledTextForCCAList("Status : ", 15),
+                            ),
+                            getTheStyledTextForCCAList(activities.elementAt(index).isVerified ?? ' ', 15)
+                          ],
+                        ),
+
+                      ],
+                    ),
                   ),
-              ),
-            )
-          :GestureDetector(
+                  color: color,
+                ),
+                SizedBox(height: 20,),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(),
+                        padding: EdgeInsets.all(17.5)
+                    ),
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => StudentCCAForm()));
+                    }, child: Icon(CupertinoIcons.add))
+              ],
+            ),
+          ),
+        )
+            :GestureDetector(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
@@ -333,23 +289,23 @@ Text getTheStyledTextForCCAList(String? field, double fontSize){
 Padding getsideCards(Icon icon, String title2, BuildContext context) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(10.0),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 15,
-              child: icon,
-            ),
-            Expanded(
-              child: ListTile(
+    child: Material(
+      borderRadius: BorderRadius.circular(10.0),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 15,
+            child: icon,
+          ),
+          Expanded(
+            child: ListTile(
               title: Text(title2),
-              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
+    ),
+  );
 }
 
 List<Widget> getImageSlider(List<String> imagesList){
@@ -409,8 +365,8 @@ SizedBox populateTheEvents(String? title, String? content, String? category){
                 borderRadius: BorderRadius.circular(20),
                 child: ConstrainedBox(
                     constraints: BoxConstraints(
-                      minHeight: 150,
-                      minWidth: 400
+                        minHeight: 150,
+                        minWidth: 400
                     ),
                     child: Container(
                         color: Colors.white,
@@ -427,12 +383,12 @@ SizedBox populateTheEvents(String? title, String? content, String? category){
               ),
             ),
             Positioned(
-              top: 10,
+              top: 20,
               left: 10,
               child: Icon(
-                  CupertinoIcons.bookmark_fill,
-                  color: Colors.deepOrange,
-                  size: 30,
+                CupertinoIcons.bookmark_fill,
+                color: Colors.deepOrange,
+                size: 30,
               ),
             ),
           ],
@@ -498,18 +454,18 @@ TableRow getTableRow(String? field, String? value){
         ),
       ),
       ConstrainedBox(
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(value ?? "",  style: TextStyle(fontWeight: FontWeight.w500),),
-            ),
-          ],
-        ),
-        constraints: BoxConstraints(
-          minWidth: 128,
-          minHeight: 54
-        )
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Text(value ?? "",  style: TextStyle(fontWeight: FontWeight.w500),),
+              ),
+            ],
+          ),
+          constraints: BoxConstraints(
+              minWidth: 128,
+              minHeight: 54
+          )
       )
     ],
   );
@@ -522,8 +478,8 @@ Padding getSubjectMarksStack(String subjectName, String subjectPercent, int size
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(subjectName.toUpperCase(), style: TextStyle(
-            fontWeight: FontWeight.bold,
-            // fontSize: 17.5,
+          fontWeight: FontWeight.bold,
+          // fontSize: 17.5,
         ),),
         SizedBox(
           height: 10,
@@ -576,36 +532,7 @@ Padding getSubjectMarksStack(String subjectName, String subjectPercent, int size
   );
 }
 
-class CircularChart extends StatefulWidget {
-  final marks;
-  const CircularChart(this.marks,{Key? key}) : super(key: key);
-
-  @override
-  State<CircularChart> createState() => _CircularChartState();
-}
-
-class _CircularChartState extends State<CircularChart> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 100,
-      height: 100,
-      child: SfCircularChart(
-          margin: EdgeInsets.all(0),
-          title: ChartTitle(text:''),
-          series: _getDefaultDoughnutSeries(widget.marks),
-          tooltipBehavior:TooltipBehavior(enable: true, format: 'point.x : point.y%'),
-      ),
-    );
-  }
-
-  @override
-  void initState() {
-
-  }
-}
-
-List<DoughnutSeries<ChartSampleData, String>> _getDefaultDoughnutSeries(List<MarksModel> marks) {
+List<DoughnutSeries<ChartSampleData, String>> getDefaultDoughnutSeries(List<MarksModel> marks) {
   return <DoughnutSeries<ChartSampleData, String>>[
     DoughnutSeries<ChartSampleData, String>(
         radius: '80%',
@@ -631,67 +558,6 @@ List<ChartSampleData> getTheChartSegments(List<MarksModel> marks){
   return list;
 }
 
-class ChartSampleData {
-  /// Holds the datapoint values like x, y, etc.,
-  ChartSampleData(
-      {this.x,
-        this.y,
-        this.xValue,
-        this.yValue,
-        this.secondSeriesYValue,
-        this.thirdSeriesYValue,
-        this.pointColor,
-        this.size,
-        this.text,
-        this.open,
-        this.close,
-        this.low,
-        this.high,
-        this.volume});
-
-  /// Holds x value of the datapoint
-  final dynamic x;
-
-  /// Holds y value of the datapoint
-  final num? y;
-
-  /// Holds x value of the datapoint
-  final dynamic xValue;
-
-  /// Holds y value of the datapoint
-  final num? yValue;
-
-  /// Holds y value of the datapoint(for 2nd series)
-  final num? secondSeriesYValue;
-
-  /// Holds y value of the datapoint(for 3nd series)
-  final num? thirdSeriesYValue;
-
-  /// Holds point color of the datapoint
-  final Color? pointColor;
-
-  /// Holds size of the datapoint
-  final num? size;
-
-  /// Holds datalabel/text value mapper of the datapoint
-  final String? text;
-
-  /// Holds open value of the datapoint
-  final num? open;
-
-  /// Holds close value of the datapoint
-  final num? close;
-
-  /// Holds low value of the datapoint
-  final num? low;
-
-  /// Holds high value of the datapoint
-  final num? high;
-
-  /// Holds open value of the datapoint
-  final num? volume;
-}
-
 List<Widget> getAllStackSubjects(Map<String, List<MarksModel>> currentMarks){
   List<Widget> list = [];
   var marksObject = currentMarks.values.toList();
@@ -700,15 +566,80 @@ List<Widget> getAllStackSubjects(Map<String, List<MarksModel>> currentMarks){
     var mark = marksObject[0].elementAt(i).obtained_marks ?? "0";
     var markInt = int.parse(mark);
     var sizePercent = (markInt > 50)
-            ?(markInt/10).floor()
-            :(markInt/10).ceil();
-    var subjectName = marksObject[0].elementAt(i).sub_name?.indexOf(new RegExp(r'[0-9]')) ?? "";
+        ?(markInt/10).floor()
+        :(markInt/10).ceil();
 
-
+    String? subjectName = getSubjectName(marksObject[0], i);
     list.add(getSubjectMarksStack(
-        marksObject[0].elementAt(i).sub_name ?? "",
+        subjectName ?? "",
         mark,
-        sizePercent));
+        sizePercent)
+    );
   }
   return list;
+}
+
+String? getSubjectName(List<MarksModel> marksObject, int i) {
+  int index = getStartIndexToRemove(marksObject, i);
+  var subjectName = (index != -1)
+      ?marksObject.elementAt(i).sub_name?.substring(0,index)
+      :marksObject.elementAt(i).sub_name;
+  return subjectName;
+}
+
+int getStartIndexToRemove(List<MarksModel> marksObject, int i) {
+  int index = marksObject.elementAt(i).sub_name?.indexOf(new RegExp(r'[0-9]')) ?? 0;
+  return index;
+}
+
+List<DoughnutSeries<ChartSampleData, String>> getSemiDoughnutSeries() {
+  return <DoughnutSeries<ChartSampleData, String>>[
+    DoughnutSeries<ChartSampleData, String>(
+        dataSource: <ChartSampleData>[
+          ChartSampleData(x: '', y: 59, text: null),
+          ChartSampleData(x: '', y: 41, text: null),
+        ],
+        innerRadius: '50%',
+        radius: '100%',
+        startAngle: 270,
+        endAngle: 90,
+
+        xValueMapper: (ChartSampleData data, _) => data.x as String,
+        yValueMapper: (ChartSampleData data, _) => data.y,
+        dataLabelMapper: (ChartSampleData data, _) => data.text,
+        dataLabelSettings: const DataLabelSettings(
+            isVisible: true, labelPosition: ChartDataLabelPosition.outside))
+  ];
+}
+
+List<ChartData> getChartDataForGraph(List<MarksModel> marks, BuildContext context){
+  List<ChartData> list = [];
+  List<MaterialColor> list2 = [Colors.red, Colors.blue,Colors.green,Colors.deepPurple,Colors.pink, Colors.orange];
+  for(var i=0;i<marks.length;i++){
+    var subjectName = (MediaQuery.of(context).size.height < MediaQuery.of(context).size.width)
+        ? getSubjectName(marks, i) ?? ""
+        : getSubjectName(marks, i)?.substring(0,2) ?? "";
+    list.add(
+        ChartData(
+            subjectName.toUpperCase(),
+            double.parse(marks.elementAt(i).obtained_marks ?? "0"),
+            list2[i]
+        )
+    );
+  }
+  return list;
+}
+
+List<LineSeries<ChartData, String>> getMultiColoredLineSeries(List<MarksModel> marks, BuildContext context) {
+  return <LineSeries<ChartData, String>>[
+    LineSeries<ChartData, String>(
+        animationDuration: 2500,
+        dataSource: getChartDataForGraph(marks, context),
+        xValueMapper: (ChartData sales, _) => sales.x,
+        yValueMapper: (ChartData sales, _) => sales.y,
+
+        /// The property used to apply the color each data.
+        pointColorMapper: (ChartData sales, _) => sales.lineColor,
+        width: 2)
+  ];
 }

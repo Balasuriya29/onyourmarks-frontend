@@ -5,8 +5,7 @@ import 'package:onyourmarks/Utilities/staticNames.dart';
 import 'package:rive/rive.dart';
 
 import '../Models/Student Models/UserModel.dart';
-import '../Utilities/components.dart';
-
+import '../Utilities/Components/functional.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

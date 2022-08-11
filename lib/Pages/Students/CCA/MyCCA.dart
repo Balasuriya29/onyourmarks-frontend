@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../ApiHandler/Student/CCAAPIs.dart';
-import '../../../Utilities/components.dart';
 import '../../../Models/Student Models/CCAModel.dart';
+import '../../../Utilities/Components/functional.dart';
 
 class MyCCA extends StatefulWidget {
   const MyCCA({Key? key}) : super(key: key);

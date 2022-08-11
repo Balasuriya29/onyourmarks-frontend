@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../ApiHandler/Student/StudentsAPIs.dart';
-import '../../../Utilities/components.dart';
 import '../../../Models/Student Models/MarksModel.dart';
+import '../../../Utilities/Components/functional.dart';
 import 'MarksScreen.dart';
 
 class MyMarks extends StatefulWidget {

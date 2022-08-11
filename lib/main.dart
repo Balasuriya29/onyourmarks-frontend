@@ -1,9 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:onyourmarks/Pages/HomePage.dart';
 import 'package:onyourmarks/Pages/LoginPage.dart';
-import 'package:onyourmarks/Pages/Students/StudentDashBoard.dart';
-import 'package:onyourmarks/Utilities/components.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

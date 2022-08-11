@@ -6,7 +6,7 @@ import 'package:webfeed/webfeed.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
-import '../Utilities/components.dart';
+import '../Utilities/Components/functional.dart';
 import '../Utilities/functions.dart';
 
 class rssScreen extends StatefulWidget {

@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:onyourmarks/Pages/rssScreen.dart';
 
-import '../Utilities/components.dart';
+import '../Utilities/Components/functional.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

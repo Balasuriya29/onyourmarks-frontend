@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/ApiHandler/Teacher/apiHandler.dart';
-import 'package:onyourmarks/Utilities/components.dart';
+
+import '../../Utilities/Components/functional.dart';
 
 class MyStudents extends StatefulWidget {
   const MyStudents({Key? key}) : super(key: key);

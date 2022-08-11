@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../ApiHandler/Student/ChatAPIs.dart';
-import '../../../Utilities/components.dart';
 import '../../../Models/Student Models/ChatModel.dart';
+import '../../../Utilities/Components/functional.dart';
 
 class MessageScreen extends StatefulWidget {
   final String chat_id;

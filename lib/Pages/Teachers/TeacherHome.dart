@@ -3,14 +3,13 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/ApiHandler/Teacher/apiHandler.dart';
-import 'package:onyourmarks/Utilities/components.dart';
 import 'package:onyourmarks/Pages/Teachers/MarkUpdationPages.dart';
 import 'package:onyourmarks/Pages/Teachers/MyStudents.dart';
 import 'package:onyourmarks/Pages/Teachers/ProfileTeacher.dart';
 import 'package:onyourmarks/Utilities/staticNames.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../main.dart';
+import '../../Utilities/Components/functional.dart';
 import '../HomePage.dart';
 import '../Teachers/Chat/ChatPage.dart';
 

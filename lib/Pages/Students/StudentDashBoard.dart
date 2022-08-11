@@ -2,12 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/ApiHandler/Student/StudentsAPIs.dart';
-import 'package:onyourmarks/Utilities/components.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../Models/Student Models/MarksModel.dart';
+import '../../Utilities/Components/class.dart';
+import '../../Utilities/Components/functional.dart';
 
 var globalScrollController = ScrollController();
+Map<String, List<MarksModel>> marksMap = {};
+Map<String, List<MarksModel>> currentMarks = {};
+var isFetching = true;
 
 class StudentDashboard extends StatefulWidget {
   const StudentDashboard({Key? key}) : super(key: key);
@@ -26,6 +31,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
         children : [
           StudentDashBoard_1(),
           StudentDashBoard_2(),
+          StudentDashBoard_3()
         ]
       ),
     );
@@ -80,123 +86,129 @@ class _StudentDashBoard_1State extends State<StudentDashBoard_1> {
   @override
   Widget build(BuildContext context) {
     return (isFetching)
-        ?loadingPage()
-        :Column(
-          children: [
-            SizedBox(
-              height: 50,
-            ),
-            customPaddedRowWidget(Row(
-              children: [
-                Expanded(
-                  flex:4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 5,
-                            height: 30,
-                            color: Colors.red,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "PROFILE",
-                            style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text("STUDENT DASHBOARD INDIVIDUAL")
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: CircleAvatar(
-                    minRadius: 30,
-                    child: Text(valuesName[0].substring(0,1).toUpperCase(), style: TextStyle(
-                      fontSize: 30
-                    ),),
-                  ),
-                )
-              ],
-            ),10),
-            SizedBox(
-              height: 40,
-            ),
-            customPaddedRowWidget(Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-
-              children: [
-                Expanded(
-                  flex:5,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 175,
-                          width: 50,
-                          color: Colors.transparent,
-                          child: Image.asset('Images/DashBoard-Image.png')
+      ?loadingPage()
+      :Column(
+        children: [
+          SizedBox(
+            height: 50,
+          ),
+          customPaddedRowWidget(Row(
+            children: [
+              Expanded(
+                flex:4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 5,
+                          height: 30,
+                          color: Colors.red,
                         ),
-                      ),
-
-                    ],
-                  )
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "PROFILE",
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("STUDENT DASHBOARD INDIVIDUAL")
+                  ],
                 ),
-                Expanded(child: Text("")),
-                Expanded(
-                  flex:5,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Attendance Percentage", style: TextStyle(fontWeight: FontWeight.bold),)
-                    ],
-                  ),
-                )
-              ],
-            ), 10),
-            SizedBox(
-              height: 40,
-            ),
-            customPaddedRowWidget(Column(
-              children: [
-                Table(
-                  border: TableBorder.all(
-                      borderRadius: BorderRadius.circular(5),
-                      width: 1.25
-                  ),
-                  columnWidths: const <int, TableColumnWidth>{
-                    0: FlexColumnWidth(),
-                    1: FlexColumnWidth(),
-                    2: FlexColumnWidth(),
-                    3: FlexColumnWidth(),
-                    4: FlexColumnWidth(),
-                    5: FlexColumnWidth(),
-                    6: FlexColumnWidth(),
-                    7: FlexColumnWidth(),
-                  },
-                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                  children: <TableRow>[
-                    for(var i=0;i<7;i++)
-                      getTableRow(fieldsName[i],valuesName[i])
+              ),
+              Expanded(
+                child: CircleAvatar(
+                  minRadius: 30,
+                  child: Text(valuesName[0].substring(0,1).toUpperCase(), style: TextStyle(
+                    fontSize: 30
+                  ),),
+                ),
+              )
+            ],
+          ),10),
+          SizedBox(
+            height: 20,
+          ),
+          customPaddedRowWidget(Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex:4,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 175,
+                        width: 50,
+                        color: Colors.transparent,
+                        child: Image.asset('Images/DashBoard-Image.png')
+                      ),
+                    ),
+
                   ],
                 )
-              ],
-            ),10),
-            SizedBox(
-              height: 40,
-            ),
-          ],
-        );
+              ),
+              // Expanded(child: Text("")),
+              Expanded(
+                flex:5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Text("Attendance Percentage", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5),)
+                    Container(
+                      width: 300,
+                      height: 200,
+                      // color: Colors.red,
+                      child: SfCircularChart(
+                        title: ChartTitle(text: 'Attendance Percentage',textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5)),
+                        series: getSemiDoughnutSeries(),
+                        tooltipBehavior: TooltipBehavior(enable: true),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ), 10),
+          customPaddedRowWidget(Column(
+            children: [
+              Table(
+                border: TableBorder.all(
+                    borderRadius: BorderRadius.circular(5),
+                    width: 1.25
+                ),
+                columnWidths: const <int, TableColumnWidth>{
+                  0: FlexColumnWidth(),
+                  1: FlexColumnWidth(),
+                  2: FlexColumnWidth(),
+                  3: FlexColumnWidth(),
+                  4: FlexColumnWidth(),
+                  5: FlexColumnWidth(),
+                  6: FlexColumnWidth(),
+                  7: FlexColumnWidth(),
+                },
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: <TableRow>[
+                  for(var i=0;i<7;i++)
+                    getTableRow(fieldsName[i],valuesName[i])
+                ],
+              )
+            ],
+          ),10),
+          SizedBox(
+            height: 40,
+          ),
+        ],
+      );
   }
 }
 
@@ -208,10 +220,7 @@ class StudentDashBoard_2 extends StatefulWidget {
 }
 
 class _StudentDashBoard_2State extends State<StudentDashBoard_2> {
-  Map<String, List<MarksModel>> marksMap = {};
-  Map<String, List<MarksModel>> currentMarks = {};
   var me;
-  var isFetching = true;
   var gotCards = false;
   var mySubjectLength;
 
@@ -260,7 +269,7 @@ class _StudentDashBoard_2State extends State<StudentDashBoard_2> {
         :Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        placeASizedBoxHere(50),
+        placeASizedBoxHere(30),
         customPaddedRowWidget(
             Row(
               children: [
@@ -327,4 +336,35 @@ class _StudentDashBoard_2State extends State<StudentDashBoard_2> {
   }
 
 }
+
+class StudentDashBoard_3 extends StatefulWidget {
+  const StudentDashBoard_3({Key? key}) : super(key: key);
+
+  @override
+  State<StudentDashBoard_3> createState() => _StudentDashBoard_3State();
+}
+
+class _StudentDashBoard_3State extends State<StudentDashBoard_3> {
+
+  @override
+  Widget build(BuildContext context) {
+    return (isFetching)?Text(""):Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        customPaddedRowWidget( Text("PERFORMANCE",style: TextStyle(
+          fontSize: 17.5,
+          fontWeight: FontWeight.bold
+        ),), 10),
+        MultiColoredChartForDashBoard(currentMarks),
+        SizedBox(
+          height: 100,
+        )
+      ],
+    );
+  }
+}
+
+
+
+
 

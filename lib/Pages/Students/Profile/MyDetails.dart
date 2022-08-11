@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../Utilities/components.dart';
+import '../../../Utilities/Components/functional.dart';
 
 class MyDetails extends StatefulWidget {
   const MyDetails({Key? key}) : super(key: key);

@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../ApiHandler/Student/ChatAPIs.dart';
-import '../../../Utilities/components.dart';
 import '../../../Models/Student Models/TeacherModel.dart';
+import '../../../Utilities/Components/functional.dart';
 import 'MessageScreen.dart';
-
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
