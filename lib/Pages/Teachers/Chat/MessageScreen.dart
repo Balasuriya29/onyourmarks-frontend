@@ -36,6 +36,8 @@ class _MessageScreenState extends State<MessageScreen> {
       setState(() {
         messages = messages1;
       });
+      print(messages);
+
     });
   }
   @override
@@ -108,6 +110,7 @@ class _MessageScreenState extends State<MessageScreen> {
 
   @override
   void initState() {
+    debugPrint("Chat id in message"+widget.chat_id);
     getMessagesFromFB(widget.chat_id);
   }
 }

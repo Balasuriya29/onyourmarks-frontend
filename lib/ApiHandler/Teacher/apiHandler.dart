@@ -89,7 +89,6 @@ void postStudentMarks(String student_id,String exam_id,String subject_id,int obt
       },
       body: body
   ).then((value) {
-    // debugPrint(value.toString());
   })
   .catchError((err){
     debugPrint(err);
@@ -164,15 +163,15 @@ postNewChat(String teacher_id,String student_id) async{
     "teacher_id" : teacher_id,
     "student_id" : student_id,
   };
-  await http.post(Uri.parse(API_LINK+"api/chat/"),
+  var res = await http.post(Uri.parse(API_LINK+"api/chat/"),
     body: json.encode(body),
     headers: {
       "content-type":"application/json",
       "x-auth-token":token
     },
-  ).then((value) {
-
-  });
+  );
+  debugPrint(res.body);
+  return res;
 }
 
 postMessage(String message,String chat_id,String person) async{
@@ -207,3 +206,9 @@ Future<List<StudentModel>> getMyChats() async{
   // debugPrint(res.body);
   return students;
 }
+
+
+
+
+
+

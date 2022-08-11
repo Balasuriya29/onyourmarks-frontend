@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 import '../../Utilities/functions.dart';
@@ -31,7 +32,7 @@ Future<List<TeacherModel>> getTeachersWithoutChat() async{
 }
 
 
-Future<List<TeacherModel>> getMyChats() async{
+Future<List<TeacherModel>> getMyChatsForStudents() async{
   var token = await getToken();
   List<TeacherModel> teachers = [];
   var res  = await http.get(Uri.parse("${API_LINK}api/student/mychat"),
@@ -94,22 +95,24 @@ Future<List<Chat>> getMessagesFromFB1(String chat_id) async{
 //
 // }
 
-postNewChat(String teacher_id,String student_id) async{
-  var token = await getToken();
-  var body = {
-    "teacher_id" : teacher_id,
-    "student_id" : student_id,
-  };
-  await http.post(Uri.parse("${API_LINK}api/chat/"),
-    body: json.encode(body),
-    headers: {
-      "content-type":"application/json",
-      "x-auth-token":token
-    },
-  ).then((value) {
-    // print("Chat added");
-  });
-}
+// postNewChat(String teacher_id,String student_id) async{
+//   var token = await getToken();
+//   var body = {
+//     "teacher_id" : teacher_id,
+//     "student_id" : student_id,
+//   };
+//   debugPrint('token : $token+body : $body');
+//   await http.post(Uri.parse("${API_LINK}api/chat/"),
+//     body: json.encode(body),
+//     headers: {
+//       "content-type":"application/json",
+//       "x-auth-token":token
+//     },
+//   ).then((value) {
+//     return value;
+//     debugPrint("Chat added");
+//   });
+// }
 
 postMessage(String message,String chat_id,String person) async{
   CollectionReference ref =  await FirebaseFirestore.instance.collection("message");

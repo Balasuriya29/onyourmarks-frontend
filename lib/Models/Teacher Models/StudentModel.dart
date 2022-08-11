@@ -3,7 +3,14 @@ class StudentModel{
   String? _rollNo;
   String? _id;
   String? _chat_id;
+  String? _lastName;
 
+
+  String? get lastName => _lastName;
+
+  set lastName(String? value) {
+    _lastName = value;
+  }
 
   String? get chat_id => _chat_id;
 

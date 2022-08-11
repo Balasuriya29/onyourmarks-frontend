@@ -91,7 +91,7 @@ class _rssScreenState extends State<rssScreen> {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index){
                   return GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         launchUrl(Uri.parse(rss.elementAt(index).url.toString()));
                       },
                       child: populateTheEvents(
