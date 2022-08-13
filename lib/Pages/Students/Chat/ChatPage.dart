@@ -38,35 +38,37 @@ class _ChatPageState extends State<ChatPage> {
               }
               else if (snapshot.hasData) {
                 children = [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal:20),
-                    child: ListView.builder(
-                      itemCount: snapshot.data?.length,
-                      shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            child: Card(
-                              child: Container(
-                                height: 60,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(snapshot.data?.elementAt(index).name ?? " "),
-                                      Text(snapshot.data?.elementAt(index).degree ?? " ")
-                                    ],
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal:20),
+                      child: ListView.builder(
+                        itemCount: snapshot.data?.length,
+                        shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(
+                              child: Card(
+                                child: Container(
+                                  height: 60,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(snapshot.data?.elementAt(index).name ?? " "),
+                                        Text(snapshot.data?.elementAt(index).degree ?? " ")
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            onTap: () async{
-                              await postNewChat(snapshot.data?.elementAt(index).id ?? " ","62de30c1bc6a3da7659b816c").then((v)=>{
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen("")))
-                              });
-                            },
-                          );
-                        }),
+                              onTap: () async{
+                                await postNewChat(snapshot.data?.elementAt(index).id ?? " ","62de30c1bc6a3da7659b816c").then((v)=>{
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen("")))
+                                });
+                              },
+                            );
+                          }),
+                    ),
                   )
                 ];
               }

@@ -8,6 +8,7 @@ import '../../Models/Student Models/CCAModel.dart';
 import '../../Models/Student Models/MarksModel.dart';
 import '../../Pages/Students/CCA/CCAForm.dart';
 import '../../main.dart';
+import '../staticNames.dart';
 import 'class.dart';
 
 AppBar getAppBar(String name){
@@ -432,7 +433,7 @@ Row customPaddedRowWidget(Widget mainWidget, int customFlex){
   );
 }
 
-TableRow getTableRow(String? field, String? value){
+TableRow getTableRow(Widget fieldWidget, Widget valueWidget, String align1, String align2){
   return TableRow(
     decoration: const BoxDecoration(
       color: Colors.transparent,
@@ -444,21 +445,26 @@ TableRow getTableRow(String? field, String? value){
           minHeight: 54,
         ),
         child: Row(
-
+          mainAxisAlignment: (align1 == "center")
+                                ?MainAxisAlignment.center
+                                :MainAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
-              child: Text(field ?? "", style: TextStyle(fontWeight: FontWeight.bold),),
+              child: fieldWidget,
             ),
           ],
         ),
       ),
       ConstrainedBox(
           child: Row(
+            mainAxisAlignment: (align2 == "center")
+                ?MainAxisAlignment.center
+                :MainAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
-                child: Text(value ?? "",  style: TextStyle(fontWeight: FontWeight.w500),),
+                child: valueWidget,
               ),
             ],
           ),
@@ -532,6 +538,19 @@ Padding getSubjectMarksStack(String subjectName, String subjectPercent, int size
   );
 }
 
+String? getSubjectName(List<MarksModel> marksObject, int i) {
+  int index = getStartIndexToRemove(marksObject, i);
+  var subjectName = (index != -1)
+      ?marksObject.elementAt(i).sub_name?.substring(0,index)
+      :marksObject.elementAt(i).sub_name;
+  return subjectName;
+}
+
+int getStartIndexToRemove(List<MarksModel> marksObject, int i) {
+  int index = marksObject.elementAt(i).sub_name?.indexOf(new RegExp(r'[0-9]')) ?? 0;
+  return index;
+}
+
 List<DoughnutSeries<ChartSampleData, String>> getDefaultDoughnutSeries(List<MarksModel> marks) {
   return <DoughnutSeries<ChartSampleData, String>>[
     DoughnutSeries<ChartSampleData, String>(
@@ -579,19 +598,6 @@ List<Widget> getAllStackSubjects(Map<String, List<MarksModel>> currentMarks){
   return list;
 }
 
-String? getSubjectName(List<MarksModel> marksObject, int i) {
-  int index = getStartIndexToRemove(marksObject, i);
-  var subjectName = (index != -1)
-      ?marksObject.elementAt(i).sub_name?.substring(0,index)
-      :marksObject.elementAt(i).sub_name;
-  return subjectName;
-}
-
-int getStartIndexToRemove(List<MarksModel> marksObject, int i) {
-  int index = marksObject.elementAt(i).sub_name?.indexOf(new RegExp(r'[0-9]')) ?? 0;
-  return index;
-}
-
 List<DoughnutSeries<ChartSampleData, String>> getSemiDoughnutSeries() {
   return <DoughnutSeries<ChartSampleData, String>>[
     DoughnutSeries<ChartSampleData, String>(
@@ -603,7 +609,6 @@ List<DoughnutSeries<ChartSampleData, String>> getSemiDoughnutSeries() {
         radius: '100%',
         startAngle: 270,
         endAngle: 90,
-
         xValueMapper: (ChartSampleData data, _) => data.x as String,
         yValueMapper: (ChartSampleData data, _) => data.y,
         dataLabelMapper: (ChartSampleData data, _) => data.text,
@@ -643,3 +648,116 @@ List<LineSeries<ChartData, String>> getMultiColoredLineSeries(List<MarksModel> m
         width: 2)
   ];
 }
+
+List<ChartDataForCCA> getChartDataForCCA(List<CCAModel> models){
+  List<ChartDataForCCA> list = [];
+  var participated = 0;
+  var winner = 0;
+
+  for(int i=0;i<models.length;i++){
+    if(models.elementAt(i).isVerified == "accepted") {
+      if (models
+          .elementAt(i)
+          .status == "Participation") {
+        participated += 1;
+      }
+      if (models
+          .elementAt(i)
+          .status == "Winner") {
+        winner += 1;
+      }
+    }
+
+  }
+  list.add(ChartDataForCCA("Participated",double.parse(participated.toString())));
+  list.add(ChartDataForCCA("Winner", double.parse(winner.toString())));
+
+  return list;
+}
+
+List<ColumnSeries<ChartSampleData, String>> getTracker(List<MarksModel> marks, BuildContext context) {
+  return <ColumnSeries<ChartSampleData, String>>[
+    ColumnSeries<ChartSampleData, String>(
+        dataSource: getColumnChartValues(marks, context),
+        isTrackVisible: true,
+        trackColor: const Color.fromRGBO(198, 201, 207, 1),
+        borderRadius: BorderRadius.circular(15),
+        xValueMapper: (ChartSampleData sales, _) => sales.x as String,
+        yValueMapper: (ChartSampleData sales, _) => sales.y,
+        name: 'Marks',
+        dataLabelSettings: const DataLabelSettings(
+            isVisible: true,
+            labelAlignment: ChartDataLabelAlignment.top,
+            textStyle: TextStyle(fontSize: 10, color: Colors.white)))
+  ];
+}
+
+List<ChartSampleData> getColumnChartValues(List<MarksModel> marks, BuildContext context){
+  List<ChartSampleData> list = [];
+  for(int i=0;i<marks.length;i++){
+    var subjectName = getSubjectName(marks, i);
+    subjectName = (MediaQuery.of(context).size.height < MediaQuery.of(context).size.width)
+        ? getSubjectName(marks, i) ?? ""
+        : getSubjectName(marks, i)?.substring(0,2) ?? "";
+    list.add(
+        ChartSampleData(
+            x: subjectName.toUpperCase(),
+            y: int.parse(marks.elementAt(i).obtained_marks ?? "0")
+        )
+    );
+  }
+
+  return list;
+}
+
+List<DateTime> getBlackoutDates() {
+  final List<DateTime> dates = <DateTime>[];
+  final DateTime startDate = DateTime.now().add(const Duration(days: 1));
+  final DateTime endDate = DateTime.now().add(const Duration(days: 500));
+  for (DateTime date = startDate; date.isBefore(endDate); date = date.add(Duration(days: 1))) {
+      dates.add(date);
+  }
+  return dates;
+}
+
+bool selectableDayPredicateDates(DateTime date) {
+  if (date.weekday == DateTime.sunday || date.compareTo(DateTime.now()) == 1) {
+    return false;
+  }
+
+  return true;
+}
+
+Color getMonthCellBackgroundColor(DateTime date, List<dynamic> attendance) {
+  if (date.weekday == DateTime.sunday) {
+    return Colors.yellow;
+  }
+
+  else if(attendance.contains(date.toString().substring(0,10))){
+    return kDarkGreen;
+  }
+  else{
+    if(DateTime.now().compareTo(date) == -1){
+      return Colors.white;
+    }
+    else{
+      return kDarkRed;
+    }
+  }
+
+
+}
+
+Color getCellTextColor(Color backgroundColor, DateTime date) {
+  if (DateTime.now().compareTo(date) == -1 && date.weekday != DateTime.sunday) {
+    return Colors.grey;
+  }
+
+  if (backgroundColor == kDarkGreen || backgroundColor == kDarkRed){
+    return Colors.white;
+  }
+
+  return Colors.black;
+}
+
+

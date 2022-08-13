@@ -43,7 +43,7 @@ class _MyExamsState extends State<MyExams> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    super.initState();
+    // super.initState();
     getExamsFunc();
   }
 

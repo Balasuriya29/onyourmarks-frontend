@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/Pages/Students/Academics/MyExams.dart';
 import 'package:onyourmarks/Pages/Students/Academics/MyMarks.dart';
+import 'package:onyourmarks/Pages/Students/Attendance/CalendarStudent.dart';
 import 'package:onyourmarks/Pages/Students/CCA/MyCCA.dart';
 import 'package:onyourmarks/Pages/Students/Profile/MyTeachers.dart';
 import 'package:onyourmarks/Utilities/staticNames.dart';
@@ -55,12 +56,23 @@ class _StudentHomeState extends State<StudentHome> {
       index = widget.index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: Key("arun"),
       backgroundColor: Colors.blueGrey.shade50,
-      appBar: getAppBar(APP_NAME),
+      appBar: AppBar(
+        title: Text(APP_NAME),
+        actions:[
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: IconButton(onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarForAttendanceView()));
+            }, icon: Icon(Icons.perm_contact_calendar)
+            ),
+          )
+        ],
+      ),
       body: (isFetching)?loadingPage():pages[index],
       drawer: Drawer(
         child: ListView(
@@ -71,7 +83,6 @@ class _StudentHomeState extends State<StudentHome> {
                 return GestureDetector(
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => MyDetails()));
-                    Scaffold.of(context).openEndDrawer();
                   },
                   child: Container(
                     height: MediaQuery.of(context).size.height / 3,

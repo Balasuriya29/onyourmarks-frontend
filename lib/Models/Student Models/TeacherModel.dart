@@ -17,7 +17,13 @@ class TeacherModel{
   String? _status;
   String? _chat_id;
   SubjectModel? _subject;
+  String? _classTeacherOf;
 
+  String? get classTeacherOf => _classTeacherOf;
+
+  set classTeacherOf(String? value) {
+    _classTeacherOf = value;
+  }
 
   SubjectModel? get subject => _subject;
 

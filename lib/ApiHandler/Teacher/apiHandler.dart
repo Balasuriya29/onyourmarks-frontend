@@ -96,7 +96,7 @@ void postStudentMarks(String student_id,String exam_id,String subject_id,int obt
   });
 }
 
- getTeacherMe() async {
+getTeacherMe() async {
   var token = await getToken();
   var res = await http.get(
     Uri.parse(API_LINK+"api/admin/me"),
@@ -107,6 +107,7 @@ void postStudentMarks(String student_id,String exam_id,String subject_id,int obt
   var me = json.decode(res.body);
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString("teacher-id", me[0]["_id"].toString());
+  preferences.setString("class-Teacher", me[0]["classTeacherOf"].toString());
   var teacherRelation = me[1];
   List<String> teacherSubjects = [];
   List<String> teacherSubjectsIds = [];

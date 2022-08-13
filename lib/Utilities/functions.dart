@@ -31,10 +31,10 @@ Future<String> getRole() async {
 void goToRespectiveHomeScreen(BuildContext context) async{
   var role = await getRole();
   if(role == "Student")
-    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentHomeM()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentHome(0)));
 
   if(role == "Teacher")
-    Navigator.push(context, MaterialPageRoute(builder: (context) => TeacherHomeM()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => TeacherHome(0)));
 }
 
 Future<UserModel> checkMe(String username, String password) async{
