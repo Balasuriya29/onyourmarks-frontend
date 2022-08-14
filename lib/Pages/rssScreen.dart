@@ -82,30 +82,21 @@ class _rssScreenState extends State<rssScreen> {
     :(isFetching)
         ?loadingPage()
         :Expanded(
-      child: Row(
-        children: [
-          placeAExpandedHere(1),
-          Expanded(
-            flex: 20,
-            child: ListView.separated(
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index){
-                  return GestureDetector(
-                      onTap: (){
-                        launchUrl(Uri.parse(rss.elementAt(index).url.toString()));
-                      },
-                      child: populateTheEvents(
-                          rss.elementAt(index).title,
-                          rss.elementAt(index).content?.substring(6),
-                          "")
-                  );
-                }, separatorBuilder: (BuildContext context, int index){
-              return placeASizedBoxHere(20);
-            }, itemCount: rss.length),
-          ),
-          placeAExpandedHere(1),
-        ],
-      ),
+          child: customPaddedRowWidget(ListView.separated(
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index){
+            return GestureDetector(
+                onTap: (){
+                  launchUrl(Uri.parse(rss.elementAt(index).url.toString()));
+                },
+                child: populateTheEvents(
+                    rss.elementAt(index).title,
+                    rss.elementAt(index).content?.substring(6),
+                    "")
+            );
+          }, separatorBuilder: (BuildContext context, int index){
+        return placeASizedBoxHere(20);
+      }, itemCount: rss.length), 20)
     );
   }
 

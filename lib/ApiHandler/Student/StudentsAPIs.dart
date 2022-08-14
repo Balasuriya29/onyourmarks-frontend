@@ -77,15 +77,17 @@ Future<Map<String, List<MarksModel>>> getMyMarks() async{
   );
   // debugPrint(res.body);
   var marks = json.decode(res.body);
+  var index = 0;
   for(var i in marks){
     if(map.containsKey(i["exam_id"]["exam_name"])){
-      map[i["exam_id"]["exam_name"]]?.add(new MarksModel(i["exam_id"]["_id"], i["exam_id"]["exam_name"], i["subject_id"]["sub_name"], i["subject_id"]["total_marks"].toString(), i["obtained"].toString()));
+      map[i["exam_id"]["exam_name"]]?.add(new MarksModel(i["exam_id"]["_id"], i["exam_id"]["exam_name"], i["subject_id"]["sub_name"], i["subject_id"]["total_marks"].toString(), i["obtained"].toString(), i["exam_id"]["dates"][index]));
     }
     else{
       map.addAll({
-        i["exam_id"]["exam_name"]:[new MarksModel(i["exam_id"]["_id"], i["exam_id"]["exam_name"], i["subject_id"]["sub_name"], i["subject_id"]["total_marks"].toString(), i["obtained"].toString())]
+        i["exam_id"]["exam_name"]:[new MarksModel(i["exam_id"]["_id"], i["exam_id"]["exam_name"], i["subject_id"]["sub_name"], i["subject_id"]["total_marks"].toString(), i["obtained"].toString(), i["exam_id"]["dates"][index])]
       });
     }
+    index++;
   }
   // debugPrint("After models");
   return map;

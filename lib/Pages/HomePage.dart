@@ -30,7 +30,6 @@ class _HomePageState extends State<HomePage> {
         placeASizedBoxHere(30),
         CarouselSlider(
           options: CarouselOptions(
-
             autoPlay: true,
             aspectRatio: 2.0,
             enlargeCenterPage: true,
@@ -39,7 +38,6 @@ class _HomePageState extends State<HomePage> {
         ),
         placeASizedBoxHere(30),
         rssScreen(),
-        placeASizedBoxHere(50)
       ],
     );
   }

@@ -30,12 +30,10 @@ class _LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: 100,
-            ),
+            placeASizedBoxHere(100),
             Row(
               children: [
-                Expanded(child: Text("")),
+                placeAExpandedHere(1),
                 Expanded(
                   flex: 3,
                   child: Column(
@@ -124,6 +122,8 @@ class _LoginPageState extends State<LoginPage> {
                           });
                           if(user.username != "Error") {
                             isChecking = false;
+                            username.text = "";
+                            password.text = "";
                             if (!(user.isRegistered ?? false)) {
                               Navigator.push(context, MaterialPageRoute(
                                   builder: (context) =>
@@ -154,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-                Expanded(child: Text("")),
+                placeAExpandedHere(1)
               ],
             ),
           ],
@@ -301,6 +301,8 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                         if(check){
                           var isRegistered = await changePassword(widget.user.username ?? '', confirmPassword.text);
                           isChecking = false;
+                          newPassword.text = "";
+                          confirmPassword.text = "";
                           if(isRegistered){
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => GetStudentInterest()));
                           }

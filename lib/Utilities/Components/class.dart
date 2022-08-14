@@ -138,40 +138,48 @@ class _BarChartForCCAState extends State<BarChartForCCA> {
   }
 }
 
-class ColumnChartForSubjectMarks extends StatefulWidget {
-  final currentMarks;
-  const ColumnChartForSubjectMarks(this.currentMarks,{Key? key}) : super(key: key);
+class BarChartForStudentsMark extends StatefulWidget {
+  const BarChartForStudentsMark({
+    Key? key,
+    required this.marks
+  }) : super(key: key);
+  final marks;
 
   @override
-  State<ColumnChartForSubjectMarks> createState() => _ColumnChartForSubjectMarksState();
+  State<BarChartForStudentsMark> createState() => _BarChartForStudentsMarkState();
 }
 
-class _ColumnChartForSubjectMarksState extends State<ColumnChartForSubjectMarks> {
+class _BarChartForStudentsMarkState extends State<BarChartForStudentsMark> {
+
+  TooltipBehavior? _tooltipBehavior;
+  @override
+  void initState() {
+    _tooltipBehavior =
+        TooltipBehavior(enable: true, header: '', canShowMarker: false);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return customPaddedRowWidget
-      (
-        SfCartesianChart(
-          plotAreaBorderWidth: 0,
-          title: ChartTitle(text: "Current Exam Marks"),
-          primaryXAxis: CategoryAxis(majorGridLines: const MajorGridLines(width: 0)),
-          primaryYAxis: NumericAxis(
-            minimum: 0,
-            maximum: 100,
-            axisLine: const AxisLine(width: 0),
-            majorGridLines: const MajorGridLines(width: 0),
-            majorTickLines: const MajorTickLines(size: 0),
-          ),
-          series: getTracker(widget.currentMarks.values.first, context),
-          tooltipBehavior: TooltipBehavior(
-              enable: true,
-              canShowMarker: false,
-              header: '',
-              format: 'point.y marks in point.x'),
-        )
-      ,10);
+    return SfCartesianChart(
+      plotAreaBorderWidth: 0,
+      title: ChartTitle(text:''),
+      primaryXAxis: CategoryAxis(
+        majorGridLines: const MajorGridLines(width: 0),
+      ),
+      primaryYAxis: NumericAxis(
+          majorGridLines: const MajorGridLines(width: 0),
+          title: AxisTitle(text:'Marks'),
+          minimum: 0,
+          maximum: 100,
+          interval: 10,
+          majorTickLines: const MajorTickLines(size: 0)),
+      series: getTrackerBarSeries(widget.marks, context),
+      tooltipBehavior: _tooltipBehavior,
+    );
   }
 }
+
 
 class ChartSampleData {
   /// Holds the datapoint values like x, y, etc.,

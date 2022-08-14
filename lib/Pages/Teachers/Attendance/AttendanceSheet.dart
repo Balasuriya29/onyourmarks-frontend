@@ -85,7 +85,7 @@ class _AttendanceSheetTodayState extends State<AttendanceSheetToday> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffdfdfdf),
+      
       appBar: getAppBar(APP_NAME),
       body: Container(
         color: Colors.transparent,
@@ -219,10 +219,7 @@ class _AttendanceSheetTodayState extends State<AttendanceSheetToday> {
             ElevatedButton(onPressed: () async{
               SharedPreferences preferences = await SharedPreferences.getInstance();
               preferences.setString(widget.selectedDate.toString().substring(0,10), true.toString());
-              var count = 0;
-              Navigator.popUntil(context, (route) {
-                return count++ == 2;
-              });
+              popPagesNtimes(context, 2);
             }, child: Text("Close Attendance"))
           ],
         ),
@@ -272,7 +269,7 @@ class _AttendanceSheetFixedState extends State<AttendanceSheetFixed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffdfdfdf),
+      
       appBar: getAppBar(APP_NAME),
       body: Container(
         color: Colors.transparent,

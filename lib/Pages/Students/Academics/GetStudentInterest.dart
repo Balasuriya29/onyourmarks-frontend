@@ -23,6 +23,7 @@ class _GetStudentInterestState extends State<GetStudentInterest> {
   @override
   void initState() {
     topics.shuffle();
+    toast("Password Changed, Use Your New Password!!!");
   }
 
   @override

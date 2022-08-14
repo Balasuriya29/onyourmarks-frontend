@@ -94,3 +94,10 @@ void toast(message) {
       fontSize: 16.0
   );
 }
+
+void popPagesNtimes(BuildContext context, int times) {
+  var count = 0;
+  Navigator.popUntil(context, (route) {
+    return count++ == times;
+  });
+}

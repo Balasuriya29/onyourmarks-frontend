@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/ApiHandler/AttendanceAPIs.dart';
 import 'package:onyourmarks/Utilities/Components/functional.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../../Utilities/staticNames.dart';
+import '../../Teachers/Chat/ChatPage.dart';
 
 class CalendarForAttendanceView extends StatefulWidget {
   const CalendarForAttendanceView({Key? key}) : super(key: key);
@@ -66,43 +68,7 @@ class _CalendarForAttendanceViewState extends State<CalendarForAttendanceView> {
         children: [
           placeASizedBoxHere(50),
           Expanded(
-            child: customPaddedRowWidget(Row(
-              children: [
-                Expanded(
-                  flex:4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 5,
-                            height: 30,
-                            color: Colors.red,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Attendance",
-                            style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text("STUDENT ATTENDANCE CALENDAR")
-                    ],
-                  ),
-                ),
-                placeAExpandedHere(1)
-
-              ],
-            ),10),
+            child: getHeader("Attendance", "STUDENT ATTENDANCE CALENDAR")
           ),
           (isFetching)
             ?Expanded(
@@ -110,19 +76,33 @@ class _CalendarForAttendanceViewState extends State<CalendarForAttendanceView> {
               child: loadingPage())
             :Expanded(
               flex : 5,
-              child: customPaddedRowWidget(SfCalendar(
-                view: CalendarView.month,
-                monthCellBuilder: _monthCellBuilder,
-                showDatePickerButton: true,
+              child: customPaddedRowWidget(
+                Card(
+                elevation: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: SfCalendar(
+                          view: CalendarView.month,
+                          monthCellBuilder: _monthCellBuilder,
+                          showDatePickerButton: true,
 
-                monthViewSettings: const MonthViewSettings(
+                          monthViewSettings: const MonthViewSettings(
 
-                  showTrailingAndLeadingDates: false,
+                            showTrailingAndLeadingDates: false,
+                          ),
+                          selectionDecoration: BoxDecoration(
+                              color: Colors.transparent
+                          ),
+
+                        ),
+                      ),
+                      Text("Attendance Updates At 10:00AM", style: TextStyle(fontWeight: FontWeight.bold),)
+                    ],
+                  ),
                 ),
-                selectionDecoration: BoxDecoration(
-                    color: Colors.transparent
-                ),
-
               ), 10),
             ),
           Expanded(
@@ -173,7 +153,7 @@ class _CalendarForAttendanceViewState extends State<CalendarForAttendanceView> {
             ), 10),
           )
         ],
-      )
+      ),
     );
   }
 

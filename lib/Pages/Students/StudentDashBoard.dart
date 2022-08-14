@@ -65,6 +65,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
     mySubjectLength = me["std_id"]["subject_id"].length;
     var marksObjects = marksMap.values.toList();
     var marksExams = marksMap.keys.toList();
+
     for(var i = marksObjects.length - 1;i>=0;i--){
       if(marksObjects.elementAt(i).length == mySubjectLength){
         currentMarks[marksExams.elementAt(i)] = marksObjects.elementAt(i);
@@ -94,15 +95,64 @@ class _StudentDashboardState extends State<StudentDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffffe3e3),
-      body: (isFetchingPage1 || isFetchingPage2 || isFetchingPage3)
-          ?loadingPage()
-          :ListView(
-        // controller: globalScrollController,
+      body:
+      ListView(
         children : [
-          StudentDashBoard_1(me: me, isFetchingPage1: isFetchingPage1, fieldsName: fieldsName, keysOfMe: keysOfMe, valuesName: valuesName,),
-          StudentDashBoard_2(currentMarks: currentMarks, gotCards: gotCards, isFetchingPage2: isFetchingPage2, marksMap: marksMap, me: me),
-          StudentDashBoard_3(activities: activities,currentMarks: currentMarks,isFetchingCCA: isFetchingPage3,)
+          SizedBox(
+            height: 50,
+          ),
+          customPaddedRowWidget(Row(
+            children: [
+              Expanded(
+                flex:4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 5,
+                          height: 30,
+                          color: Colors.red,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "DASHBOARD",
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("INDIVIDUAL STUDENT ANALYSIS")
+                  ],
+                ),
+              ),
+              (isFetchingPage1)?Text(""):Expanded(
+                child: CircleAvatar(
+                  minRadius: 30,
+                  child: Text(valuesName[0].substring(0,1).toUpperCase(), style: TextStyle(
+                      fontSize: 30
+                  ),),
+                ),
+              )
+            ],
+          ),10),
+          (isFetchingPage1 || isFetchingPage2 || isFetchingPage3)
+              ?loadingPage()
+              :StudentDashBoard_1(me: me, isFetchingPage1: isFetchingPage1, fieldsName: fieldsName, keysOfMe: keysOfMe, valuesName: valuesName,),
+          (isFetchingPage1 || isFetchingPage2 || isFetchingPage3)
+              ?Text("")
+              :StudentDashBoard_2(currentMarks: currentMarks, gotCards: gotCards, isFetchingPage2: isFetchingPage2, marksMap: marksMap, me: me),
+          (isFetchingPage1 || isFetchingPage2 || isFetchingPage3)
+              ?Text("")
+              :StudentDashBoard_3(activities: activities,currentMarks: currentMarks,isFetchingCCA: isFetchingPage3,)
         ]
       ),
     );
@@ -139,52 +189,6 @@ class _StudentDashBoard_1State extends State<StudentDashBoard_1> {
   Widget build(BuildContext context) {
     return Column(
         children: [
-          SizedBox(
-            height: 50,
-          ),
-          customPaddedRowWidget(Row(
-            children: [
-              Expanded(
-                flex:4,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          width: 5,
-                          height: 30,
-                          color: Colors.red,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "PROFILE",
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text("STUDENT DASHBOARD INDIVIDUAL")
-                  ],
-                ),
-              ),
-              Expanded(
-                child: CircleAvatar(
-                  minRadius: 30,
-                  child: Text(widget.valuesName[0].substring(0,1).toUpperCase(), style: TextStyle(
-                    fontSize: 30
-                  ),),
-                ),
-              )
-            ],
-          ),10),
           SizedBox(
             height: 20,
           ),
@@ -312,7 +316,7 @@ class _StudentDashBoard_2State extends State<StudentDashBoard_2> {
                           fontSize: 16
                       ),),
                       placeASizedBoxHere(20),
-                      Text("HALF YEARLY EXAMINATION", style: TextStyle(
+                      Text(widget.currentMarks.keys.first.toString().toUpperCase(), style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 13.5
                       ),),
@@ -354,10 +358,7 @@ class _StudentDashBoard_2State extends State<StudentDashBoard_2> {
         ),
         placeASizedBoxHere(25),
         customPaddedRowWidget(
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: getAllStackSubjects(widget.currentMarks),
-            ),10
+            BarChartForStudentsMark(marks: widget.currentMarks.values.first),10
         ),
         placeASizedBoxHere(50)
       ],
@@ -395,7 +396,6 @@ class _StudentDashBoard_3State extends State<StudentDashBoard_3> {
         placeASizedBoxHere(20),
         BarChartForCCA(widget.activities),
         placeASizedBoxHere(20),
-        ColumnChartForSubjectMarks(widget.currentMarks)
       ],
     );
   }

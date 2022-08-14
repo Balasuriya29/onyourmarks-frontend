@@ -17,7 +17,7 @@ class _ChatPageState extends State<ChatPage> {
    @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: getAppBar("Chat"),
+        appBar: getAppBar("New Chats"),
         body: FutureBuilder<List<TeacherModel>>(
           future: getTeachersWithoutChat(),
             builder: (BuildContext context,
@@ -108,7 +108,7 @@ class _mychatsState extends State<mychats> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar("MyChat"),
+      appBar: getAppBar("My Chats"),
       body:FutureBuilder<List<TeacherModel>>(
         future: getMyChats(),
         builder: (BuildContext context,AsyncSnapshot<List<TeacherModel>> snapshot){
@@ -120,35 +120,40 @@ class _mychatsState extends State<mychats> {
           }
           else if(snapshot.hasData){
             children = [
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: snapshot.data?.length,
-                    itemBuilder: (BuildContext context,int index){
+              (snapshot.data?.length != 0)
+                ?Padding(
+              padding: const EdgeInsets.all(10),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: snapshot.data?.length,
+                itemBuilder: (BuildContext context,int index){
                   return GestureDetector(
-                    child: Card(
-                      child: Container(
-                        height: 80,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(snapshot.data?.elementAt(index).name ?? " ",
-                                  style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
+                  child: Card(
+                    child: Container(
+                      height: 80,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(snapshot.data?.elementAt(index).name ?? " ",
+                                style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen(snapshot.data?.elementAt(index).chat_id ?? " ")));
-                    },
-                  );
-                }),
-              )
+                  ),
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen(snapshot.data?.elementAt(index).chat_id ?? " ")));
+                  },
+                );
+              }),
+            )
+                :Container(
+                  height: MediaQuery.of(context).size.height-200,
+                  child: Center(child: Text("No Chat History... Add New!"))
+                )
             ];
           }
           else{

@@ -4,6 +4,14 @@ class MarksModel{
   String? _sub_name;
   String? _total_marks;
   String? _obtained_marks;
+  String? _date;
+
+
+  String? get date => _date;
+
+  set dates(String? value) {
+    _date = value;
+  }
 
   String? get exam_id => _exam_id;
 
@@ -36,5 +44,5 @@ class MarksModel{
   }
 
   MarksModel(this._exam_id, this._exam_name, this._sub_name, this._total_marks,
-      this._obtained_marks);
+      this._obtained_marks, this._date);
 }

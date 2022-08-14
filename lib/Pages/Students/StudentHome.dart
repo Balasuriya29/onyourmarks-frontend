@@ -42,7 +42,7 @@ class StudentHome extends StatefulWidget {
 }
 
 class _StudentHomeState extends State<StudentHome> {
-  var pages = [HomePage(), StudentDashboard() ,MyTeachers(), MyExams(), MyMarks(), MyCCA()];
+  var pages = [HomePage(), StudentDashboard(), MyExams(), MyMarks(), MyCCA()];
   var index = 0;
   var me;
   bool isFetching = true;
@@ -51,6 +51,7 @@ class _StudentHomeState extends State<StudentHome> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     me = jsonDecode(preferences.getString("student-personalDetails").toString());
     // print(me);
+    pages.insert(2, MyTeachers(me["std_id"]["std_name"]));
     setState(() {
       isFetching = false;
       index = widget.index;
@@ -60,7 +61,6 @@ class _StudentHomeState extends State<StudentHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey.shade50,
       appBar: AppBar(
         title: Text(APP_NAME),
         actions:[
@@ -73,7 +73,9 @@ class _StudentHomeState extends State<StudentHome> {
           )
         ],
       ),
-      body: (isFetching)?loadingPage():pages[index],
+      body: (isFetching)
+        ?loadingPage()
+        :pages[index],
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -82,7 +84,13 @@ class _StudentHomeState extends State<StudentHome> {
               builder: (context) {
                 return GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyDetails()));
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                          transitionDuration: Duration(milliseconds: 500),
+                          pageBuilder: (_, __, ___) => MyDetails(me)
+                      ),
+                    );
                   },
                   child: Container(
                     height: MediaQuery.of(context).size.height / 3,

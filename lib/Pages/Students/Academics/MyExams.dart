@@ -49,35 +49,35 @@ class _MyExamsState extends State<MyExams> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return (isFetching)
-      ?loadingPage()
-      :Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        placeASizedBoxHere(50),
+        getHeader("EXAMS", "FIND YOUR EXAMS HERE!!!"),
+        placeASizedBoxHere(50),
+        (isFetching)
+            ?loadingPage()
+            :customPaddedRowWidget(Text("Upcoming Exam for you is: "+futureFirstDate.toString().substring(0,10), style: TextStyle(
+          fontSize: 15,
 
-        children: [
-          Expanded(
-              flex: 2,
-              child: Text("Your Exams",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),)),
-          Expanded(
-              child: Text("Upcoming Exam for you is: "+futureFirstDate.toString().substring(0,10))),
-          Expanded(
-            flex: 10,
-            child: SfCalendar(
-              view: CalendarView.month,
-              controller: calenderController,
-              showDatePickerButton: true,
-              allowViewNavigation: true,
-              dataSource: MeetingDataSource(_getDataSource(subjects , exams)),
-              monthViewSettings: const MonthViewSettings(showAgenda: true),
-              timeSlotViewSettings: const TimeSlotViewSettings(
-                  minimumAppointmentDuration: Duration(minutes: 60)),
-            ),
-          ),
-
-        ],
-      )
-      );
+        ),), 10),
+        placeASizedBoxHere(50),
+        (isFetching)
+            ?Text("")
+            :Expanded(
+          child: customPaddedRowWidget(SfCalendar(
+            view: CalendarView.month,
+            controller: calenderController,
+            showDatePickerButton: true,
+            allowViewNavigation: true,
+            dataSource: MeetingDataSource(_getDataSource(subjects , exams)),
+            monthViewSettings: const MonthViewSettings(showAgenda: true),
+            timeSlotViewSettings: const TimeSlotViewSettings(
+                minimumAppointmentDuration: Duration(minutes: 60)),
+          ), 10),
+        ),
+      ],
+    );
   }
 }
 

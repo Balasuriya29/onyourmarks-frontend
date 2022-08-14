@@ -8,6 +8,7 @@ import '../../Models/Student Models/CCAModel.dart';
 import '../../Models/Student Models/MarksModel.dart';
 import '../../Pages/Students/CCA/CCAForm.dart';
 import '../../main.dart';
+import '../functions.dart';
 import '../staticNames.dart';
 import 'class.dart';
 
@@ -362,23 +363,19 @@ SizedBox populateTheEvents(String? title, String? content, String? category){
           children: [
             Align(
               alignment: Alignment.bottomCenter,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+              child: Card(
+                elevation: 2,
                 child: ConstrainedBox(
                     constraints: BoxConstraints(
                         minHeight: 150,
                         minWidth: 400
                     ),
-                    child: Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 38.0,top: 8.0,right: 38.0),
-                          child: ListTile(
-                            title: Text(title ?? "",  style: TextStyle(fontWeight: FontWeight.bold),maxLines: 2,overflow: TextOverflow.ellipsis,),
-                            subtitle: Text(content ?? "", maxLines: 3,),
-                          ),
-                        )
-
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 38.0,top: 8.0,right: 38.0),
+                      child: ListTile(
+                        title: Text(title ?? "",  style: TextStyle(fontWeight: FontWeight.bold),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                        subtitle: Text(content ?? "", maxLines: 3,),
+                      ),
                     )
                 ),
               ),
@@ -411,7 +408,20 @@ Padding getBottomDrawerNavigation(context){
         ),
         GestureDetector(
             onTap: (){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
+              Navigator.pop(context);
+              showDialog(context: context, builder: (BuildContext context){
+                return AlertDialog(
+                  content: Text("Do you want to log out?"),
+                  actions: [
+                    TextButton(onPressed: () async{
+                      popPagesNtimes(context,2);
+                    }, child: Text("YES")),
+                    TextButton(onPressed: (){
+                      Navigator.of(context).pop();
+                    }, child: Text("NO"))
+                  ],
+                );
+              });
             },
             child: getsideCards(Icon(Icons.logout) , 'Log Out', context)
         ),
@@ -538,16 +548,16 @@ Padding getSubjectMarksStack(String subjectName, String subjectPercent, int size
   );
 }
 
-String? getSubjectName(List<MarksModel> marksObject, int i) {
-  int index = getStartIndexToRemove(marksObject, i);
+String? getSubjectName(String subName) {
+  int index = getStartIndexToRemove(subName);
   var subjectName = (index != -1)
-      ?marksObject.elementAt(i).sub_name?.substring(0,index)
-      :marksObject.elementAt(i).sub_name;
+      ?subName.substring(0,index)
+      :subName;
   return subjectName;
 }
 
-int getStartIndexToRemove(List<MarksModel> marksObject, int i) {
-  int index = marksObject.elementAt(i).sub_name?.indexOf(new RegExp(r'[0-9]')) ?? 0;
+int getStartIndexToRemove(String subName) {
+  int index = subName.indexOf(RegExp(r'[0-9]'));
   return index;
 }
 
@@ -588,7 +598,7 @@ List<Widget> getAllStackSubjects(Map<String, List<MarksModel>> currentMarks){
         ?(markInt/10).floor()
         :(markInt/10).ceil();
 
-    String? subjectName = getSubjectName(marksObject[0], i);
+    String? subjectName = getSubjectName(marksObject[0].elementAt(i).sub_name ?? "");
     list.add(getSubjectMarksStack(
         subjectName ?? "",
         mark,
@@ -622,8 +632,8 @@ List<ChartData> getChartDataForGraph(List<MarksModel> marks, BuildContext contex
   List<MaterialColor> list2 = [Colors.red, Colors.blue,Colors.green,Colors.deepPurple,Colors.pink, Colors.orange];
   for(var i=0;i<marks.length;i++){
     var subjectName = (MediaQuery.of(context).size.height < MediaQuery.of(context).size.width)
-        ? getSubjectName(marks, i) ?? ""
-        : getSubjectName(marks, i)?.substring(0,2) ?? "";
+        ? getSubjectName(marks.elementAt(i).sub_name ?? "") ?? ""
+        : getSubjectName(marks.elementAt(i).sub_name ?? "")?.substring(0,2) ?? "";
     list.add(
         ChartData(
             subjectName.toUpperCase(),
@@ -675,41 +685,6 @@ List<ChartDataForCCA> getChartDataForCCA(List<CCAModel> models){
   return list;
 }
 
-List<ColumnSeries<ChartSampleData, String>> getTracker(List<MarksModel> marks, BuildContext context) {
-  return <ColumnSeries<ChartSampleData, String>>[
-    ColumnSeries<ChartSampleData, String>(
-        dataSource: getColumnChartValues(marks, context),
-        isTrackVisible: true,
-        trackColor: const Color.fromRGBO(198, 201, 207, 1),
-        borderRadius: BorderRadius.circular(15),
-        xValueMapper: (ChartSampleData sales, _) => sales.x as String,
-        yValueMapper: (ChartSampleData sales, _) => sales.y,
-        name: 'Marks',
-        dataLabelSettings: const DataLabelSettings(
-            isVisible: true,
-            labelAlignment: ChartDataLabelAlignment.top,
-            textStyle: TextStyle(fontSize: 10, color: Colors.white)))
-  ];
-}
-
-List<ChartSampleData> getColumnChartValues(List<MarksModel> marks, BuildContext context){
-  List<ChartSampleData> list = [];
-  for(int i=0;i<marks.length;i++){
-    var subjectName = getSubjectName(marks, i);
-    subjectName = (MediaQuery.of(context).size.height < MediaQuery.of(context).size.width)
-        ? getSubjectName(marks, i) ?? ""
-        : getSubjectName(marks, i)?.substring(0,2) ?? "";
-    list.add(
-        ChartSampleData(
-            x: subjectName.toUpperCase(),
-            y: int.parse(marks.elementAt(i).obtained_marks ?? "0")
-        )
-    );
-  }
-
-  return list;
-}
-
 List<DateTime> getBlackoutDates() {
   final List<DateTime> dates = <DateTime>[];
   final DateTime startDate = DateTime.now().add(const Duration(days: 1));
@@ -737,6 +712,14 @@ Color getMonthCellBackgroundColor(DateTime date, List<dynamic> attendance) {
     return kDarkGreen;
   }
   else{
+    var today = DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day);
+    var current = DateTime(date.year,date.month,date.day);
+    var attendanceTime = DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,10);
+    if(today.compareTo(current) == 0) {
+      if (DateTime.now().compareTo(attendanceTime) == -1) {
+        return Colors.white;
+      }
+    }
     if(DateTime.now().compareTo(date) == -1){
       return Colors.white;
     }
@@ -760,4 +743,77 @@ Color getCellTextColor(Color backgroundColor, DateTime date) {
   return Colors.black;
 }
 
+List<BarSeries<ChartSampleData, String>> getTrackerBarSeries(List<MarksModel> marks, BuildContext context) {
+  return <BarSeries<ChartSampleData, String>>[
+    BarSeries<ChartSampleData, String>(
+      dataSource: getColumnChartValues(marks, context),
+      borderRadius: BorderRadius.circular(15),
+      // spacing: 0,
+      color: Colors.deepPurple,
+      trackColor: Colors.deepPurple.shade200,
+      isTrackVisible: true,
+      dataLabelSettings: const DataLabelSettings(
+          isVisible: true, labelAlignment: ChartDataLabelAlignment.top),
+      xValueMapper: (ChartSampleData sales, _) => sales.x as String,
+      yValueMapper: (ChartSampleData sales, _) => sales.y,
+    ),
+  ];
+}
+
+List<ChartSampleData> getColumnChartValues(List<MarksModel> marks, BuildContext context){
+  List<ChartSampleData> list = [];
+  for(int i=0;i<marks.length;i++){
+    var subjectName = getSubjectName(marks.elementAt(i).sub_name ?? "");
+    subjectName = (MediaQuery.of(context).size.height < MediaQuery.of(context).size.width)
+        ? getSubjectName(marks.elementAt(i).sub_name ?? "") ?? ""
+        : getSubjectName(marks.elementAt(i).sub_name ?? "")?.substring(0,2) ?? "";
+    list.add(
+        ChartSampleData(
+            x: subjectName.toUpperCase(),
+            y: int.parse(marks.elementAt(i).obtained_marks ?? "0")
+        )
+    );
+  }
+
+  return list;
+}
+
+Row getHeader(String title, String subtitle){
+  return customPaddedRowWidget(Row(
+    children: [
+      Expanded(
+        flex:4,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 5,
+                  height: 30,
+                  color: Colors.red,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold
+                  ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(subtitle.toUpperCase())
+          ],
+        ),
+      ),
+
+    ],
+  ),10);
+}
 
