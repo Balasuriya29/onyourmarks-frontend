@@ -47,6 +47,13 @@ class _TeacherHomeState extends State<TeacherHome> {
   getMyInfo() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     me = jsonDecode(preferences.getString("teacher-personalDetails").toString());
+    var today = DateTime.now();
+    var date = DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,10,0);
+    
+    if(today.compareTo(date) == 1){
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.setString(today.toString().substring(0,10), true.toString());
+    }
     setState(() {
       isFetching = false;
       index = widget.index;
@@ -98,7 +105,7 @@ class _TeacherHomeState extends State<TeacherHome> {
                         ),
                       ),
                       placeASizedBoxHere(20),
-                      (isFetching)?Text("Id"):getTheStyledTextForExamsList(me["_id"], 17.5),
+                      (isFetching)?Text("Id"):getTheStyledTextForExamsList(me["facultyId"], 17.5),
                       (isFetching)?Text("Name"):getTheStyledTextForExamsList(me["name"], 17.5),
                       placeASizedBoxHere(20)
                     ],
@@ -112,29 +119,44 @@ class _TeacherHomeState extends State<TeacherHome> {
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Column(
                   children: [
-                    GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            index = 0;
-                          });
-                        },
-                        child: getsideCards(Icon(CupertinoIcons.home) , 'Home', context)
+                    Builder(
+                      builder: (context) {
+                        return GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                index = 0;
+                              });
+                              Scaffold.of(context).openEndDrawer();
+                            },
+                            child: getsideCards(Icon(CupertinoIcons.home) , 'Home', context)
+                        );
+                      }
                     ),
-                    GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            index = 1;
-                          });
-                        },
-                        child: getsideCards(Icon(CupertinoIcons.person_crop_rectangle_fill) , 'My Class Students', context)
+                    Builder(
+                      builder: (context) {
+                        return GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                index = 1;
+                              });
+                              Scaffold.of(context).openEndDrawer();
+                            },
+                            child: getsideCards(Icon(CupertinoIcons.person_crop_rectangle_fill) , 'My Class Students', context)
+                        );
+                      }
                     ),
-                    GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            index = 2;
-                          });
-                        },
-                        child: getsideCards(Icon(CupertinoIcons.pencil) , 'Update Student Exams', context)
+                    Builder(
+                      builder: (context) {
+                        return GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                index = 2;
+                              });
+                              Scaffold.of(context).openEndDrawer();
+                            },
+                            child: getsideCards(Icon(CupertinoIcons.pencil) , 'Update Student Exams', context)
+                        );
+                      }
                     ),
                   ],
                 ),
