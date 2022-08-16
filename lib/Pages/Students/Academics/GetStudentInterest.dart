@@ -4,7 +4,8 @@ import 'package:onyourmarks/Pages/Students/StudentHome.dart';
 import 'package:onyourmarks/Utilities/functions.dart';
 import 'package:onyourmarks/Utilities/staticNames.dart';
 
-import '../../../Utilities/components.dart';
+import '../../../Utilities/Components/class.dart';
+import '../../../Utilities/Components/functional.dart';
 
 class GetStudentInterest extends StatefulWidget {
   const GetStudentInterest({Key? key}) : super(key: key);
@@ -22,6 +23,7 @@ class _GetStudentInterestState extends State<GetStudentInterest> {
   @override
   void initState() {
     topics.shuffle();
+    toast("Password Changed, Use Your New Password!!!");
   }
 
   @override

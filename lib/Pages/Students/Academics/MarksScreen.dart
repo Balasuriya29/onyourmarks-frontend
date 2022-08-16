@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../Utilities/components.dart';
 import '../../../Models/Student Models/MarksModel.dart';
-
+import '../../../Utilities/Components/functional.dart';
 
 class MarksScreen extends StatefulWidget {
   final List<MarksModel>? marks;

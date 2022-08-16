@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:onyourmarks/Pages/rssScreen.dart';
 
-import '../Utilities/components.dart';
+import '../Utilities/Components/functional.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -30,7 +30,6 @@ class _HomePageState extends State<HomePage> {
         placeASizedBoxHere(30),
         CarouselSlider(
           options: CarouselOptions(
-
             autoPlay: true,
             aspectRatio: 2.0,
             enlargeCenterPage: true,
@@ -39,7 +38,6 @@ class _HomePageState extends State<HomePage> {
         ),
         placeASizedBoxHere(30),
         rssScreen(),
-        placeASizedBoxHere(50)
       ],
     );
   }

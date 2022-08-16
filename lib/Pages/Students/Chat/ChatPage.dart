@@ -8,8 +8,9 @@ import '../../../ApiHandler/Student/ChatAPIs.dart';
 import '../../../ApiHandler/Teacher/apiHandler.dart';
 import '../../../Utilities/components.dart';
 import '../../../Models/Student Models/TeacherModel.dart';
-import 'MessageScreen.dart';
+import '../../../Utilities/Components/functional.dart';
 
+import 'MessageScreen.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -237,6 +238,7 @@ class _mychatsState extends State<mychats> {
                         },
                       );
                     }),
+
               ),
             ):Center(child: Text("You haven't chatted with anyone"),)
           ];

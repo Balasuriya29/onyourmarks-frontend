@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../ApiHandler/Student/CCAAPIs.dart';
-import '../../../Utilities/components.dart';
 import '../../../Models/Student Models/CCAModel.dart';
+import '../../../Utilities/Components/functional.dart';
+import 'CCAForm.dart';
 
 class MyCCA extends StatefulWidget {
   const MyCCA({Key? key}) : super(key: key);
@@ -40,61 +42,78 @@ class _MyCCAState extends State<MyCCA> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-    return (isFetching)
-        ?Center(child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(),
-          SizedBox(
-            height: 20,
+    return Column(
+      children: [
+        placeASizedBoxHere(50),
+        getHeader("Co-Curricular Activity", "POST YOUR TALENT"),
+        placeASizedBoxHere(20),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              (isFetching)
+                  ?loadingPage()
+                  :DefaultTabController(
+                length: 3,
+                child: TabBar(
+                    controller: _tabController,
+                    indicatorColor: Colors.deepPurple,
+                    labelColor: Colors.deepPurple,
+                    tabs: const [
+                      Tab(
+                        text: "Pending",
+                      ),
+                      Tab(
+                        text: "Accepted",
+                      ),
+                      Tab(
+                        text: "Rejected",
+                      )
+                    ]
+                ),
+              ),
+              (isFetching)
+                  ?Text("")
+                  :Expanded(
+                child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      (pending.isNotEmpty)
+                          ?populateCCAObjectToListView(context, pending, "pending")
+                          :Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Actitities Yet To Be Submitted😅"),
+                              placeASizedBoxHere(20),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      shape: CircleBorder(),
+                                      padding: EdgeInsets.all(17.5)
+                                  ),
+                                  onPressed: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentCCAForm()));
+                                  }, child: Icon(CupertinoIcons.add))
+                            ],
+                          )
+                      ),
+                      (accepted.isNotEmpty)
+                          ?populateCCAObjectToListView(context, accepted, "accepted")
+                          :Center(
+                          child: Text("Actitities Yet To Be Accepted😕")
+                      ),
+                      (rejected.isNotEmpty)
+                          ?populateCCAObjectToListView(context, rejected, "rejected")
+                          :Center(
+                          child: Text("No Activities are Rejected😉")
+                      ),
+                    ]
+                ),
+              )
+            ],
           ),
-          Text("Loading Data")
-        ],
-      ))
-        :Column(
-        children: [
-          DefaultTabController(
-            length: 3,
-            child: TabBar(
-                controller: _tabController,
-                indicatorColor: Colors.deepPurple,
-                labelColor: Colors.deepPurple,
-                tabs: const [
-                  Tab(
-                    text: "Pending",
-                  ),
-                  Tab(
-                    text: "Accepted",
-                  ),
-                  Tab(
-                    text: "Rejected",
-                  )
-                ]
-            ),
-          ),
-          Expanded(
-            child: TabBarView(
-                controller: _tabController,
-                children: [
-                  (pending.isNotEmpty)
-                      ?populateCCAObjectToListView(context, pending, "pending")
-                      :Center(
-                      child: Text("Actitities Yet To Be Submitted😅")
-                  ),
-                  (accepted.isNotEmpty)
-                      ?populateCCAObjectToListView(context, accepted, "accepted")
-                      :Center(
-                      child: Text("Actitities Yet To Be Accepted😕")
-                  ),
-                  (rejected.isNotEmpty)
-                      ?populateCCAObjectToListView(context, rejected, "rejected")
-                      :Center(
-                      child: Text("No Activities are Rejected😉")
-                  ),
-                ]
-            ),
-          )
-        ],
-      );
+        ),
+      ],
+    );
   }
 }

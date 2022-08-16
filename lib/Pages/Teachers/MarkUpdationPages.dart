@@ -9,8 +9,8 @@ import 'package:onyourmarks/Utilities/staticNames.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../Utilities/components.dart';
 import '../../Models/Teacher Models/StudentModel.dart';
+import '../../Utilities/Components/functional.dart';
 
 class ExamViewPage extends StatefulWidget {
   const ExamViewPage({Key? key}) : super(key: key);
