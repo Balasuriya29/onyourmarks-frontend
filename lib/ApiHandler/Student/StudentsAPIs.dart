@@ -105,7 +105,7 @@ Future<bool> postInterests(List<String> interests, List<int> counts, String reqT
          "counts":counts
       });
 
-  debugPrint(body.toString());
+  // debugPrint(body.toString());
   await http.put(
     Uri.parse(API_LINK+"api/student/interests"),
     headers: {
@@ -115,7 +115,7 @@ Future<bool> postInterests(List<String> interests, List<int> counts, String reqT
     body: body
   )
   .then((v) async {
-    debugPrint("Response"+v.body.toString());
+    // debugPrint("Response"+v.body.toString());
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("student-interest",jsonEncode(interests));
     preferences.setString("student-interestCounts",jsonEncode(counts));

@@ -2,13 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:onyourmarks/Utilities/staticNames.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../ApiHandler/Student/ChatAPIs.dart';
-import '../../../ApiHandler/Teacher/apiHandler.dart';
 import '../../../Models/Student Models/TeacherModel.dart';
 import '../../../Utilities/Components/functional.dart';
-
 import 'MessageScreen.dart';
 
 class ChatPage extends StatefulWidget {
@@ -52,123 +51,169 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       key: _scaffoldKey,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
           title: (_searchClicked)?TextField(
             autofocus: true,
             onChanged: (s) {
-              debugPrint(s);
+              // debugPrint(s);
                 implementSearch(s);
             },
+            cursorColor: Colors.white,
             decoration: InputDecoration(
               hintText: "Search",
+              hintStyle: TextStyle(
+                color: Colors.white
+              ),
               border: InputBorder.none
             ),
-          ):Text(""),
-          leading: IconButton(
-            icon: Icon(CupertinoIcons.back,color: Colors.black,),
+          ):Text(APP_NAME),
+          leading: (_searchClicked) ? IconButton(
             onPressed: (){
-              Navigator.pop(context);
+              _searchClicked =
+              !_searchClicked;
+              setState(() {
+                tempTeacherList = teacherContacts;
+              });
             },
-          ),
+            icon: Icon(Icons.arrow_back,color: Colors.white),
+          ) : null,
         ),
-        body: (_isLoading)?Center(child: CircularProgressIndicator(),)
-            :SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+        body: Column(
+              children: [
+                placeASizedBoxHere((_searchClicked)?0:50),
+                (_searchClicked)?SizedBox(height: 0,width: 0,):customPaddedRowWidget(Row(
                   children: [
                     Expanded(
-                        flex: 6,
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                width: 4,
-                                height: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text("Contacts",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500),),
-                          ],
-                        )),
-                    Expanded(
                       flex: 2,
-                      child: Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(child: IconButton(onPressed: (){
-                            setState(() {
-                              _searchClicked = !_searchClicked;
-                            });
-                          }, icon: Icon(CupertinoIcons.search))),
-                          Expanded(child: IconButton(onPressed: (){}, icon: Icon(Icons.more_vert))),
+                          Row(
+                            children: [
+                              Container(
+                                width: 5,
+                                height: 30,
+                                color: Colors.red,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "New Chats",
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text("FIND YOUR TEACHERS")
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal:20),
-                child: Card(
-                  elevation:2,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListView.builder(
-                        itemCount: tempTeacherList.length,
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    CircleAvatar(),
-                                    Container(
-                                      height: 60,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(tempTeacherList.elementAt(index).name ?? " "),
-                                            Text(tempTeacherList.elementAt(index).degree ?? " ")
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(height: 1,thickness: 0.6,)
-                              ],
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: IconButton(
+                                onPressed: () {
+                                  _searchClicked =
+                                  !_searchClicked;
+                                  setState(() {
+                                    tempTeacherList = teacherContacts;
+                                  });
+                                }, icon: Icon(Icons.search_rounded)
                             ),
-                            onTap: () async{
-                              setState(() {
-                                _isLoading = true;
-                              });
-                              SharedPreferences pref= await SharedPreferences.getInstance();
-                              await postNewChat(teacherContacts.elementAt(index).id ?? " ",pref.getString("student-id").toString()).then((v){
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                                return json.decode(v.body);
-                              }).then((chatId){
-                                Navigator.pushReplacement(_scaffoldKey.currentContext!, MaterialPageRoute(builder: (context)=>MessageScreen(chatId["_id"].toString())));
-                              });
-                            },
-                          );
-                        }),
+                          ),
+                          Expanded(
+                            // flex:2,
+                            child: IconButton(
+
+                                onPressed: () {
+
+                                }, icon: Icon(Icons.more_vert)
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ), 10),
+                placeASizedBoxHere(20),
+                (_isLoading)
+                    ?loadingPage()
+                    :Expanded(
+                  child: ListView(
+                    children:[ Column(
+                      children: [
+                        Column(
+                          children: [
+                            customPaddedRowWidget(ListView.builder(
+                                itemCount: tempTeacherList.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return GestureDetector(
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Row(
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 25,
+                                              ),
+                                              Container(
+                                                height: 60,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(10),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(tempTeacherList.elementAt(index).name ?? " ",
+                                                        style: TextStyle(
+                                                          fontSize: 15
+                                                        ),),
+                                                      Text(tempTeacherList.elementAt(index).degree ?? " ")
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () async{
+                                      setState(() {
+                                        _isLoading = true;
+                                      });
+                                      SharedPreferences pref= await SharedPreferences.getInstance();
+                                      var chatId;
+                                      await postNewChat(teacherContacts.elementAt(index).id ?? " ",pref.getString("student-id").toString()).then((v){
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+                                        chatId = json.decode(v.body);
+                                      });
+
+                                        Navigator.pushReplacement(_scaffoldKey.currentContext!, MaterialPageRoute(builder: (context)=>MessageScreen(chatId["_id"].toString(), teacherContacts.elementAt(index).name ?? "")));
+
+                                    },
+                                  );
+                                }), 20),
+                          ],
+                        ),
+                      ],
+                    ),
+                    ]
                   ),
                 ),
-              )
-            ],
-          ),
-        ),
+              ],
+            ),
     );
   }
 
@@ -192,12 +237,19 @@ class mychats extends StatefulWidget {
 }
 
 class _mychatsState extends State<mychats> {
-  bool _loading = true;
+  var isSearchButtonClicked = false;
+  var teachersToShow;
+  var teachers;
+  var flag;
 
-  futureBuilder(){
+  FutureBuilder getFutureBuilder(){
     return FutureBuilder<List<TeacherModel>>(
       future: getMyChatsForStudents(),
       builder: (BuildContext context,AsyncSnapshot<List<TeacherModel>> snapshot){
+        if(flag){
+          teachers = snapshot.data;
+          teachersToShow = teachers;
+        }
         List<Widget> children = [];
         if(snapshot.hasError){
           children=[
@@ -206,72 +258,211 @@ class _mychatsState extends State<mychats> {
         }
         else if(snapshot.hasData){
           children = [
-            (snapshot.data?.isNotEmpty == true)?Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data?.length,
-                    itemBuilder: (BuildContext context,int index){
-                      return GestureDetector(
-                        child: Card(
-                          child: Container(
-                            height: 80,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(snapshot.data?.elementAt(index).name ?? " ",
-                                    style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen(snapshot.data?.elementAt(index).chat_id ?? " "))).then((value) {
-                            build(context);
-                          });
-                        },
-                      );
-                    }),
+            (teachersToShow.length != 0)
+                ?Column(
+                  children: [
+                    customPaddedRowWidget(ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: teachersToShow.length,
+                        itemBuilder: (BuildContext context,int index){
+                        var color = Colors.white;
+                          return GestureDetector(
+                            onLongPress: (){
+                              color = Colors.grey;
+                              setState(() {
 
-              ),
-            ):Center(child: Text("You haven't chatted with anyone"),)
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                Container(
+                                  color: color,
+                                  height: 80,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 25,
+                                        ),
+                                        SizedBox(width: 20,),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(teachersToShow.elementAt(index).name ?? " ",
+                                              style: TextStyle(fontSize: 15),
+                                            ),
+                                            Text(teachersToShow.elementAt(index).degree ?? " ",
+                                              style: TextStyle(fontSize: 20),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                )
+                              ],
+                            ),
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>MessageScreen(teachersToShow.elementAt(index).chat_id ?? " ",teachersToShow.elementAt(index).name ?? " ")));
+                            },
+                          );
+                        }), 20),
+                  ],
+            )
+                :Container(
+                  height: MediaQuery.of(context).size.height-200,
+                  child: Center(child: Text("No Chat History... Add New!")
+                )
+              )
           ];
+          flag = false;
         }
         else{
-          children = const <Widget>[
-            SizedBox(
-              width: 60,
-              height: 60,
-              child: CircularProgressIndicator(),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 16),
-              child: Text('Awaiting result...'),
-            )
+          children = <Widget>[
+            Center(child: loadingPage())
           ];
         }
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+        return Column(
             children:children,
-          ),
-        );
+          );
+
       },
     );
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar("MyChat"),
-      body:futureBuilder(),
+      appBar: AppBar(
+        leading: (isSearchButtonClicked) ? IconButton(
+          onPressed: (){
+            isSearchButtonClicked =
+            !isSearchButtonClicked;
+            setState(() {
+              teachersToShow = teachers;
+            });
+          },
+          icon: Icon(Icons.arrow_back,color: Colors.white),
+        ) : null,
+        title: (isSearchButtonClicked)
+            ?TextField(
+              autofocus: true,
+              onChanged: (s){
+                List<TeacherModel>? newTeachers = [];
+                for(var i in (teachers ?? [])) {
+                  if (i.name.toLowerCase().contains(s.toLowerCase())) {
+                    newTeachers.add(i);
+                  }
+                }
+                teachersToShow = newTeachers;
+                setState(() {
+
+                });
+              },
+              cursorColor: Colors.white,
+          style: TextStyle(
+            color: Colors.white
+          ),
+              decoration:InputDecoration(
+                border: InputBorder.none,
+                hintStyle: TextStyle(
+                  color: Colors.white
+                ),
+                hintText: "Search",
+              ),
+             )
+            :Text(APP_NAME),
+      ),
+      body:Column(
+        children: [
+          placeASizedBoxHere((isSearchButtonClicked)?0:50),
+          (isSearchButtonClicked)?SizedBox(height: 0,width: 0,):customPaddedRowWidget(Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 5,
+                          height: 30,
+                          color: Colors.red,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "My Chats",
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("FIND YOUR TEACHERS")
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: IconButton(
+                          onPressed: () {
+                            isSearchButtonClicked =
+                            !isSearchButtonClicked;
+                            setState(() {
+                              teachersToShow = teachers;
+                            });
+                          }, icon: Icon(Icons.search_rounded)
+                      ),
+                    ),
+                    Expanded(
+                      // flex:2,
+                      child: IconButton(
+
+                          onPressed: () {
+
+                          }, icon: Icon(Icons.more_vert)
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ), 10),
+
+          placeASizedBoxHere(20),
+          Expanded(
+            child: ListView(
+              children: [
+                getFutureBuilder(),
+              ],
+            ),
+          )
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
+          flag = true;
+          setState(() {
+
+          });
           Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatPage())).then((value) {
+
             initState();
           });
         },
@@ -282,6 +473,8 @@ class _mychatsState extends State<mychats> {
 
   @override
   void initState() {
-      futureBuilder();
+    flag = true;
+    getFutureBuilder();
   }
+
 }

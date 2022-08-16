@@ -81,7 +81,7 @@ class _CalendarForAttendanceState extends State<CalendarForAttendance> {
                         toast("Please Select A Date!");
                         return;
                       }
-                      print(dateController.selectedDate.toString());
+                      // print(dateController.selectedDate.toString());
                       Navigator.push(context, MaterialPageRoute(builder: (context) => AttendanceSheet(selectedDate: dateController.selectedDate)));
                     },
                     monthCellStyle: const DateRangePickerMonthCellStyle(

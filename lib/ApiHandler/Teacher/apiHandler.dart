@@ -171,7 +171,7 @@ postNewChat(String teacher_id,String student_id) async{
       "x-auth-token":token
     },
   );
-  debugPrint(res.body);
+  // debugPrint(res.body);
   return res;
 }
 
@@ -201,7 +201,7 @@ Future<List<StudentModel>> getMyChats() async{
   // debugPrint(res.body);
   var studentsRes = json.decode(res.body);
   for(var i in studentsRes){
-    StudentModel student = new StudentModel.forChat(i["student_id"]["_id"], i["student_id"]["first_name"],i["_id"]);
+    StudentModel student = new StudentModel.forChat(i["student_id"]["_id"], i["student_id"]["first_name"], i["student_id"]["last_name"],i["_id"]);
     students.add(student);
   }
   // debugPrint(res.body);

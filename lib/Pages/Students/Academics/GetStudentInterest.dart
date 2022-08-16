@@ -45,8 +45,8 @@ class _GetStudentInterestState extends State<GetStudentInterest> {
             child: ElevatedButton(
                 onPressed: () async {
                   List<int> selectedCount = List.filled(selectedReportList.length, 0);
-                  debugPrint(selectedReportList.toString());
-                  debugPrint(selectedCount.toString());
+                  // debugPrint(selectedReportList.toString());
+                  // debugPrint(selectedCount.toString());
                   // print("Before Posted");
                   var posted = await postInterests(selectedReportList, selectedCount,'post');
                   // print("After Posted"+ posted.toString());

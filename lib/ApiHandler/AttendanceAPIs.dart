@@ -25,7 +25,7 @@ Future<bool> addAttendance(String id, String date) async{
   )
       .then((value){
         var res = value.body.toString();
-    debugPrint("Posted Attendance : $res");
+    // debugPrint("Posted Attendance : $res");
     posted = true;
   })
       .catchError((err) {
@@ -52,7 +52,7 @@ Future<bool> removeAttendance(String id, String date) async{
   )
       .then((value){
     var res = value.body.toString();
-    debugPrint("Removed Attendance : $res");
+    // debugPrint("Removed Attendance : $res");
     removed = true;
   })
       .catchError((err) {

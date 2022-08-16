@@ -19,14 +19,30 @@ class MyTeachers extends StatefulWidget {
 
 class _MyTeachersState extends State<MyTeachers> {
   List<TeacherModel> teachers = [];
+  List<TeacherModel> teachersToShow = [];
   var isFetching = true;
+  var isSearchButtonClicked = false;
 
   getMyTeachersFunc() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var stdId = jsonDecode(preferences.get("student-personalDetails").toString())["std_id"]["_id"].toString();
     teachers = await getMyTeachers(stdId);
+    teachersToShow = teachers;
     setState(() {
       isFetching = false;
+    });
+  }
+
+  changeList(String s){
+    List<TeacherModel> newTeachers = [];
+    for(var i in teachers){
+      if(i.name?.toLowerCase().contains(s.toLowerCase()) ?? false){
+        newTeachers.add(i);
+      }
+    }
+    teachersToShow = newTeachers;
+    setState(() {
+
     });
   }
 
@@ -40,8 +56,92 @@ class _MyTeachersState extends State<MyTeachers> {
     return Column(
     children: [
       placeASizedBoxHere(50),
-      getHeader("Teachers", "CLASS : "+widget.standard.toString()),
-      placeASizedBoxHere(20),
+      customPaddedRowWidget(Row(
+        children: [
+          Expanded(
+            flex:2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 5,
+                      height: 30,
+                      color: Colors.deepOrange,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Teachers",
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text("STANDARD : "+widget.standard.toString(), style: TextStyle(
+                    fontSize: 14
+                ),)
+              ],
+            ),
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  flex:2,
+                  child: IconButton(
+                    onPressed: (){
+                      isSearchButtonClicked = !isSearchButtonClicked;
+                      setState(() {
+                        teachersToShow = teachers;
+                      });
+                    } , icon: Icon(Icons.search_rounded)
+                  ),
+                ),
+                Expanded(
+                  // flex:2,
+                  child: IconButton(
+                    onPressed: (){
+
+                    } , icon: Icon(Icons.more_vert)
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),10),
+
+      (isSearchButtonClicked)
+        ?Column(
+        children: [
+          placeASizedBoxHere(20),
+          customPaddedRowWidget(TextField(
+            onChanged: (s){
+              changeList(s);
+            },
+            decoration:InputDecoration(
+              suffixIcon:IconButton(
+                  onPressed: (){
+
+                  } , icon: Icon(Icons.search_rounded)
+              ) ,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(40)
+                )
+            ),
+          ), 15)
+        ],
+      )
+        :Text(""),
+      placeASizedBoxHere(10),
       (isFetching)
         ?loadingPage()
         :Expanded(
@@ -49,7 +149,7 @@ class _MyTeachersState extends State<MyTeachers> {
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index){
               return ExpansionTile(
-                title: Text(teachers.elementAt(index).id ?? ""),
+                title: Text(teachersToShow.elementAt(index).id ?? ""),
                 children: <Widget>[
                   ListTile(title: Row(
                     children: [
@@ -58,11 +158,11 @@ class _MyTeachersState extends State<MyTeachers> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Name : ${teachers.elementAt(index).name}"),
+                            Text("Name : ${teachersToShow.elementAt(index).name}"),
                             SizedBox(
                               height: 20,
                             ),
-                            Text("Subject : ${getSubjectName(teachers.elementAt(index).subject?.subName ?? "")}"),
+                            Text("Subject : ${getSubjectName(teachersToShow.elementAt(index).subject?.subName ?? "")}"),
                           ],
                         )
                       ),
@@ -79,12 +179,11 @@ class _MyTeachersState extends State<MyTeachers> {
                       )
                     ],
                   )),
-
                 ],
               );
             }, separatorBuilder: (BuildContext context, int index){
             return SizedBox( height: 0,);
-          }, itemCount: teachers.length),
+          }, itemCount: teachersToShow.length),
         ),
       ]
     );

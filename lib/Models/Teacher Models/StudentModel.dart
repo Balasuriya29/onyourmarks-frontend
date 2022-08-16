@@ -54,7 +54,7 @@ class StudentModel{
 
   StudentModel(this._firstName, this._rollNo, this._id);
 
-  StudentModel.forChat(this._id,this._firstName,this._chat_id);
+  StudentModel.forChat(this._id,this._firstName,this._lastName,this._chat_id);
 
   StudentModel.forAttendance(this._firstName, this._id, this._std_name, this._posted);
 

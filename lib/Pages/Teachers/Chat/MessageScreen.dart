@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:onyourmarks/Utilities/Components/functional.dart';
 
 import '../../../ApiHandler/Teacher/apiHandler.dart';
 import '../../../Models/Teacher Models/ChatModel.dart';
 
 class MessageScreen extends StatefulWidget {
   final String chat_id;
-  const MessageScreen(this.chat_id,{Key? key}) : super(key: key);
+  final String name;
+  const MessageScreen(this.chat_id,this.name,{Key? key}) : super(key: key);
 
   @override
   State<MessageScreen> createState() => _MessageScreenState();
@@ -36,14 +38,14 @@ class _MessageScreenState extends State<MessageScreen> {
       setState(() {
         messages = messages1;
       });
-      print(messages);
+      // print(messages);
 
     });
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: getAppBar(widget.name),
       body: Column(
         children: [
           Expanded(
@@ -95,6 +97,7 @@ class _MessageScreenState extends State<MessageScreen> {
                           messageController.text, widget.chat_id,
                           "teacher").then((v){
                         setState(() {
+                          messageController.text = "";
                         });
                       });
                     },
@@ -110,7 +113,7 @@ class _MessageScreenState extends State<MessageScreen> {
 
   @override
   void initState() {
-    debugPrint("Chat id in message"+widget.chat_id);
+    // debugPrint("Chat id in message"+widget.chat_id);
     getMessagesFromFB(widget.chat_id);
   }
 }

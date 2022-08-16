@@ -95,24 +95,26 @@ Future<List<Chat>> getMessagesFromFB1(String chat_id) async{
 //
 // }
 
-// postNewChat(String teacher_id,String student_id) async{
-//   var token = await getToken();
-//   var body = {
-//     "teacher_id" : teacher_id,
-//     "student_id" : student_id,
-//   };
-//   debugPrint('token : $token+body : $body');
-//   await http.post(Uri.parse("${API_LINK}api/chat/"),
-//     body: json.encode(body),
-//     headers: {
-//       "content-type":"application/json",
-//       "x-auth-token":token
-//     },
-//   ).then((value) {
-//     return value;
-//     debugPrint("Chat added");
-//   });
-// }
+postNewChat(String teacher_id,String student_id) async{
+  var token = await getToken();
+  var res;
+  var body = {
+    "teacher_id" : teacher_id,
+    "student_id" : student_id,
+  };
+  // debugPrint('token : $token+body : $body');
+  await http.post(Uri.parse("${API_LINK}api/chat/"),
+    body: json.encode(body),
+    headers: {
+      "content-type":"application/json",
+      "x-auth-token":token
+    },
+  ).then((value) {
+    res = value;
+    // debugPrint("Chat added");
+  });
+  return res;
+}
 
 postMessage(String message,String chat_id,String person) async{
   CollectionReference ref =  await FirebaseFirestore.instance.collection("message");

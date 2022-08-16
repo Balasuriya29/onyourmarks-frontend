@@ -34,7 +34,7 @@ Future<List<TeacherModel>> getMyTeachers(String stdId) async{
   var res = jsonDecode(req.body);
   for(var i in res){
     SubjectModel sm = SubjectModel.forTeachers(i["subject_id"]["_id"], i["subject_id"]["sub_name"], i["subject_id"]["total_marks"].toString());
-    TeacherModel tm = TeacherModel.forMyTeachers(i["teacher_id"]["_id"], i["teacher_id"]["name"], sm);
+    TeacherModel tm = TeacherModel.forMyTeachers(i["teacher_id"]["facultyId"], i["teacher_id"]["name"], sm);
     teachers.add(tm);
   }
   return teachers;

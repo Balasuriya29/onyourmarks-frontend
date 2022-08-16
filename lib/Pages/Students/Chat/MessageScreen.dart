@@ -8,7 +8,8 @@ import '../../../Utilities/Components/functional.dart';
 
 class MessageScreen extends StatefulWidget {
   final String chat_id;
-  const MessageScreen(this.chat_id,{Key? key}) : super(key: key);
+  final String name;
+  const MessageScreen(this.chat_id,this.name, {Key? key}) : super(key: key);
 
   @override
   State<MessageScreen> createState() => _MessageScreenState();
@@ -44,7 +45,7 @@ class _MessageScreenState extends State<MessageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar("Messeges"),
+      appBar: getAppBar(widget.name),
       body: Column(
         children: [
           Expanded(
