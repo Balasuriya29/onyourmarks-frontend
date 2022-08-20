@@ -36,9 +36,9 @@ class _GetStudentInterestState extends State<GetStudentInterest> {
         children: [
           Container(width: double.infinity,),
           BuildChoiceChips(topics, onSelectionChanged: (selectedList) {
-            setState(() {
+            (mounted)?setState(() {
               selectedReportList = selectedList;
-            });
+            }):null;
           },),
           ClipRRect(
             borderRadius: BorderRadius.circular(20),

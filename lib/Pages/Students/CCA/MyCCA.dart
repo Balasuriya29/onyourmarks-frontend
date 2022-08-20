@@ -30,9 +30,9 @@ class _MyCCAState extends State<MyCCA> with TickerProviderStateMixin{
               ?accepted.add(i)
               :rejected.add(i);
     }
-    setState(() {
+    (mounted)?setState(() {
       isFetching = false;
-    });
+    }):null;
   }
 
   @override

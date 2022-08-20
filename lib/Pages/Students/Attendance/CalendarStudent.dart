@@ -19,9 +19,9 @@ class _CalendarForAttendanceViewState extends State<CalendarForAttendanceView> {
   var isFetching = true;
   getMyDates() async{
     dates = await getMyAttendance();
-    setState(() {
+    (mounted)?setState(() {
       isFetching = false;
-    });
+    }):null;
   }
 
   Widget _monthCellBuilder(

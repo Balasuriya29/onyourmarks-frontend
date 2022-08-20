@@ -74,9 +74,9 @@ class _StudentCCAFormState extends State<StudentCCAForm> {
                             controller: actNameController,
                             onChanged: (s){
                               actNameValidator = false;
-                              setState(() {
+                              (mounted)?setState(() {
 
-                              });
+                              }):null;
                             },
                           )
                         ],
@@ -111,9 +111,9 @@ class _StudentCCAFormState extends State<StudentCCAForm> {
                                   onChange: (_) {
                                     actTypeValidator = false;
                                     actTypeController = _["value"];
-                                    setState(() {
+                                    (mounted)?setState(() {
 
-                                    });
+                                    }):null;
                                   },
                                   defaultValue: dropdownItemListForTypeOfActivity[0],
                                   // placeholder: 'insert...',
@@ -150,9 +150,9 @@ class _StudentCCAFormState extends State<StudentCCAForm> {
                                   onChange: (_) {
                                     actStatusValidator = false;
                                     actStatusController = _["value"];
-                                    setState(() {
+                                    (mounted)?setState(() {
 
-                                    });
+                                    }):null;
                                   },
                                   defaultValue: dropdownItemListForTypeOfStatus[0],
                                   // placeholder: 'insert...',
@@ -189,9 +189,9 @@ class _StudentCCAFormState extends State<StudentCCAForm> {
                                 TextField(
                                   onChanged: (s){
                                     actStartValidator = false;
-                                    setState(() {
+                                    (mounted)?setState(() {
 
-                                    });
+                                    }):null;
                                   },
                                   controller: actStartController,
                                   decoration: InputDecoration(
@@ -214,11 +214,11 @@ class _StudentCCAFormState extends State<StudentCCAForm> {
                                           .format(pickedDate);
 
 
-                                      setState(() {
+                                      (mounted)?setState(() {
                                         actStartController.text =
                                             formattedDate;
                                         actStartValidator = false;
-                                      });
+                                      }):null;
                                     }
 
                                   },
@@ -270,13 +270,13 @@ class _StudentCCAFormState extends State<StudentCCAForm> {
                                           .format(pickedDate);
                                       // print(formattedDate);
 
-                                      setState(() {
+                                      (mounted)?setState(() {
                                         actEndController.text =
                                             formattedDate;
                                         // print(actEndValidator);
                                         actEndValidator = false;
                                         // print(actEndValidator);
-                                      });
+                                      }):null;
                                     }
                                     else {
                                       // print("Date is not selected");
@@ -324,9 +324,9 @@ class _StudentCCAFormState extends State<StudentCCAForm> {
                       if(check){
                         SharedPreferences preferences = await SharedPreferences.getInstance();
                         await postActivity(preferences.get("student-id").toString(),actNameController.text,actTypeController,actStatusController,actStartController.text.substring(0,10),actEndController.text.substring(0,10)).then((v)  {
-                          setState(() {
+                          (mounted)?setState(() {
 
-                          });
+                          }):null;
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StudentHome(5)));
                         });
                       }

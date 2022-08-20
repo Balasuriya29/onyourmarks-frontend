@@ -45,10 +45,10 @@ class _StudentDashboardState extends State<StudentDashboard> {
       }
     }
 
-    setState(() {
+    (mounted)?setState(() {
       isFetchingPage1 = false;
       // print("Got Info");
-    });
+    }):null;
   }
 
   //Page 2
@@ -69,14 +69,14 @@ class _StudentDashboardState extends State<StudentDashboard> {
     for(var i = marksObjects.length - 1;i>=0;i--){
       if(marksObjects.elementAt(i).length == mySubjectLength){
         currentMarks[marksExams.elementAt(i)] = marksObjects.elementAt(i);
-        setState(() {});
+        (mounted)?setState(() {}):null;
         break;
       }
     }
-    setState(() {
+    (mounted)?setState(() {
       isFetchingPage2 = false;
       // print("Got Marks");
-    });
+    }):null;
   }
 
   //Page 3
@@ -85,10 +85,10 @@ class _StudentDashboardState extends State<StudentDashboard> {
 
   getCCA() async {
     activities = await getMyActivities();
-    setState(() {
+    (mounted)?setState(() {
       isFetchingPage3 = false;
       // print("Got CCA");
-    });
+    }):null;
   }
 
 

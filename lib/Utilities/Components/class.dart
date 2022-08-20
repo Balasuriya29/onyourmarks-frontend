@@ -27,12 +27,12 @@ class _BuildChoiceChipsState extends State<BuildChoiceChips> {
           selected: selectedChoices.contains(item),
           selectedColor: Colors.blue,
           onSelected: (selected) {
-            setState(() {
+            (mounted)?setState(() {
               selectedChoices.contains(item)
                   ? selectedChoices.remove(item)
                   : selectedChoices.add(item);
               widget.onSelectionChanged(selectedChoices); // +added
-            });
+            }):null;
           },
         ),
       ));

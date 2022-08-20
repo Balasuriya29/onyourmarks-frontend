@@ -35,9 +35,9 @@ class _MessageScreenState extends State<MessageScreen> {
         // print(chat.message.runtimeType);
         messages1.add(chat);
       }
-      setState(() {
+      (mounted)?setState(() {
         messages = messages1;
-      });
+      }):null;
       // print(messages);
 
     });
@@ -96,9 +96,9 @@ class _MessageScreenState extends State<MessageScreen> {
                       await postMessage(
                           messageController.text, widget.chat_id,
                           "teacher").then((v){
-                        setState(() {
+                        (mounted)?setState(() {
                           messageController.text = "";
-                        });
+                        }):null;
                       });
                     },
                     icon: Icon(CupertinoIcons.arrow_right_circle_fill),

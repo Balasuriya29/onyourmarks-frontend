@@ -47,9 +47,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         onChanged: (s){
                           invalidUsername = false;
-                          setState(() {
+                          (mounted)?setState(() {
 
-                          });
+                          }):null;
                         },
                       ),
                       SizedBox(
@@ -68,36 +68,36 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.grey,
                             onPressed: () {
                               passwordInVisibility = !passwordInVisibility;
-                              setState(() {
+                              (mounted)?setState(() {
 
-                              });
+                              }):null;
                             },
                             icon: Icon(Icons.remove_red_eye),
                           )
                               :IconButton(
                               onPressed: (){
                                 passwordInVisibility = !passwordInVisibility;
-                                setState(() {
+                                (mounted)?setState(() {
 
-                                });
+                                }):null;
                               },
                               icon: Icon(Icons.remove_red_eye)
                           ),
                         ),
                         onChanged: (s){
                           invalidPassword = false;
-                          setState(() {
+                          (mounted)?setState(() {
 
-                          });
+                          }):null;
                         },
                       ),
                       SizedBox(
                         height: 60,
                       ),
                       ElevatedButton(onPressed: () async{
-                        setState(() {
+                        (mounted)?setState(() {
                           isChecking = true;
-                        });
+                        }):null;
                         var check = true;
                         if(username.text == ""){
                           invalidUsername = true;
@@ -111,15 +111,15 @@ class _LoginPageState extends State<LoginPage> {
                           isChecking = false;
                         }
 
-                        setState(() {
+                        (mounted)?setState(() {
 
-                        });
+                        }):null;
 
                         if(check){
                           user = await checkMe(username.text, password.text);
-                          setState(() {
+                          (mounted)?setState(() {
 
-                          });
+                          }):null;
                           if(user.username != "Error") {
                             isChecking = false;
                             username.text = "";
@@ -211,9 +211,9 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                             color: Colors.grey,
                             onPressed: () {
                               password1InVisibility = !password1InVisibility;
-                              setState(() {
+                              (mounted)?setState(() {
 
-                              });
+                              }):null;
                             },
                             icon: Icon(Icons.remove_red_eye),
                           )
@@ -221,18 +221,18 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                               color: Colors.blue,
                               onPressed: (){
                                 password1InVisibility = !password1InVisibility;
-                                setState(() {
+                                (mounted)?setState(() {
 
-                                });
+                                }):null;
                               },
                               icon: Icon(Icons.remove_red_eye)
                           ),
                         ),
                         onChanged: (s){
                           invalidPassword1 = false;
-                          setState(() {
+                          (mounted)?setState(() {
 
-                          });
+                          }):null;
                         },
                       ),
                       SizedBox(
@@ -251,36 +251,36 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                             color: Colors.grey,
                             onPressed: () {
                               password2InVisibility = !password2InVisibility;
-                              setState(() {
+                              (mounted)?setState(() {
 
-                              });
+                              }):null;
                             },
                             icon: Icon(Icons.remove_red_eye),
                           )
                               :IconButton(
                               onPressed: (){
                                 password2InVisibility = !password2InVisibility;
-                                setState(() {
+                                (mounted)?setState(() {
 
-                                });
+                                }):null;
                               },
                               icon: Icon(Icons.remove_red_eye)
                           ),
                         ),
                         onChanged: (s){
                           invalidPassword2 = false;
-                          setState(() {
+                          (mounted)?setState(() {
 
-                          });
+                          }):null;
                         },
                       ),
                       SizedBox(
                         height: 60,
                       ),
                       ElevatedButton(onPressed: () async{
-                        setState(() {
+                        (mounted)?setState(() {
                           isChecking = true;
-                        });
+                        }):null;
                         var check = true;
                         if(newPassword.text == ""){
                           invalidPassword1 = true;
@@ -307,9 +307,9 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => GetStudentInterest()));
                           }
                         }
-                        setState(() {
+                        (mounted)?setState(() {
 
-                        });
+                        }):null;
                       }, child: Text("Change")),
                       (isChecking)
                           ?Center(child: Column(

@@ -26,9 +26,9 @@ class _ChatPageState extends State<ChatPage> {
 
   implementSearch(String s){
     if(s.isEmpty){
-      setState(() {
+      (mounted)?setState(() {
         tempTeacherList = teacherContacts;
-      });
+      }):null;
      return;
     }
     else {
@@ -40,9 +40,9 @@ class _ChatPageState extends State<ChatPage> {
           tempList.add(element);
         }
       }
-      setState(() {
+      (mounted)?setState(() {
         tempTeacherList = tempList;
-      });
+      }):null;
     }
   }
 
@@ -70,9 +70,9 @@ class _ChatPageState extends State<ChatPage> {
             onPressed: (){
               _searchClicked =
               !_searchClicked;
-              setState(() {
+              (mounted)?setState(() {
                 tempTeacherList = teacherContacts;
-              });
+              }):null;
             },
             icon: Icon(Icons.arrow_back,color: Colors.white),
           ) : null,
@@ -122,9 +122,9 @@ class _ChatPageState extends State<ChatPage> {
                                 onPressed: () {
                                   _searchClicked =
                                   !_searchClicked;
-                                  setState(() {
+                                  (mounted)?setState(() {
                                     tempTeacherList = teacherContacts;
-                                  });
+                                  }):null;
                                 }, icon: Icon(Icons.search_rounded)
                             ),
                           ),
@@ -188,15 +188,15 @@ class _ChatPageState extends State<ChatPage> {
                                       ],
                                     ),
                                     onTap: () async{
-                                      setState(() {
+                                      (mounted)?setState(() {
                                         _isLoading = true;
-                                      });
+                                      }):null;
                                       SharedPreferences pref= await SharedPreferences.getInstance();
                                       var chatId;
                                       await postNewChat(teacherContacts.elementAt(index).id ?? " ",pref.getString("student-id").toString()).then((v){
-                                        setState(() {
+                                        (mounted)?setState(() {
                                           _isLoading = false;
-                                        });
+                                        }):null;
                                         chatId = json.decode(v.body);
                                       });
 
@@ -220,11 +220,11 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     getTeachersWithoutChat().then((value){
-      setState(() {
+      (mounted)?setState(() {
         _isLoading = false;
         teacherContacts = value;
         tempTeacherList = value;
-      });
+      }):null;
     });
   }
 }
@@ -270,9 +270,9 @@ class _mychatsState extends State<mychats> {
                           return GestureDetector(
                             onLongPress: (){
                               color = Colors.grey;
-                              setState(() {
+                              (mounted)?setState(() {
 
-                              });
+                              }):null;
                             },
                             child: Column(
                               children: [
@@ -344,9 +344,9 @@ class _mychatsState extends State<mychats> {
           onPressed: (){
             isSearchButtonClicked =
             !isSearchButtonClicked;
-            setState(() {
+            (mounted)?setState(() {
               teachersToShow = teachers;
-            });
+            }):null;
           },
           icon: Icon(Icons.arrow_back,color: Colors.white),
         ) : null,
@@ -361,9 +361,9 @@ class _mychatsState extends State<mychats> {
                   }
                 }
                 teachersToShow = newTeachers;
-                setState(() {
+                (mounted)?setState(() {
 
-                });
+                }):null;
               },
               cursorColor: Colors.white,
           style: TextStyle(
@@ -424,9 +424,9 @@ class _mychatsState extends State<mychats> {
                           onPressed: () {
                             isSearchButtonClicked =
                             !isSearchButtonClicked;
-                            setState(() {
+                            (mounted)?setState(() {
                               teachersToShow = teachers;
-                            });
+                            }):null;
                           }, icon: Icon(Icons.search_rounded)
                       ),
                     ),
@@ -458,9 +458,9 @@ class _mychatsState extends State<mychats> {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           flag = true;
-          setState(() {
+          (mounted)?setState(() {
 
-          });
+          }):null;
           Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatPage())).then((value) {
 
             initState();

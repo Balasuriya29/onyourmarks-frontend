@@ -36,9 +36,9 @@ class _MyExamsState extends State<MyExams> with TickerProviderStateMixin {
       tempList.addAll(i.subjects ?? []);
       subjects.add(tempList);
     }
-    setState(() {
+    (mounted)?setState(() {
       isFetching = false;
-    });
+    }):null;
   }
 
   @override

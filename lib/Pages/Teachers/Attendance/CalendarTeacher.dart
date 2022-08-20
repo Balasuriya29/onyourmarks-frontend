@@ -24,7 +24,6 @@ class _CalendarForAttendanceState extends State<CalendarForAttendance> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: getAppBar("Attendance"),
       body: Column(
         children: [

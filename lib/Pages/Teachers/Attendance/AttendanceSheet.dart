@@ -37,9 +37,9 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
     closedAttendance = preferences.getString(widget.selectedDate.toString().substring(0,10));
     selected = widget.selectedDate.toString().substring(0,10);
     today = DateTime.now().toString().substring(0,10);
-    setState(() {
+    (mounted)?setState(() {
 
-    });
+    }):null;
   }
 
   @override
@@ -71,14 +71,14 @@ class _AttendanceSheetTodayState extends State<AttendanceSheetToday> {
     var stdId = preferences.getString("class-Teacher");
     myStudents = await getAttendance(stdId!, widget.selectedDate);
     if(mounted){
-      setState(() {
+      (mounted)?setState(() {
 
         length = myStudents?.length ?? 0;
         height = (length) * 60;
         flags = List.filled(length, true);
         stdName = myStudents?.elementAt(0).std_name ?? "";
         isFetching = false;
-      });
+      }):null;
     }
   }
 
@@ -184,9 +184,9 @@ class _AttendanceSheetTodayState extends State<AttendanceSheetToday> {
                                 IconButton(
                                   onPressed: (flags[i])?() async {
                                     flags[i] = false;
-                                    setState(() {
+                                    (mounted)?setState(() {
 
-                                    });
+                                    }):null;
                                     toast("Updating data...");
 
                                     var result = myStudents?.elementAt(i).posted ?? false
@@ -201,9 +201,9 @@ class _AttendanceSheetTodayState extends State<AttendanceSheetToday> {
                                       var temp = myStudents?.elementAt(i).posted;
                                       myStudents?.elementAt(i).posted = !(temp!);
                                     }
-                                    setState(() {
+                                    (mounted)?setState(() {
 
-                                    });
+                                    }):null;
                                   } : null
 
                                , icon: (myStudents?.elementAt(i).posted ?? false)
@@ -253,12 +253,12 @@ class _AttendanceSheetFixedState extends State<AttendanceSheetFixed> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var stdId = preferences.getString("class-Teacher");
     myStudents = await getAttendance(stdId!, widget.selectedDate);
-    setState(() {
+    (mounted)?setState(() {
       length = myStudents?.length ?? 0;
       height = (length) * 60;
       stdName = myStudents?.elementAt(0).std_name ?? "";
       isFetching = false;
-    });
+    }):null;
   }
 
   @override

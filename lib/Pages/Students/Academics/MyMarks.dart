@@ -22,9 +22,9 @@ class _MyMarksState extends State<MyMarks> {
         exam_names.add(i);
       }
       // debugPrint(exam_names.toString());
-      setState(() {
+      (mounted)?setState(() {
         isFetching = false;
-      });
+      }):null;
     });
 
   }

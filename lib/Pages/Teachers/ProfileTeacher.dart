@@ -1,166 +1,184 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:onyourmarks/Utilities/staticNames.dart';
 import '../../Utilities/Components/functional.dart';
 import 'Chat/ChatPage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage(this.me, this.stds_subs,{Key? key}) : super(key: key);
+  final me;
+  final stds_subs;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  var myDetails;
-  String classes = "", subjects = "";
-  String appBarEmote = "";
-  var isFetching = true;
-  var size = 0;
-  getMyDetails() async{
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    myDetails = json.decode(preferences.getString("teacher-personalDetails") ?? " ");
-    var temp = json.decode(preferences.getString("teacherStandardObjects") ?? " ");
-    var temp2 = json.decode(preferences.getString("teacherSubjectsObjects") ?? " ");
 
-    for(var i=0;i<temp.length;i++){
-      var std = json.decode(temp[i]);
-      var sub = json.decode(temp2[i]);
-      classes = classes +" ${i+1}. "+std["std_name"] +" - "+ sub["sub_name"]+"\n" +"\n";
-      size += 75;
-    }
+  ListView getSubjectListView(var map){
+    return ListView.separated(
+    physics: NeverScrollableScrollPhysics(),
+    shrinkWrap: true,
+    itemBuilder: (BuildContext context, int index){
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(map.keys.toList().elementAt(index), style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold
+          ),),
+          getStdListView(map.values.toList().elementAt(index)),
 
-    setState(() {
-      // print(myDetails["gender"]);
-      if(myDetails["gender"] == 'Male') appBarEmote = "👨‍🏫";
-      if(myDetails["gender"] == 'Female') appBarEmote = "👩‍🏫";
-      isFetching = false;
-    });
+        ],
+      );
+    }, separatorBuilder: (BuildContext context, int index){
+      return placeASizedBoxHere(10);
+    }, itemCount: map.length);
   }
 
+  ListView getStdListView(var standards){
+    return ListView.separated(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int index){
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(standards.elementAt(index).toString())
+            ],
+          );
+        }, separatorBuilder: (BuildContext context, int index){
+      return placeASizedBoxHere(5);
+    }, itemCount: standards.length);
+  }
+  
   @override
   void initState() {
-    getMyDetails();
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar("Profile"+appBarEmote),
-      body: (isFetching)
-       ?loadingPage()
-       :ListView(
-         children:[
-             Container(
-              // height: MediaQuery.of(context).size.height * (1/3) - 25,
-                 color: Colors.lightBlue.shade700,
-                 child: Row(
-                   children: [
-                     Column(
-                       mainAxisAlignment: MainAxisAlignment.center,
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         Padding(
-                           padding: const EdgeInsets.only(right: 18.0,left: 18.0,top: 28.0),
-                           child: populateCardsWithSubjectDetails("Name : ", 17, myDetails["name"], 17),
-                         ),
-                         Padding(
-                           padding: const EdgeInsets.only(right: 18.0,left: 18.0,top: 18.0),
-                           child: populateCardsWithSubjectDetails("Position : ", 17, "Teacher", 17),
-                         ),
-                         Padding(
-                           padding: const EdgeInsets.only(right: 18.0,left: 18.0,top: 18.0,bottom: 28.0),
-                           child: populateCardsWithSubjectDetails("Degree : ", 17, myDetails['degree'], 17),
-                         ),
-                       ],
-                     ),
-                     SizedBox(
-                       width: 30,
-                     ),
-                     Column(
-                       mainAxisAlignment: MainAxisAlignment.center,
-                       crossAxisAlignment: CrossAxisAlignment.center,
-                       children: [
-                         CircleAvatar(
-                           radius: 50,
-                           child: Icon(
-                               CupertinoIcons.profile_circled,
-                               size: 100,
-                           ),
-                         )
-                       ],
-                     )
-                   ],
-                 )
-             ),
-             placeASizedBoxHere(50),
-             Column(
-               children: [
-                 ClipRRect(
-                   borderRadius: BorderRadius.circular(20),
-                   child: Container(
-                     width: 325,
-                     height: double.parse(size.toString()),
-                     color: Colors.grey,
-                     child: Column(
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         Padding(
-                           padding: const EdgeInsets.only(right: 18.0,left: 18.0,top: 18.0),
-                           child: getTheStyledTextForExamsList("Classes & Subjects Incharge",20),
-                         ),
-                         Padding(
-                           padding: const EdgeInsets.only(right: 18.0,left: 18.0,top: 28.0,bottom: 8.0),
-                           child: getTheStyledTextForExamsList(classes, 15),
-                         ),
-                       ],
-                     ),
-                   ),
-                 ),
-                 placeASizedBoxHere(50),
-                 ClipRRect(
-                   borderRadius: BorderRadius.circular(20),
-                   child: Container(
-                     width: 325,
-                     height: 200,
-                     color: Colors.grey,
-                     child: Column(
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         Padding(
-                           padding: const EdgeInsets.only(right: 18.0,left: 18.0,top: 18.0),
-                           child: getTheStyledTextForExamsList("Contact Details",20),
-                         ),
-                         Padding(
-                           padding: const EdgeInsets.only(right: 18.0,left: 18.0,top: 28.0,bottom: 8.0),
-                           child: Row(
-                             children: [
-                               getTheStyledTextForExamsList("Phone No : ", 15),
-                               getTheStyledTextForExamsList(myDetails["phoneNo"].toString(), 15),
-                             ],
-                           ),
-                         ),
-                         Padding(
-                           padding: const EdgeInsets.all(18.0),
-                           child: Row(
-                             children: [
-                               getTheStyledTextForExamsList("Email : ", 15),
-                               getTheStyledTextForExamsList(myDetails["email"], 15)
-                             ],
-                           ),
-
-                         )
-                       ],
-                     ),
-                   ),
-                 ),
-                 placeASizedBoxHere(50),
-               ],
-             ),
-         ]
-       ),
+      appBar: getAppBar(APP_NAME),
+      body: Column(
+        children: [
+          placeASizedBoxHere(50),
+          getHeader("Profile", "YOUR DETAILS"),
+          placeASizedBoxHere(20),
+          Expanded(
+            child: ListView(
+            children:[
+              customPaddedRowWidget(ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    color: Colors.blueGrey.shade50,
+                    child: Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Row(
+                        children: [
+                          Hero(
+                            tag: "ProfilePic",
+                            child: CircleAvatar(
+                              radius: 50,
+                              child:  Icon(
+                                CupertinoIcons.profile_circled,
+                                size: 100,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 18.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(widget.me["name"], style: TextStyle(fontWeight: FontWeight.bold),),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(widget.me["degree"],style: TextStyle(fontWeight: FontWeight.bold)),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(widget.me["facultyId"],style: TextStyle(fontWeight: FontWeight.bold))
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ), 20),
+              placeASizedBoxHere(30),
+              Column(
+                children: [
+                  customPaddedRowWidget(ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      color: Colors.blueGrey.shade50,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 18.0,left: 18.0,top: 18.0),
+                                  child: getTheStyledTextForExamsList("Classes & Subjects Incharge",17.5, Colors.black),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 18.0,left: 18.0,top: 28.0,bottom: 8.0),
+                                  child: getSubjectListView(widget.stds_subs),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ), 20),
+                  placeASizedBoxHere(30),
+                  customPaddedRowWidget(ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      color: Colors.blueGrey.shade50,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 25.0),
+                            child: getTheStyledTextForExamsList("Contact Details",17.5,Colors.black),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                            child: Row(
+                              children: [
+                                getTheStyledTextForExamsList("Email ID : ", 15, Colors.black),
+                                Text(widget.me["email"])
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 20.0),
+                            child: Row(
+                              children: [
+                                getTheStyledTextForExamsList("Mobile No : ", 15, Colors.black),
+                                Text(widget.me["phoneNo"].toString())
+                              ],
+                            ),
+                          ),
+                          placeASizedBoxHere(10)
+                        ],
+                      ),
+                    ),
+                  ), 20),
+                ],
+              ),
+             ]
+           ),
+              ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context)=>mychats()));

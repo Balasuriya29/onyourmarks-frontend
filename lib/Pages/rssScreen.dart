@@ -26,9 +26,9 @@ class _rssScreenState extends State<rssScreen> {
     ).catchError((err) {
       errorLoading = true;
       toast("Error Loading the Page");
-      setState(() {
+      (mounted)?setState(() {
 
-      });
+      }):null;
       return err;
     });
     if(!errorLoading){
@@ -39,9 +39,9 @@ class _rssScreenState extends State<rssScreen> {
       if(rssItems?.length == 0 || rssItems == null){
         debugPrint("Error");
         errorLoading = true;
-        setState(() {
+        (mounted)?setState(() {
 
-        });
+        }):null;
       }
       if(!errorLoading){
         for(var i in rssItems!){
@@ -49,9 +49,9 @@ class _rssScreenState extends State<rssScreen> {
           String _content = unescape.convert(i.content ?? "").replaceAll(exp, '');
           rss.add(RSSModel(_title,_content , i.links?.first.href));
           if(rss.length == 10){
-            setState(() {
+            (mounted)?setState(() {
               isFetching = false;
-            });
+            }):null;
             break;
           }
         }

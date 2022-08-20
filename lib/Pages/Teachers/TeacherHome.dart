@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Utilities/Components/functional.dart';
 import '../HomePage.dart';
 import '../Teachers/Chat/ChatPage.dart';
+import 'Academics/HomeWorkUpdate.dart';
 
 class TeacherHomeM extends StatelessWidget {
   const TeacherHomeM({Key? key}) : super(key: key);
@@ -39,14 +40,32 @@ class TeacherHome extends StatefulWidget {
 
 class _TeacherHomeState extends State<TeacherHome> {
 
-  var pages = [HomePage(), MyStudents(), ExamViewPage()];
+  var pages = [HomePage(), MyStudents(), ExamViewPage(), HomeWorkUpdatePage()];
   var index;
   var me;
+  Map<String, List<dynamic>>? map;
   bool isFetching = true;
 
   getMyInfo() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     me = jsonDecode(preferences.getString("teacher-personalDetails").toString());
+    var standards = json.decode(preferences.getString("teacherStandardObjects") ?? " ");
+    var subjects = json.decode(preferences.getString("teacherSubjectsObjects") ?? " ");
+
+    map = {"Maths" : ["8-A", "9-B"]};
+
+    for(var i = 0;i<subjects.length ;i++){
+      var subName = getSubjectName(jsonDecode(subjects[i])["sub_name"]);
+      var stds = map?[subName];
+      var stdName = jsonDecode(standards[i])["std_name"];
+      if(stds!=null){
+        stds.add(stdName);
+        map?[subName ?? ""] = stds;
+      }
+      else{
+        map?[subName ?? ""] = [stdName];
+      }
+    }
     var today = DateTime.now();
     var date = DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day,10,0);
     
@@ -54,10 +73,10 @@ class _TeacherHomeState extends State<TeacherHome> {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.setString(today.toString().substring(0,10), true.toString());
     }
-    setState(() {
+    (mounted)?setState(() {
       isFetching = false;
       index = widget.index;
-    });
+    }):null;
   }
 
   @override
@@ -83,7 +102,7 @@ class _TeacherHomeState extends State<TeacherHome> {
           children: [
             GestureDetector(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(me, map)));
               },
               child: Container(
                 height: MediaQuery.of(context).size.height / 3,
@@ -105,8 +124,8 @@ class _TeacherHomeState extends State<TeacherHome> {
                         ),
                       ),
                       placeASizedBoxHere(20),
-                      (isFetching)?Text("Id"):getTheStyledTextForExamsList(me["facultyId"], 17.5),
-                      (isFetching)?Text("Name"):getTheStyledTextForExamsList(me["name"], 17.5),
+                      (isFetching)?Text("Id"):getTheStyledTextForExamsList(me["facultyId"], 17.5,Colors.white),
+                      (isFetching)?Text("Name"):getTheStyledTextForExamsList(me["name"], 17.5,Colors.white),
                       placeASizedBoxHere(20)
                     ],
                   ),
@@ -114,7 +133,7 @@ class _TeacherHomeState extends State<TeacherHome> {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height / 2,
+              height: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height / 3),
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Column(
@@ -123,9 +142,9 @@ class _TeacherHomeState extends State<TeacherHome> {
                       builder: (context) {
                         return GestureDetector(
                             onTap: (){
-                              setState(() {
+                              (mounted)?setState(() {
                                 index = 0;
-                              });
+                              }):null;
                               Scaffold.of(context).openEndDrawer();
                             },
                             child: getsideCards(Icon(CupertinoIcons.home) , 'Home', context)
@@ -136,9 +155,9 @@ class _TeacherHomeState extends State<TeacherHome> {
                       builder: (context) {
                         return GestureDetector(
                             onTap: (){
-                              setState(() {
+                              (mounted)?setState(() {
                                 index = 1;
-                              });
+                              }):null;
                               Scaffold.of(context).openEndDrawer();
                             },
                             child: getsideCards(Icon(CupertinoIcons.person_crop_rectangle_fill) , 'My Class Students', context)
@@ -149,20 +168,35 @@ class _TeacherHomeState extends State<TeacherHome> {
                       builder: (context) {
                         return GestureDetector(
                             onTap: (){
-                              setState(() {
+                              (mounted)?setState(() {
                                 index = 2;
-                              });
+                              }):null;
                               Scaffold.of(context).openEndDrawer();
                             },
                             child: getsideCards(Icon(CupertinoIcons.pencil) , 'Update Student Exams', context)
                         );
                       }
                     ),
+                    Builder(
+                        builder: (context) {
+                          return GestureDetector(
+                              onTap: (){
+                                (mounted)?setState(() {
+                                  index = 3;
+                                }):null;
+                                Scaffold.of(context).openEndDrawer();
+                              },
+                              child: getsideCards(Icon(Icons.work_history_sharp) , 'Update Homework', context)
+                          );
+                        }
+                    ),
+                    getBottomDrawerNavigation(context)
                   ],
                 ),
               ),
+
             ),
-            getBottomDrawerNavigation(context)
+
           ],
         ),
       ),

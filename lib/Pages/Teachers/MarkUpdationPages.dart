@@ -36,9 +36,9 @@ class _ExamViewPageState extends State<ExamViewPage> with TickerProviderStateMix
               :finished.add(i);
     }
 
-    setState(() {
+    (mounted)?setState(() {
       isFetching = false;
-    });
+    }):null;
   }
 
   @override
@@ -48,54 +48,59 @@ class _ExamViewPageState extends State<ExamViewPage> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    return (isFetching)
-              ?loadingPage()
-              :Column(
-                children: [
-                  DefaultTabController(
-                    length: 3,
-                    child: TabBar(
-                        controller: _tabController,
-                        indicatorColor: Colors.deepPurple,
-                        labelColor: Colors.deepPurple,
+    return Column(
+      children: [
+        placeASizedBoxHere(50),
+        getHeader("Mark Updation", "RATE THE PERFORMANCE"),
+        placeASizedBoxHere(20),
+        (isFetching)
+            ?loadingPage()
+            :DefaultTabController(
+          length: 3,
+          child: TabBar(
+              controller: _tabController,
+              indicatorColor: Colors.deepPurple,
+              labelColor: Colors.deepPurple,
 
-                        tabs: const [
-                          Tab(
-                            text: "Upcoming",
-                          ),
-                          Tab(
-                            text: "In Progress",
-                          ),
-                          Tab(
-                            text: "Finished",
-                          )
-                        ]),
+              tabs: const [
+                Tab(
+                  text: "Upcoming",
+                ),
+                Tab(
+                  text: "In Progress",
+                ),
+                Tab(
+                  text: "Finished",
+                )
+              ]),
 
-                  ),
-                  Expanded(
-                    child: TabBarView(
-                        controller: _tabController,
-                        children: [
-                          (upcoming.isNotEmpty)
-                            ?populateExamsObjectToListView(context,upcoming, "upcoming")
-                            :Center(
-                              child: Text("No Exams Scheduled📅")
-                             ),
-                          (inProgress.isNotEmpty)
-                              ?populateExamsObjectToListView(context,inProgress, "in progress")
-                              :Center(
-                              child: Text("No Exams is in the Progress📝")
-                          ),
-                          (finished.isNotEmpty)
-                              ?populateExamsObjectToListView(context,finished, "finished")
-                              :Center(
-                              child: Text("No Exams in the Past🔁🕧")
-                          ),
-                        ]
-                    ),
-                  )
-                ],
-      );
+        ),
+        (isFetching)
+            ?Text("")
+            :Expanded(
+          child: TabBarView(
+              controller: _tabController,
+              children: [
+                (upcoming.isNotEmpty)
+                  ?populateExamsObjectToListView(context,upcoming, "upcoming")
+                  :Center(
+                    child: Text("No Exams Scheduled📅")
+                   ),
+                (inProgress.isNotEmpty)
+                    ?populateExamsObjectToListView(context,inProgress, "in progress")
+                    :Center(
+                    child: Text("No Exams is in the Progress📝")
+                ),
+                (finished.isNotEmpty)
+                    ?populateExamsObjectToListView(context,finished, "finished")
+                    :Center(
+                    child: Text("No Exams in the Past🔁🕧")
+                ),
+              ]
+          ),
+        )
+      ],
+    );
   }
 }
 
@@ -116,16 +121,12 @@ class _ExamDetailsViewState extends State<ExamDetailsView> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 30.0,top: 30.0,right: 30.0,bottom: 15.0),
-            child: Text(
-                widget.exam.examName.toString()+" - "+widget.exam.std_name.toString(),
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-
-            ),),
+          placeASizedBoxHere(50),
+          getHeader(
+              widget.exam.examName.toString(),
+              "STANDARD : "+widget.exam.std_name.toString()
           ),
+          placeASizedBoxHere(20),
           Expanded(
             child: ListView.separated(itemBuilder: (BuildContext context, int index){
               return GestureDetector(
@@ -214,9 +215,9 @@ class _ShowStudentsToUpdateMarksState extends State<ShowStudentsToUpdateMarks> {
 
   getTeacherId(String id) async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
+    (mounted)?setState(() {
       id = preferences.getString("id")!;
-    });
+    }):null;
   }
 
   getStudentsFunc(String id) async{
@@ -264,9 +265,9 @@ class _ShowStudentsToUpdateMarksState extends State<ShowStudentsToUpdateMarks> {
             isPending = true;
         }
 
-        setState(() {
+        (mounted)?setState(() {
           mix = isPending && isAuthoried;
-        });
+        }):null;
     });
   }
 
@@ -274,9 +275,9 @@ class _ShowStudentsToUpdateMarksState extends State<ShowStudentsToUpdateMarks> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var subjects = json.decode(preferences.getString("teacherSubjects") ?? "");
     if(subjects.contains(widget.subject_id)){
-      setState(() {
+      (mounted)?setState(() {
         isAuthoried = true;
-      });
+      }):null;
     }
   }
 
@@ -285,6 +286,7 @@ class _ShowStudentsToUpdateMarksState extends State<ShowStudentsToUpdateMarks> {
     getStudentsFunc(widget.std_id);
     hasAuthority();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -292,30 +294,19 @@ class _ShowStudentsToUpdateMarksState extends State<ShowStudentsToUpdateMarks> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 30.0,top: 30.0,right: 30.0,bottom: 15.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Student Marks of Standard "+widget.std_name,
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                (mix)
-                    ?Text(
-                      "Pending: "+pending.toString()+" / "+total.toString(),
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                    :Text(""),
-              ],
+          placeASizedBoxHere(50),
+          getHeader("Student Marks", "STANDARD : "+widget.std_name),
+          placeASizedBoxHere(20),
+          (mix)
+              ?customPaddedRowWidget(Text(
+            "Pending: "+pending.toString()+" / "+total.toString(),
+            style: TextStyle(
+              fontSize: 17.5,
+              // fontWeight: FontWeight.bold,
             ),
-          ),
+          ), 10)
+              :Text(""),
+
           (isFetching)
           ?loadingPage()
           :Expanded(
@@ -393,10 +384,10 @@ class _ShowStudentsToUpdateMarksState extends State<ShowStudentsToUpdateMarks> {
                                             widget.subject_id,
                                             int.parse(_markController.elementAt(index).text));
                                       }
-                                          setState(() {
+                                      (mounted)?setState(() {
                                           flags[index] = !flags[index];
                                           pending--;
-                                        });
+                                        }):null;
                                     },
                                     icon: (flags.elementAt(index))
                                           ?Icon(

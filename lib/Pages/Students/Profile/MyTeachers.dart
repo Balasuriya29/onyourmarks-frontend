@@ -28,9 +28,9 @@ class _MyTeachersState extends State<MyTeachers> {
     var stdId = jsonDecode(preferences.get("student-personalDetails").toString())["std_id"]["_id"].toString();
     teachers = await getMyTeachers(stdId);
     teachersToShow = teachers;
-    setState(() {
+    (mounted)?setState(() {
       isFetching = false;
-    });
+    }):null;
   }
 
   changeList(String s){
@@ -41,9 +41,9 @@ class _MyTeachersState extends State<MyTeachers> {
       }
     }
     teachersToShow = newTeachers;
-    setState(() {
+    (mounted)?setState(() {
 
-    });
+    }):null;
   }
 
   @override
@@ -99,9 +99,9 @@ class _MyTeachersState extends State<MyTeachers> {
                   child: IconButton(
                     onPressed: (){
                       isSearchButtonClicked = !isSearchButtonClicked;
-                      setState(() {
+                      (mounted)?setState(() {
                         teachersToShow = teachers;
-                      });
+                      }):null;
                     } , icon: Icon(Icons.search_rounded)
                   ),
                 ),

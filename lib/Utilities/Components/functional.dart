@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/Models/Teacher%20Models/ExamModel.dart';
+import 'package:onyourmarks/Pages/LoginPage.dart';
 import 'package:onyourmarks/Pages/Teachers/MarkUpdationPages.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -36,8 +37,8 @@ SizedBox placeASizedBoxHere(double height){
 Row populateCardsWithSubjectDetails(String field,double fieldSize,String? value,double valueSize){
   return Row(
     children: [
-      getTheStyledTextForExamsList(field,fieldSize),
-      getTheStyledTextForExamsList(value,valueSize),
+      getTheStyledTextForExamsList(field,fieldSize, Colors.white),
+      getTheStyledTextForExamsList(value,valueSize,Colors.white),
     ],
   );
 }
@@ -66,12 +67,12 @@ ListView populateExamsObjectToListView(BuildContext context, List<ExamModel> exa
                       children: [
                         Padding(
                             padding: const EdgeInsets.only(left:18.0),
-                            child: getTheStyledTextForExamsList(exams.elementAt(index).examName.toString(),20)
+                            child: getTheStyledTextForExamsList(exams.elementAt(index).examName.toString(),20,Colors.white)
                         ),
                         SizedBox(
                           width: 75,
                         ),
-                        getTheStyledTextForExamsList(exams.elementAt(index).std_name.toString(),20)
+                        getTheStyledTextForExamsList(exams.elementAt(index).std_name.toString(),20,Colors.white)
                       ],
                     ),
                     placeASizedBoxHere(20),
@@ -80,9 +81,9 @@ ListView populateExamsObjectToListView(BuildContext context, List<ExamModel> exa
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 18.0),
-                          child: getTheStyledTextForExamsList("From : ", 15),
+                          child: getTheStyledTextForExamsList("From : ", 15,Colors.white),
                         ),
-                        getTheStyledTextForExamsList(exams.elementAt(index).subjects?.first.date?.substring(0,10) ?? ' ', 15),
+                        getTheStyledTextForExamsList(exams.elementAt(index).subjects?.first.date?.substring(0,10) ?? ' ', 15,Colors.white),
                       ],
                     ),
                     placeASizedBoxHere(10),
@@ -91,9 +92,9 @@ ListView populateExamsObjectToListView(BuildContext context, List<ExamModel> exa
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 18.0),
-                          child: getTheStyledTextForExamsList("To : ", 15),
+                          child: getTheStyledTextForExamsList("To : ", 15, Colors.white),
                         ),
-                        getTheStyledTextForExamsList(exams.elementAt(index).subjects?.last.date?.substring(0,10) ?? ' ', 15)
+                        getTheStyledTextForExamsList(exams.elementAt(index).subjects?.last.date?.substring(0,10) ?? ' ', 15, Colors.white)
                       ],
                     )
                   ],
@@ -113,8 +114,8 @@ ListView populateExamsObjectToListView(BuildContext context, List<ExamModel> exa
       , itemCount: exams.length);
 }
 
-Text getTheStyledTextForExamsList(String? field, double fontSize){
-  return Text(field ?? ' ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: fontSize),);
+Text getTheStyledTextForExamsList(String? field, double fontSize, Color colors){
+  return Text(field ?? ' ', style: TextStyle(color: colors, fontWeight: FontWeight.bold, fontSize: fontSize),);
 }
 
 Center loadingPage(){
@@ -395,38 +396,36 @@ SizedBox populateTheEvents(String? title, String? content, String? category){
   );
 }
 
-Padding getBottomDrawerNavigation(context){
-  return Padding(
-    padding: const EdgeInsets.only(left: 8.0),
-    child: Column(
-      children: [
-        GestureDetector(
-            onTap: (){
+Column getBottomDrawerNavigation(context){
+  return Column(
+    children: [
+      GestureDetector(
+          onTap: (){
 
-            },
-            child: getsideCards(Icon(Icons.settings) , 'Settings', context)
-        ),
-        GestureDetector(
-            onTap: (){
-              Navigator.pop(context);
-              showDialog(context: context, builder: (BuildContext context){
-                return AlertDialog(
-                  content: Text("Do you want to log out?"),
-                  actions: [
-                    TextButton(onPressed: () async{
-                      popPagesNtimes(context,2);
-                    }, child: Text("YES")),
-                    TextButton(onPressed: (){
-                      Navigator.of(context).pop();
-                    }, child: Text("NO"))
-                  ],
-                );
-              });
-            },
-            child: getsideCards(Icon(Icons.logout) , 'Log Out', context)
-        ),
-      ],
-    ),
+          },
+          child: getsideCards(Icon(Icons.settings) , 'Settings', context)
+      ),
+      GestureDetector(
+          onTap: (){
+            Navigator.pop(context);
+            showDialog(context: context, builder: (BuildContext context){
+              return AlertDialog(
+                content: Text("Do you want to log out?"),
+                actions: [
+                  TextButton(onPressed: () async{
+                    popPagesNtimes(context,1);
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                  }, child: Text("YES")),
+                  TextButton(onPressed: (){
+                    Navigator.of(context).pop();
+                  }, child: Text("NO"))
+                ],
+              );
+            });
+          },
+          child: getsideCards(Icon(Icons.logout) , 'Log Out', context)
+      ),
+    ],
   );
 }
 
@@ -697,6 +696,17 @@ List<DateTime> getBlackoutDates() {
 
 bool selectableDayPredicateDates(DateTime date) {
   if (date.weekday == DateTime.sunday || date.compareTo(DateTime.now()) == 1) {
+    return false;
+  }
+
+  return true;
+}
+
+bool selectableDayPredicateDatesForHW(DateTime date) {
+  if (date.weekday == DateTime.sunday || date.compareTo(DateTime.now()) == 1) {
+    if(DateTime.now().add(Duration(days: 1)).toString().substring(0,10) == date.toString().substring(0,10)){
+      return true;
+    }
     return false;
   }
 

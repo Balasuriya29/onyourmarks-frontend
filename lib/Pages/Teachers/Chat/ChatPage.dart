@@ -25,9 +25,9 @@ class _ChatPageState extends State<ChatPage> {
 
   implementSearch(String s){
     if(s.isEmpty){
-      setState(() {
+      (mounted)?setState(() {
         tempStudentList = studentWithoutChatList;
-      });
+      }):null;
       return;
     }
     else {
@@ -39,9 +39,9 @@ class _ChatPageState extends State<ChatPage> {
           tempList.add(element);
         }
       }
-      setState(() {
+      (mounted)?setState(() {
         tempStudentList = tempList;
-      });
+      }):null;
     }
   }
 
@@ -72,9 +72,9 @@ class _ChatPageState extends State<ChatPage> {
             onPressed: (){
               _searchClicked =
               !_searchClicked;
-              setState(() {
+              (mounted)?setState(() {
                 tempStudentList = studentWithoutChatList;
-              });
+              }):null;
             },
             icon: Icon(Icons.arrow_back,color: Colors.white),
           ) : null,
@@ -124,9 +124,9 @@ class _ChatPageState extends State<ChatPage> {
                             onPressed: () {
                               _searchClicked =
                               !_searchClicked;
-                              setState(() {
+                              (mounted)?setState(() {
                                 tempStudentList = studentWithoutChatList;
-                              });
+                              }):null;
                             }, icon: Icon(Icons.search_rounded)
                         ),
                       ),
@@ -191,14 +191,14 @@ class _ChatPageState extends State<ChatPage> {
                                     ],
                                   ),
                                   onTap: () async{
-                                    setState(() {
+                                    (mounted)?setState(() {
                                       _loading = true;
-                                    });
+                                    }):null;
                                     SharedPreferences pref= await SharedPreferences.getInstance();
                                     await postNewChat(pref.getString("teacher-id").toString(),tempStudentList.elementAt(index).id ?? ' ').then((v){
-                                      setState(() {
+                                      (mounted)?setState(() {
                                         _loading = false;
-                                      });
+                                      }):null;
                                       return json.decode(v.body);
                                     }).then((chatId){
                                       Navigator.pushReplacement(_scaffoldKey.currentContext!, MaterialPageRoute(builder: (context)=>MessageScreen(chatId["_id"].toString(),(tempStudentList.elementAt(index).firstName ?? " ")+" "+(tempStudentList.elementAt(index).lastName ?? " "))));
@@ -226,11 +226,11 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
       getStudentsWithoutChat().then((value){
-        setState(() {
+        (mounted)?setState(() {
           studentWithoutChatList = value;
           tempStudentList = value;
           _loading = false;
-        });
+        }):null;
       });
   }
 }
@@ -256,9 +256,9 @@ class _mychatsState extends State<mychats> {
           onPressed: (){
             isSearchButtonClicked =
             !isSearchButtonClicked;
-            setState(() {
+            (mounted)?setState(() {
               studentsToShow = students;
-            });
+            }):null;
           },
           icon: Icon(Icons.arrow_back,color: Colors.white),
         ) : null,
@@ -275,9 +275,9 @@ class _mychatsState extends State<mychats> {
             }
 
             studentsToShow = newStudents;
-            setState(() {
+            (mounted)?setState(() {
 
-            });
+            }):null;
           },
           cursorColor: Colors.white,
           style: TextStyle(
@@ -338,9 +338,9 @@ class _mychatsState extends State<mychats> {
                           onPressed: () {
                             isSearchButtonClicked =
                             !isSearchButtonClicked;
-                            setState(() {
+                            (mounted)?setState(() {
                               studentsToShow = students;
-                            });
+                            }):null;
                           }, icon: Icon(Icons.search_rounded)
                       ),
                     ),
