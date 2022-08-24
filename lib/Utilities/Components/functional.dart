@@ -703,10 +703,7 @@ bool selectableDayPredicateDates(DateTime date) {
 }
 
 bool selectableDayPredicateDatesForHW(DateTime date) {
-  if (date.weekday == DateTime.sunday || date.compareTo(DateTime.now()) == 1) {
-    if(DateTime.now().add(Duration(days: 1)).toString().substring(0,10) == date.toString().substring(0,10)){
-      return true;
-    }
+  if (date.compareTo(DateTime.now()) == 1) {
     return false;
   }
 

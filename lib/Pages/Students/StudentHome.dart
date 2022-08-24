@@ -231,7 +231,7 @@ class _StudentHomeState extends State<StudentHome> {
                                   }):null;
                                   Scaffold.of(context).openEndDrawer();
                                 },
-                                child: getsideCards(Icon(Icons.work) , 'HomeWork', context)
+                                child: getsideCards(Icon(Icons.work) , 'Homework', context)
                             );
                           }
                       ),
