@@ -24,9 +24,11 @@ class _LoginPageState extends State<LoginPage> {
   late UserModel user;
   var isChecking = false;
   GoogleTranslator translator = GoogleTranslator();
-
+  var flag = true;
   getAppName() async {
-    return await translator.translate(APP_NAME, from: 'en', to: 'mr').then(print);
+    return await translator
+        .translate(APP_NAME, from: 'en', to: 'mr')
+        .then(print);
   }
 
   @override
@@ -52,15 +54,13 @@ class _LoginPageState extends State<LoginPage> {
                       TextField(
                         controller: username,
                         decoration: InputDecoration(
-                          errorText: (invalidUsername)?"Invalid":null,
+                          errorText: (invalidUsername) ? "Invalid" : null,
                           border: UnderlineInputBorder(),
                           labelText: texts[1],
                         ),
-                        onChanged: (s){
+                        onChanged: (s) {
                           invalidUsername = false;
-                          (mounted)?setState(() {
-
-                          }):null;
+                          (mounted) ? setState(() {}) : null;
                         },
                       ),
                       SizedBox(
@@ -70,104 +70,109 @@ class _LoginPageState extends State<LoginPage> {
                         controller: password,
                         obscureText: passwordInVisibility,
                         decoration: InputDecoration(
-                          errorText: (invalidPassword)?"Invalid":null,
+                          errorText: (invalidPassword) ? texts[5] : null,
                           border: UnderlineInputBorder(),
                           labelText: texts[2],
-                          suffixIcon:
-                          passwordInVisibility
-                              ?IconButton(
-                            color: Colors.grey,
-                            onPressed: () {
-                              passwordInVisibility = !passwordInVisibility;
-                              (mounted)?setState(() {
-
-                              }):null;
-                            },
-                            icon: Icon(Icons.remove_red_eye),
-                          )
-                              :IconButton(
-                              onPressed: (){
-                                passwordInVisibility = !passwordInVisibility;
-                                (mounted)?setState(() {
-
-                                }):null;
-                              },
-                              icon: Icon(Icons.remove_red_eye)
-                          ),
+                          suffixIcon: passwordInVisibility
+                              ? IconButton(
+                                  color: Colors.grey,
+                                  onPressed: () {
+                                    passwordInVisibility =
+                                        !passwordInVisibility;
+                                    (mounted) ? setState(() {}) : null;
+                                  },
+                                  icon: Icon(Icons.remove_red_eye),
+                                )
+                              : IconButton(
+                                  onPressed: () {
+                                    passwordInVisibility =
+                                        !passwordInVisibility;
+                                    (mounted) ? setState(() {}) : null;
+                                  },
+                                  icon: Icon(Icons.remove_red_eye)),
                         ),
-                        onChanged: (s){
+                        onChanged: (s) {
                           invalidPassword = false;
-                          (mounted)?setState(() {
-
-                          }):null;
+                          (mounted) ? setState(() {}) : null;
                         },
                       ),
                       SizedBox(
                         height: 60,
                       ),
-                      ElevatedButton(onPressed: () async{
-                        (mounted)?setState(() {
-                          isChecking = true;
-                        }):null;
-                        var check = true;
-                        if(username.text == ""){
-                          invalidUsername = true;
-                          check = false;
-                          isChecking = false;
-                        }
-
-                        if(password.text == ""){
-                          invalidPassword = true;
-                          check = false;
-                          isChecking = false;
-                        }
-
-                        (mounted)?setState(() {
-
-                        }):null;
-
-                        if(check){
-                          user = await checkMe(username.text, password.text);
-                          (mounted)?setState(() {
-
-                          }):null;
-                          if(user.username != "Error") {
-                            isChecking = false;
-                            username.text = "";
-                            password.text = "";
-                            if (!(user.isRegistered ?? false)) {
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) =>
-                                      PasswordChangePage(user)));
+                      ElevatedButton(
+                          onPressed: () async {
+                            (mounted)
+                                ? setState(() {
+                                    isChecking = true;
+                                  })
+                                : null;
+                            var check = true;
+                            if (username.text == "") {
+                              invalidUsername = true;
+                              check = false;
+                              isChecking = false;
                             }
-                            else
-                              goToRespectiveHomeScreen(context);
-                          }
-                        }
 
-                      }, child: Text(texts[3])),
-                      ElevatedButton(onPressed: () async {
-                        await changeLanguage("Marathi");
-                        setState(() {
+                            if (password.text == "") {
+                              invalidPassword = true;
+                              check = false;
+                              isChecking = false;
+                            }
 
-                        });
-                      }, child: Text("Change Language")),
+                            (mounted) ? setState(() {}) : null;
+
+                            if (check) {
+                              user =
+                                  await checkMe(username.text, password.text);
+                              (mounted) ? setState(() {}) : null;
+                              if (user.username != "Error") {
+                                isChecking = false;
+                                username.text = "";
+                                password.text = "";
+                                if (!(user.isRegistered ?? false)) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PasswordChangePage(user)));
+                                } else
+                                  goToRespectiveHomeScreen(context);
+                              }
+                            }
+                          },
+                          child: Text(texts[3])),
+                      ElevatedButton(
+                          onPressed: () async {
+                            if (flag) {
+                              await changeLanguage("Tamil");
+                              flag = false;
+                            } else {
+                              await changeLanguage("English");
+                              flag = true;
+                            }
+                            
+                            setState(() {
+
+                            });
+                          },
+                          child: Text("Change Language")),
                       (isChecking)
-                          ?Center(child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          placeASizedBoxHere(30),
-                          Container(
-                            width: 150,
-                            height: 150,
-                            child: RiveAnimation.network(
-                              'https://cdn.rive.app/animations/vehicles.riv',
-                              animations: const ['idle', 'curves'],
-                            ),
-                          )
-                        ],
-                      ))
-                          :Text(""),
+                          ? Center(
+                              child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                placeASizedBoxHere(30),
+                                Container(
+                                  width: 150,
+                                  height: 150,
+                                  child: RiveAnimation.network(
+                                    'https://cdn.rive.app/animations/vehicles.riv',
+                                    animations: const ['idle', 'curves'],
+                                  ),
+                                )
+                              ],
+                            ))
+                          : Text(""),
                     ],
                   ),
                 ),
@@ -219,37 +224,31 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                         controller: newPassword,
                         obscureText: password1InVisibility,
                         decoration: InputDecoration(
-                          errorText: (invalidPassword1)?"Invalid":null,
+                          errorText: (invalidPassword1) ? "Invalid" : null,
                           border: UnderlineInputBorder(),
                           labelText: "New Password",
-                          suffixIcon:
-                          password1InVisibility
-                              ?IconButton(
-                            color: Colors.grey,
-                            onPressed: () {
-                              password1InVisibility = !password1InVisibility;
-                              (mounted)?setState(() {
-
-                              }):null;
-                            },
-                            icon: Icon(Icons.remove_red_eye),
-                          )
-                              :IconButton(
-                              color: Colors.blue,
-                              onPressed: (){
-                                password1InVisibility = !password1InVisibility;
-                                (mounted)?setState(() {
-
-                                }):null;
-                              },
-                              icon: Icon(Icons.remove_red_eye)
-                          ),
+                          suffixIcon: password1InVisibility
+                              ? IconButton(
+                                  color: Colors.grey,
+                                  onPressed: () {
+                                    password1InVisibility =
+                                        !password1InVisibility;
+                                    (mounted) ? setState(() {}) : null;
+                                  },
+                                  icon: Icon(Icons.remove_red_eye),
+                                )
+                              : IconButton(
+                                  color: Colors.blue,
+                                  onPressed: () {
+                                    password1InVisibility =
+                                        !password1InVisibility;
+                                    (mounted) ? setState(() {}) : null;
+                                  },
+                                  icon: Icon(Icons.remove_red_eye)),
                         ),
-                        onChanged: (s){
+                        onChanged: (s) {
                           invalidPassword1 = false;
-                          (mounted)?setState(() {
-
-                          }):null;
+                          (mounted) ? setState(() {}) : null;
                         },
                       ),
                       SizedBox(
@@ -259,87 +258,90 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                         controller: confirmPassword,
                         obscureText: password2InVisibility,
                         decoration: InputDecoration(
-                          errorText: (invalidPassword2)?"Invalid":null,
+                          errorText: (invalidPassword2) ? "Invalid" : null,
                           border: UnderlineInputBorder(),
                           labelText: "Confirm Password",
-                          suffixIcon:
-                          password2InVisibility
-                              ?IconButton(
-                            color: Colors.grey,
-                            onPressed: () {
-                              password2InVisibility = !password2InVisibility;
-                              (mounted)?setState(() {
-
-                              }):null;
-                            },
-                            icon: Icon(Icons.remove_red_eye),
-                          )
-                              :IconButton(
-                              onPressed: (){
-                                password2InVisibility = !password2InVisibility;
-                                (mounted)?setState(() {
-
-                                }):null;
-                              },
-                              icon: Icon(Icons.remove_red_eye)
-                          ),
+                          suffixIcon: password2InVisibility
+                              ? IconButton(
+                                  color: Colors.grey,
+                                  onPressed: () {
+                                    password2InVisibility =
+                                        !password2InVisibility;
+                                    (mounted) ? setState(() {}) : null;
+                                  },
+                                  icon: Icon(Icons.remove_red_eye),
+                                )
+                              : IconButton(
+                                  onPressed: () {
+                                    password2InVisibility =
+                                        !password2InVisibility;
+                                    (mounted) ? setState(() {}) : null;
+                                  },
+                                  icon: Icon(Icons.remove_red_eye)),
                         ),
-                        onChanged: (s){
+                        onChanged: (s) {
                           invalidPassword2 = false;
-                          (mounted)?setState(() {
-
-                          }):null;
+                          (mounted) ? setState(() {}) : null;
                         },
                       ),
                       SizedBox(
                         height: 60,
                       ),
-                      ElevatedButton(onPressed: () async{
-                        (mounted)?setState(() {
-                          isChecking = true;
-                        }):null;
-                        var check = true;
-                        if(newPassword.text == ""){
-                          invalidPassword1 = true;
-                          check = false;
-                          isChecking = false;
-                        }
-                        if(confirmPassword.text == ""){
-                          invalidPassword2 = true;
-                          check = false;
-                          isChecking = false;
-                        }
-                        if(confirmPassword.text != newPassword.text){
-                          invalidPassword2 = true;
-                          invalidPassword1 = true;
-                          check = false;
-                          isChecking = false;
-                        }
-                        if(check){
-                          var isRegistered = await changePassword(widget.user.username ?? '', confirmPassword.text);
-                          isChecking = false;
-                          newPassword.text = "";
-                          confirmPassword.text = "";
-                          if(isRegistered){
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => GetStudentInterest()));
-                          }
-                        }
-                        (mounted)?setState(() {
-
-                        }):null;
-                      }, child: Text("Change")),
+                      ElevatedButton(
+                          onPressed: () async {
+                            (mounted)
+                                ? setState(() {
+                                    isChecking = true;
+                                  })
+                                : null;
+                            var check = true;
+                            if (newPassword.text == "") {
+                              invalidPassword1 = true;
+                              check = false;
+                              isChecking = false;
+                            }
+                            if (confirmPassword.text == "") {
+                              invalidPassword2 = true;
+                              check = false;
+                              isChecking = false;
+                            }
+                            if (confirmPassword.text != newPassword.text) {
+                              invalidPassword2 = true;
+                              invalidPassword1 = true;
+                              check = false;
+                              isChecking = false;
+                            }
+                            if (check) {
+                              var isRegistered = await changePassword(
+                                  widget.user.username ?? '',
+                                  confirmPassword.text);
+                              isChecking = false;
+                              newPassword.text = "";
+                              confirmPassword.text = "";
+                              if (isRegistered) {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            GetStudentInterest()));
+                              }
+                            }
+                            (mounted) ? setState(() {}) : null;
+                          },
+                          child: Text("Change")),
                       (isChecking)
-                          ?Center(child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text("Loading Data")
-                        ],
-                      ))
-                          :Text(""),
+                          ? Center(
+                              child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircularProgressIndicator(),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text("Loading Data")
+                              ],
+                            ))
+                          : Text(""),
                     ],
                   ),
                 ),
@@ -352,4 +354,3 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
     );
   }
 }
-

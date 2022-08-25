@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:onyourmarks/Pages/LoginPage.dart';
 import 'package:onyourmarks/Pages/Teachers/TeacherHome.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       options: FirebaseOptions(
           appId: "1:269652040859:android:49fa2700f8def261e1fa3e",
           messagingSenderId: "269652040859",
           projectId: "onyourmarks-60696",
-          apiKey: 'AIzaSyD6WZ4OWlfjUrBw4B8d6tWJPWB23E6s114')
-  );
+          apiKey: 'AIzaSyD6WZ4OWlfjUrBw4B8d6tWJPWB23E6s114'));
   runApp(const MyApp());
 }
 
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        '/home':(context) => TeacherHome(0),
+        '/home': (context) => TeacherHome(0),
       },
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -34,4 +33,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

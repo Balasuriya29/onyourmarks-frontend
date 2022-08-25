@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/Utilities/Components/functional.dart';
 
+import '../../../Utilities/functions.dart';
+
 class ScheduleSystem extends StatefulWidget {
   @override
   _TableExample createState() => _TableExample();
@@ -16,20 +18,20 @@ class _TableExample extends State<ScheduleSystem> {
     "2.00 PM To 3.00 PM",
   ];
   List<String> days = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
+    texts[42],
+    texts[43],
+    texts[44],
+    texts[45],
+    texts[46],
+    texts[47]
   ];
   List<List<String>> subjects = [
-    ["Maths", "Physics", "English", "Tamil", "Chemistry", "Biology"],
-    ["Maths", "PET", "English", "Tamil", "Chemistry", "Biology"],
-    ["Maths", "Physics", "English", "Tamil", "Chemistry", "Biology"],
-    ["Maths", "Physics", "English", "Tamil", "Chemistry", "Biology"],
-    ["Maths", "Physics", "English", "Tamil", "Chemistry", "Biology"],
-    ["Maths", "Physics", "English", "Tamil", "Chemistry", "Biology"],
+    [texts[48], texts[49], texts[50], texts[51], texts[52], texts[53]],
+    [texts[48], texts[54], texts[50], texts[52], texts[51], texts[49]],
+    [texts[48], texts[49], texts[50], texts[53], texts[52], texts[48]],
+    [texts[48], texts[49], texts[51], texts[50], texts[53], texts[51]],
+    [texts[48], texts[49], texts[52], texts[53], texts[51], texts[48]],
+    [texts[48], texts[49], texts[53], texts[51], texts[50], texts[52]],
   ];
 
   renderExpansionTile(String day, List<String> subjects) {
@@ -49,7 +51,7 @@ class _TableExample extends State<ScheduleSystem> {
       body: Column(
         children: [
           placeASizedBoxHere(50),
-          getHeader("Weekly TimeTable", "SEE THE SCHEDULE COMING!"),
+          getHeader(texts[40], texts[41]),
           placeASizedBoxHere(20),
           Expanded(
             child: ListView(

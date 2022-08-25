@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/ApiHandler/Student/StudentsAPIs.dart';
+import 'package:onyourmarks/Utilities/functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -24,7 +25,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
   List<String>? keysOfMe = [];
 
 
-  var fieldsName = ["NAME","ROLL NO","STANDARD","GENDER","FATHER NAME","ADDRESS","PHONE NO"];
+  var fieldsName = [texts[8],texts[9],texts[10],texts[11],texts[12],texts[13],texts[14]];
   var valuesName = ["","roll_no","std_id","gender","parent1name","currentAddress","phoneNo"];
 
   getMyInfo() async {
@@ -119,7 +120,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                           width: 10,
                         ),
                         Text(
-                          "DASHBOARD",
+                          texts[15],
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold
@@ -130,7 +131,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("INDIVIDUAL STUDENT ANALYSIS")
+                    Text(texts[16])
                   ],
                 ),
               ),
@@ -221,7 +222,7 @@ class _StudentDashBoard_1State extends State<StudentDashBoard_1> {
                       height: 200,
                       // color: Colors.red,
                       child: SfCircularChart(
-                        title: ChartTitle(text: 'Attendance Percentage',textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5)),
+                        title: ChartTitle(text: texts[17],textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.5)),
                         series: getSemiDoughnutSeries(),
                         tooltipBehavior: TooltipBehavior(enable: true),
                       ),
@@ -311,7 +312,7 @@ class _StudentDashBoard_2State extends State<StudentDashBoard_2> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("CURRENT EXAM STATUS", style: TextStyle(
+                      Text(texts[18], style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16
                       ),),
@@ -323,7 +324,7 @@ class _StudentDashBoard_2State extends State<StudentDashBoard_2> {
                       placeASizedBoxHere(30),
                       Padding(
                         padding: const EdgeInsets.only(left: 18.0),
-                        child: Text(("NAME        : "+widget.me["first_name"]+" "+widget.me["last_name"]).toUpperCase(), style: TextStyle(
+                        child: Text((texts[19]+widget.me["first_name"]+" "+widget.me["last_name"]).toUpperCase(), style: TextStyle(
                             fontWeight: FontWeight.w900,
                             fontSize: 12
                         ),),
@@ -331,7 +332,7 @@ class _StudentDashBoard_2State extends State<StudentDashBoard_2> {
                       placeASizedBoxHere(10),
                       Padding(
                         padding: const EdgeInsets.only(left: 18.0),
-                        child: Text("ROLL NO : "+widget.me["roll_no"], style: TextStyle(
+                        child: Text(texts[20]+widget.me["roll_no"], style: TextStyle(
                             fontWeight: FontWeight.w900,
                             fontSize: 12
                         ),),
@@ -388,7 +389,7 @@ class _StudentDashBoard_3State extends State<StudentDashBoard_3> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        customPaddedRowWidget( Text("PERFORMANCE",style: TextStyle(
+        customPaddedRowWidget( Text(texts[21],style: TextStyle(
           fontSize: 17.5,
           fontWeight: FontWeight.bold
         ),), 10),

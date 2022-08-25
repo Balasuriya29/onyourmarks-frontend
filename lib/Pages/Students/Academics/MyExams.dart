@@ -5,6 +5,7 @@ import '../../../ApiHandler/Student/StudentsAPIs.dart';
 import '../../../Models/Student Models/SubjectModel.dart';
 import '../../../Models/Student Models/ExamModel.dart';
 import '../../../Utilities/Components/functional.dart';
+import '../../../Utilities/functions.dart';
 
 class MyExams extends StatefulWidget {
   const MyExams({Key? key}) : super(key: key);
@@ -22,23 +23,31 @@ class _MyExamsState extends State<MyExams> with TickerProviderStateMixin {
   bool flag = true;
   getExamsFunc() async {
     exams = await getMyExams();
-    for(var i in exams){
+    for (var i in exams) {
       List<SubjectModel> tempList = [];
 
-      if(futureFirstDate.compareTo(DateTime.parse(i.subjects?.first.date ?? "")) == -1 && flag){
+      if (futureFirstDate
+                  .compareTo(DateTime.parse(i.subjects?.first.date ?? "")) ==
+              -1 &&
+          flag) {
         futureFirstDate = DateTime.parse(i.subjects?.first.date ?? "");
         flag = false;
       }
-      if(futureFirstDate.compareTo(DateTime.parse(i.subjects?.first.date ?? "")) == -1 && flag){
+      if (futureFirstDate
+                  .compareTo(DateTime.parse(i.subjects?.first.date ?? "")) ==
+              -1 &&
+          flag) {
         futureFirstDate = DateTime.parse(i.subjects?.first.date ?? "");
         flag = false;
       }
       tempList.addAll(i.subjects ?? []);
       subjects.add(tempList);
     }
-    (mounted)?setState(() {
-      isFetching = false;
-    }):null;
+    (mounted)
+        ? setState(() {
+            isFetching = false;
+          })
+        : null;
   }
 
   @override
@@ -53,48 +62,56 @@ class _MyExamsState extends State<MyExams> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         placeASizedBoxHere(50),
-        getHeader("EXAMS", "FIND YOUR EXAMS HERE!!!"),
+        getHeader(texts[24], texts[25]),
         placeASizedBoxHere(50),
         (isFetching)
-            ?loadingPage()
-            :customPaddedRowWidget(Text("Upcoming Exam for you is: "+futureFirstDate.toString().substring(0,10), style: TextStyle(
-          fontSize: 15,
-
-        ),), 10),
+            ? loadingPage()
+            : customPaddedRowWidget(
+                Text(
+                  texts[26] + futureFirstDate.toString().substring(0, 10),
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+                10),
         placeASizedBoxHere(50),
         (isFetching)
-            ?Text("")
-            :Expanded(
-          child: customPaddedRowWidget(SfCalendar(
-            view: CalendarView.month,
-            controller: calenderController,
-            showDatePickerButton: true,
-            allowViewNavigation: true,
-            dataSource: MeetingDataSource(_getDataSource(subjects , exams)),
-            monthViewSettings: const MonthViewSettings(showAgenda: true),
-            timeSlotViewSettings: const TimeSlotViewSettings(
-                minimumAppointmentDuration: Duration(minutes: 60)),
-          ), 10),
-        ),
+            ? Text("")
+            : Expanded(
+                child: customPaddedRowWidget(
+                    SfCalendar(
+                      view: CalendarView.month,
+                      controller: calenderController,
+                      showDatePickerButton: true,
+                      allowViewNavigation: true,
+                      dataSource:
+                          MeetingDataSource(_getDataSource(subjects, exams)),
+                      monthViewSettings:
+                          const MonthViewSettings(showAgenda: true),
+                      timeSlotViewSettings: const TimeSlotViewSettings(
+                          minimumAppointmentDuration: Duration(minutes: 60)),
+                    ),
+                    10),
+              ),
       ],
     );
   }
 }
 
-List<Meeting> _getDataSource(List<List<SubjectModel>>? subjects, List<ExamModel> exams) {
+List<Meeting> _getDataSource(
+    List<List<SubjectModel>>? subjects, List<ExamModel> exams) {
   final List<Meeting> meetings = <Meeting>[];
   int examCounter = 0;
-  for(var i in subjects!){
+  for (var i in subjects!) {
     var examName = exams.elementAt(examCounter++).examName;
 
-    for(var j in i){
+    for (var j in i) {
       var subName = j.subName ?? "";
       var date = DateTime.parse(j.date ?? "");
       DateTime startTime = DateTime(date.year, date.month, date.day, 9, 0, 0);
       DateTime endTime = startTime.add(const Duration(hours: 3));
-      meetings.add(
-          Meeting(examName!+ " - "+subName, startTime, endTime, Colors.green.shade900, false)
-      );
+      meetings.add(Meeting(examName! + " - " + subName, startTime, endTime,
+          Colors.green.shade900, false));
     }
   }
 
@@ -102,7 +119,7 @@ List<Meeting> _getDataSource(List<List<SubjectModel>>? subjects, List<ExamModel>
 }
 
 class MeetingDataSource extends CalendarDataSource {
-  MeetingDataSource(List<Meeting> source){
+  MeetingDataSource(List<Meeting> source) {
     appointments = source;
   }
 

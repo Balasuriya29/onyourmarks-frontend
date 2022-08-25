@@ -74,11 +74,11 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Hey "+name.toString()+"!", style: TextStyle(
+              Text(texts[6]+name.toString()+"!", style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20
               ),),
-              Text("You gotta check this 😉", style: TextStyle(
+              Text(texts[7], style: TextStyle(
                 fontWeight: FontWeight.w500,
               ),),
             ],

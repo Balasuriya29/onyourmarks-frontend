@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../ApiHandler/Student/profileAPIs.dart';
 import '../../../Models/Student Models/TeacherModel.dart';
+import '../../../Utilities/functions.dart';
 
 class MyTeachers extends StatefulWidget {
   const MyTeachers(this.standard,{
@@ -74,7 +75,7 @@ class _MyTeachersState extends State<MyTeachers> {
                       width: 10,
                     ),
                     Text(
-                      "Teachers",
+                      texts[22],
                       style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold
@@ -85,7 +86,7 @@ class _MyTeachersState extends State<MyTeachers> {
                 SizedBox(
                   height: 10,
                 ),
-                Text("STANDARD : "+widget.standard.toString(), style: TextStyle(
+                Text(texts[23]+widget.standard.toString(), style: TextStyle(
                     fontSize: 14
                 ),)
               ],
