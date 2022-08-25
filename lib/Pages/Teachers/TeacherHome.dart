@@ -40,7 +40,7 @@ class TeacherHome extends StatefulWidget {
 
 class _TeacherHomeState extends State<TeacherHome> {
 
-  var pages = [HomePage(), MyStudents(), ExamViewPage(), HomeWorkUpdatePage()];
+  var pages = [HomePage(role: "Teacher",), MyStudents(), ExamViewPage(), HomeWorkUpdatePage()];
   var index;
   var me;
   Map<String, List<dynamic>>? map;
@@ -51,7 +51,6 @@ class _TeacherHomeState extends State<TeacherHome> {
     me = jsonDecode(preferences.getString("teacher-personalDetails").toString());
     var standards = json.decode(preferences.getString("teacherStandardObjects") ?? " ");
     var subjects = json.decode(preferences.getString("teacherSubjectsObjects") ?? " ");
-
     map = {"Maths" : ["8-A", "9-B"]};
 
     for(var i = 0;i<subjects.length ;i++){
@@ -81,130 +80,160 @@ class _TeacherHomeState extends State<TeacherHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blueGrey.shade50,
-      appBar: AppBar(
-        title: Text(APP_NAME),
-        actions:[
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarForAttendance()));
-            }, icon: Icon(Icons.perm_contact_calendar)
-            ),
-          )
-        ],
-      ),
-      body: pages[index ?? 0],
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            GestureDetector(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(me, map)));
-              },
-              child: Container(
-                height: MediaQuery.of(context).size.height / 3,
-                color: Colors.deepPurple,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Hero(
-                        tag: "ProfilePic",
-                        child: CircleAvatar(
-                          radius: 40,
-                          child: Icon(
-                            CupertinoIcons.profile_circled,
-                            size: 70,
+    bool shouldPop = false;
+    return WillPopScope(
+      onWillPop: () async {
+        if(index == 0){
+          return true;
+        }
+        else{
+          index = 0;
+          setState(() {
+
+          });
+        }
+        return shouldPop;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.blueGrey.shade50,
+        appBar: AppBar(
+          title: Text(APP_NAME),
+          actions:[
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarForAttendance()));
+              }, icon: Icon(Icons.perm_contact_calendar)
+              ),
+            )
+          ],
+        ),
+        body: Builder(
+          builder: (context) {
+            return GestureDetector(
+                onPanUpdate: (details) {
+                  // Swiping in right direction.
+                  if (details.delta.dx > 0) {
+                    Scaffold.of(context).openDrawer();
+                  }
+
+                  // Swiping in left direction.
+                  if (details.delta.dx < 0) {}
+                },
+                child: pages[index ?? 0]
+            );
+          }
+        ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(me, map)));
+                },
+                child: Container(
+                  height: MediaQuery.of(context).size.height / 3,
+                  color: Colors.deepPurple,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Hero(
+                          tag: "ProfilePic",
+                          child: CircleAvatar(
+                            radius: 40,
+                            child: Icon(
+                              CupertinoIcons.profile_circled,
+                              size: 70,
+                            ),
                           ),
                         ),
-                      ),
-                      placeASizedBoxHere(20),
-                      (isFetching)?Text("Id"):getTheStyledTextForExamsList(me["facultyId"], 17.5,Colors.white),
-                      (isFetching)?Text("Name"):getTheStyledTextForExamsList(me["name"], 17.5,Colors.white),
-                      placeASizedBoxHere(20)
-                    ],
+                        placeASizedBoxHere(20),
+                        (isFetching)?Text("Id"):getTheStyledTextForExamsList(me["facultyId"], 17.5,Colors.white),
+                        (isFetching)?Text("Name"):getTheStyledTextForExamsList(me["name"], 17.5,Colors.white),
+                        placeASizedBoxHere(20)
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height / 3),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Column(
-                  children: [
-                    Builder(
-                      builder: (context) {
-                        return GestureDetector(
-                            onTap: (){
-                              (mounted)?setState(() {
-                                index = 0;
-                              }):null;
-                              Scaffold.of(context).openEndDrawer();
-                            },
-                            child: getsideCards(Icon(CupertinoIcons.home) , 'Home', context)
-                        );
-                      }
-                    ),
-                    Builder(
-                      builder: (context) {
-                        return GestureDetector(
-                            onTap: (){
-                              (mounted)?setState(() {
-                                index = 1;
-                              }):null;
-                              Scaffold.of(context).openEndDrawer();
-                            },
-                            child: getsideCards(Icon(CupertinoIcons.person_crop_rectangle_fill) , 'My Class Students', context)
-                        );
-                      }
-                    ),
-                    Builder(
-                      builder: (context) {
-                        return GestureDetector(
-                            onTap: (){
-                              (mounted)?setState(() {
-                                index = 2;
-                              }):null;
-                              Scaffold.of(context).openEndDrawer();
-                            },
-                            child: getsideCards(Icon(CupertinoIcons.pencil) , 'Update Student Exams', context)
-                        );
-                      }
-                    ),
-                    Builder(
+              SizedBox(
+                height: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height / 3),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    children: [
+                      Builder(
                         builder: (context) {
                           return GestureDetector(
                               onTap: (){
                                 (mounted)?setState(() {
-                                  index = 3;
+                                  index = 0;
                                 }):null;
                                 Scaffold.of(context).openEndDrawer();
                               },
-                              child: getsideCards(Icon(Icons.work_history_sharp) , 'Update Homework', context)
+                              child: getsideCards(Icon(CupertinoIcons.home) , 'Home', context)
                           );
                         }
-                    ),
-                    getBottomDrawerNavigation(context)
-                  ],
+                      ),
+                      Builder(
+                        builder: (context) {
+                          return GestureDetector(
+                              onTap: (){
+                                (mounted)?setState(() {
+                                  index = 1;
+                                }):null;
+                                Scaffold.of(context).openEndDrawer();
+                              },
+                              child: getsideCards(Icon(CupertinoIcons.person_crop_rectangle_fill) , 'My Class Students', context)
+                          );
+                        }
+                      ),
+                      Builder(
+                        builder: (context) {
+                          return GestureDetector(
+                              onTap: (){
+                                (mounted)?setState(() {
+                                  index = 2;
+                                }):null;
+                                Scaffold.of(context).openEndDrawer();
+                              },
+                              child: getsideCards(Icon(CupertinoIcons.pencil) , 'Update Student Exams', context)
+                          );
+                        }
+                      ),
+                      Builder(
+                          builder: (context) {
+                            return GestureDetector(
+                                onTap: (){
+                                  (mounted)?setState(() {
+                                    index = 3;
+                                  }):null;
+                                  Scaffold.of(context).openEndDrawer();
+                                },
+                                child: getsideCards(Icon(Icons.work_history_sharp) , 'Update Homework', context)
+                            );
+                          }
+                      ),
+                      getBottomDrawerNavigation(context)
+                    ],
+                  ),
                 ),
+
               ),
 
-            ),
-
-          ],
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(CupertinoIcons.chat_bubble_text_fill),
-        onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>mychats()));
-        },
+        floatingActionButton: FloatingActionButton(
+          child: Icon(CupertinoIcons.chat_bubble_text_fill),
+          onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>mychats()));
+          },
+        ),
       ),
     );
   }

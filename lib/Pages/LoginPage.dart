@@ -3,9 +3,10 @@ import 'package:onyourmarks/Pages/Students/Academics/GetStudentInterest.dart';
 import 'package:onyourmarks/Utilities/functions.dart';
 import 'package:onyourmarks/Utilities/staticNames.dart';
 import 'package:rive/rive.dart';
-
+import 'package:translator/translator.dart';
 import '../Models/Student Models/UserModel.dart';
 import '../Utilities/Components/functional.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -22,11 +23,21 @@ class _LoginPageState extends State<LoginPage> {
   var passwordInVisibility = true;
   late UserModel user;
   var isChecking = false;
+  GoogleTranslator translator = GoogleTranslator();
+
+  getAppName() async {
+    return await translator.translate(APP_NAME, from: 'en', to: 'mr').then(print);
+  }
+
+  @override
+  void initState() {
+    // getAppName();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(APP_NAME),
+      appBar: getAppBar(texts[0]),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -43,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: InputDecoration(
                           errorText: (invalidUsername)?"Invalid":null,
                           border: UnderlineInputBorder(),
-                          labelText: "Username",
+                          labelText: texts[1],
                         ),
                         onChanged: (s){
                           invalidUsername = false;
@@ -61,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: InputDecoration(
                           errorText: (invalidPassword)?"Invalid":null,
                           border: UnderlineInputBorder(),
-                          labelText: "Password",
+                          labelText: texts[2],
                           suffixIcon:
                           passwordInVisibility
                               ?IconButton(
@@ -134,7 +145,13 @@ class _LoginPageState extends State<LoginPage> {
                           }
                         }
 
-                      }, child: Text("Login")),
+                      }, child: Text(texts[3])),
+                      ElevatedButton(onPressed: () async {
+                        await changeLanguage("Marathi");
+                        setState(() {
+
+                        });
+                      }, child: Text("Change Language")),
                       (isChecking)
                           ?Center(child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

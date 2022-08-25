@@ -3,12 +3,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:onyourmarks/Utilities/staticNames.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:translator/translator.dart';
 import 'dart:convert';
 
 import '../Pages/Students/StudentHome.dart';
 import '../Pages/Teachers/TeacherHome.dart';
 import '../../Models/Student Models/UserModel.dart';
 import 'staticNames.dart';
+
+List<String> texts = [APP_NAME, "Username", "Password", "Login", 'Home'];
 
 Future<String> getToken() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -100,4 +103,21 @@ void popPagesNtimes(BuildContext context, int times) {
   Navigator.popUntil(context, (route) {
     return count++ == times;
   });
+}
+
+Future<void> changeLanguage(String lang) async {
+  GoogleTranslator translator = GoogleTranslator();
+  var index = 0;
+  for(var i in texts){
+    var newText = "";
+    (lang == "Marathi")
+        ?await translator.translate(APP_NAME, from: 'en', to: 'mr').then((v){
+          newText = v.text;
+        })
+        :await translator.translate(APP_NAME, from: 'mr', to: 'en').then((v){
+      newText = v.text;
+    });
+    texts[index++] = newText;
+  }
+  // print(texts.toString());
 }

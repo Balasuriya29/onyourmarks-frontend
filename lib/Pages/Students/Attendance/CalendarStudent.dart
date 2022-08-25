@@ -88,9 +88,7 @@ class _CalendarForAttendanceViewState extends State<CalendarForAttendanceView> {
                           view: CalendarView.month,
                           monthCellBuilder: _monthCellBuilder,
                           showDatePickerButton: true,
-
                           monthViewSettings: const MonthViewSettings(
-
                             showTrailingAndLeadingDates: false,
                           ),
                           selectionDecoration: BoxDecoration(

@@ -386,7 +386,7 @@ SizedBox populateTheEvents(String? title, String? content, String? category){
               left: 10,
               child: Icon(
                 CupertinoIcons.bookmark_fill,
-                color: Colors.deepOrange,
+                color: Colors.black45,
                 size: 30,
               ),
             ),
@@ -643,6 +643,25 @@ List<ChartData> getChartDataForGraph(List<MarksModel> marks, BuildContext contex
   }
   return list;
 }
+
+List<ChartData> getChartDataForGraph2(List<MarksModel> marks, BuildContext context){
+  List<ChartData> list = [];
+  List<MaterialColor> list2 = [Colors.blue, Colors.green,Colors.deepPurple,];
+  for(var i=0;i<marks.length;i++){
+    var subjectName = (MediaQuery.of(context).size.height < MediaQuery.of(context).size.width)
+        ? getSubjectName(marks.elementAt(i).sub_name ?? "") ?? ""
+        : getSubjectName(marks.elementAt(i).sub_name ?? "")?.substring(0,2) ?? "";
+    list.add(
+        ChartData(
+            subjectName.toUpperCase(),
+            double.parse(marks.elementAt(i).obtained_marks ?? "0"),
+            list2[i]
+        )
+    );
+  }
+  return list;
+}
+
 
 List<LineSeries<ChartData, String>> getMultiColoredLineSeries(List<MarksModel> marks, BuildContext context) {
   return <LineSeries<ChartData, String>>[

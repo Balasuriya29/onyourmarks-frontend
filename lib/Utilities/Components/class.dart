@@ -88,23 +88,24 @@ class _MultiColoredChartForDashBoardState extends State<MultiColoredChartForDash
       plotAreaBorderWidth: 0,
       legend: Legend(),
       primaryXAxis: CategoryAxis(
-          labelStyle: TextStyle(
-              overflow: TextOverflow.ellipsis
-          ),
-          majorGridLines: const MajorGridLines(width: 0),
-          title: AxisTitle(text: 'Subjects')),
+      labelStyle: TextStyle(
+          overflow: TextOverflow.ellipsis
+      ),
+      majorGridLines: const MajorGridLines(width: 0),
+      title: AxisTitle(text: 'Subjects')),
       primaryYAxis: NumericAxis(
-          minimum: 0,
-          maximum: 100,
-          interval: 10,
-          axisLine: const AxisLine(width: 0),
-          labelFormat: '{value}',
-          majorTickLines: const MajorTickLines(size: 0)),
+      minimum: 0,
+      maximum: 100,
+      interval: 10,
+      axisLine: const AxisLine(width: 0),
+      labelFormat: '{value}',
+      majorTickLines: const MajorTickLines(size: 0)),
       series: getMultiColoredLineSeries(widget.currentMarks.values.first, context),
       trackballBehavior: TrackballBehavior(
           enable: true,
           activationMode: ActivationMode.singleTap,
-          tooltipSettings: const InteractiveTooltip(format: 'point.x : point.y')),
+          tooltipSettings: const InteractiveTooltip(format: 'point.x : point.y')
+      ),
     ), 10);
   }
 }

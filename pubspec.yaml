@@ -52,6 +52,8 @@ dependencies:
   syncfusion_flutter_datepicker: ^20.2.43
   navigation_history_observer: ^1.1.0
   animated_text_kit: ^4.2.2
+  translator: ^0.1.7
+  flutter_translate: ^4.0.3
 
 dev_dependencies:
   flutter_test:
