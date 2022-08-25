@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../ApiHandler/Student/CCAAPIs.dart';
 import '../../../Models/Student Models/CCAModel.dart';
 import '../../../Utilities/Components/functional.dart';
+import '../../../Utilities/functions.dart';
 import 'CCAForm.dart';
 
 class MyCCA extends StatefulWidget {
@@ -45,7 +46,7 @@ class _MyCCAState extends State<MyCCA> with TickerProviderStateMixin{
     return Column(
       children: [
         placeASizedBoxHere(50),
-        getHeader("Co-Curricular Activity", "POST YOUR TALENT"),
+        getHeader(texts[32], texts[33]),
         placeASizedBoxHere(20),
         Expanded(
           child: Column(
@@ -59,15 +60,15 @@ class _MyCCAState extends State<MyCCA> with TickerProviderStateMixin{
                     controller: _tabController,
                     indicatorColor: Colors.deepPurple,
                     labelColor: Colors.deepPurple,
-                    tabs: const [
+                    tabs:  [
                       Tab(
-                        text: "Pending",
+                        text: texts[34],
                       ),
                       Tab(
-                        text: "Accepted",
+                        text: texts[35],
                       ),
                       Tab(
-                        text: "Rejected",
+                        text: texts[36],
                       )
                     ]
                 ),
@@ -84,7 +85,7 @@ class _MyCCAState extends State<MyCCA> with TickerProviderStateMixin{
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("Actitities Yet To Be Submitted😅"),
+                              Text(texts[37]),
                               placeASizedBoxHere(20),
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -100,12 +101,12 @@ class _MyCCAState extends State<MyCCA> with TickerProviderStateMixin{
                       (accepted.isNotEmpty)
                           ?populateCCAObjectToListView(context, accepted, "accepted")
                           :Center(
-                          child: Text("Actitities Yet To Be Accepted😕")
+                          child: Text(texts[38])
                       ),
                       (rejected.isNotEmpty)
                           ?populateCCAObjectToListView(context, rejected, "rejected")
                           :Center(
-                          child: Text("No Activities are Rejected😉")
+                          child: Text(texts[39])
                       ),
                     ]
                 ),

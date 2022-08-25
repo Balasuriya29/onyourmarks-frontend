@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../ApiHandler/Student/StudentsAPIs.dart';
 import '../../../Models/Student Models/MarksModel.dart';
 import '../../../Utilities/Components/functional.dart';
+import '../../../Utilities/functions.dart';
 import 'MarksScreen.dart';
 
 class MyMarks extends StatefulWidget {
@@ -39,12 +40,12 @@ class _MyMarksState extends State<MyMarks> {
     return Column(
       children: [
         placeASizedBoxHere(50),
-        getHeader("Results", "HERE'S YOUR MARKS"),
+        getHeader(texts[27], texts[28]),
         placeASizedBoxHere(20),
         (isFetching)
           ?loadingPage()
           :(exam_names.isEmpty)
-            ?Center(child: Text("No Results to Show"),)
+            ?Center(child: Text(texts[29]),)
             :customPaddedRowWidget(ListView.separated(
           shrinkWrap: true,
           itemBuilder: (BuildContext context,int index){
@@ -66,12 +67,12 @@ class _MyMarksState extends State<MyMarks> {
                           Text(exam_names.elementAt(index),style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
                           placeASizedBoxHere(10),
                           Text(
-                            "From : " +
+                            texts[30] +
                             map.values.toList().first.first.date.toString().substring(0,10),
 
                           ),
                           Text(
-                              "To      : " +
+                              texts[31] +
                               map.values.toList().first.last.date.toString().substring(0,10)
                           )
                         ],
