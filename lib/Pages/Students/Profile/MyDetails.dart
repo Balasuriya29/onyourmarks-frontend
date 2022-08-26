@@ -104,14 +104,14 @@ class _MyDetailsState extends State<MyDetails> {
                                         MediaQuery.of(context).size.width - 100,
                                     child: Center(
                                         child: Text(
-                                      "Personal Identification",
+                                      texts[87],
                                       style: TextStyle(fontSize: 20),
                                     ))),
                                 SizedBox(
                                   height: 15,
                                 ),
                                 Row(children: [
-                                  Text("Date Of Birth : "),
+                                  Text(texts[88]),
                                   Text(widget.myDetails["dob"]
                                       .toString()
                                       .substring(0, 10))
@@ -120,14 +120,14 @@ class _MyDetailsState extends State<MyDetails> {
                                   height: 10,
                                 ),
                                 Row(children: [
-                                  Text("Gender: "),
+                                  Text(texts[89]),
                                   Text(widget.myDetails["gender"])
                                 ]),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Row(children: [
-                                  Text("Blood Group: "),
+                                  Text(texts[90]),
                                   Text(
                                       widget.myDetails["bloodGroup"].toString())
                                 ]),
@@ -135,7 +135,7 @@ class _MyDetailsState extends State<MyDetails> {
                                   height: 10,
                                 ),
                                 Row(children: [
-                                  Text("Mother Tongue: "),
+                                  Text(texts[91]),
                                   Text(widget.myDetails["motherTongue"])
                                 ]),
                                 SizedBox(
@@ -170,28 +170,28 @@ class _MyDetailsState extends State<MyDetails> {
                                         MediaQuery.of(context).size.width - 100,
                                     child: Center(
                                         child: Text(
-                                      "Personal Details",
+                                      texts[92],
                                       style: TextStyle(fontSize: 20),
                                     ))),
                                 SizedBox(
                                   height: 15,
                                 ),
                                 Row(children: [
-                                  Text("Father's Name: "),
+                                  Text(texts[93]),
                                   Text(widget.myDetails["parent1name"])
                                 ]),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Row(children: [
-                                  Text("Mother's Name: "),
+                                  Text(texts[94]),
                                   Text(widget.myDetails["parent2name"])
                                 ]),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Row(children: [
-                                  Text("Occupation: "),
+                                  Text(texts[95]),
                                   Text(
                                       widget.myDetails["occupation"].toString())
                                 ]),
@@ -199,7 +199,7 @@ class _MyDetailsState extends State<MyDetails> {
                                   height: 10,
                                 ),
                                 Row(children: [
-                                  Text("Income: "),
+                                  Text(texts[96]),
                                   Text(widget.myDetails["income"].toString())
                                 ]),
                                 SizedBox(
@@ -234,35 +234,35 @@ class _MyDetailsState extends State<MyDetails> {
                                         MediaQuery.of(context).size.width - 100,
                                     child: Center(
                                         child: Text(
-                                      "Other Details",
+                                      texts[97],
                                       style: TextStyle(fontSize: 20),
                                     ))),
                                 SizedBox(
                                   height: 15,
                                 ),
                                 Row(children: [
-                                  Text("Permanent Address : "),
+                                  Text(texts[98]),
                                   Text(widget.myDetails["permanentAddress"]),
                                 ]),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Row(children: [
-                                  Text("Current Address : "),
+                                  Text(texts[99]),
                                   Text(widget.myDetails["currentAddress"]),
                                 ]),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Row(children: [
-                                  Text("Phone No: "),
+                                  Text(texts[100]),
                                   Text(widget.myDetails["phoneNo"].toString())
                                 ]),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Row(children: [
-                                  Text("Email: "),
+                                  Text(texts[101]),
                                   Text(widget.myDetails["email"])
                                 ]),
                                 SizedBox(

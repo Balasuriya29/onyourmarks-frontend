@@ -81,7 +81,47 @@ List<String> texts = [
   "Holiday",
   "Profile",
   "YOUR DETAILS",
-  "ProfilePic"
+  "ProfilePic",
+  "Roll No",
+  "Name",
+  'Student DashBoard',
+  'My Class Teachers',
+  'My Exams',
+  'My Marks',
+  'My CCA',
+  'TimeTable',
+  'Homework',
+  'Attendance',
+  "No Chat History... Add New!",
+  "Search",
+  "New Chats",
+  "FIND YOUR TEACHERS",
+  "My Chats", //84
+  "Settings",
+  "CHANGE THE LOOKS",
+  "Personal Identification",
+  "Date Of Birth : ",
+  "Gender: ",
+  "Blood Group: ",
+  "Mother Tongue: ", //91
+  "Personal Details",
+  "Father's Name: ",
+  "Mother's Name: ",
+  "Occupation: ",
+  "Income: ",
+  "Other Details", //97
+  "Permanent Address : ",
+  "Current Address : ",
+  "Phone No: ",
+  "Email: ",
+  'Settings',
+  "Do you want to log out?",
+  "YES",
+  "NO",
+  'Log Out',
+  "Participated",
+  "Winner",
+  "Language"
 ];
 
 var lang = {
@@ -155,10 +195,50 @@ var lang = {
     "Holiday",
     "Profile",
     "YOUR DETAILS",
-    "ProfilePic"
+    "ProfilePic",
+    "Roll No",
+    "Name",
+    'Student DashBoard',
+    'My Class Teachers',
+    'My Exams',
+    'My Marks',
+    'My CCA',
+    'TimeTable',
+    'Homework',
+    'Attendance',
+    "No Chat History... Add New!",
+    "Search",
+    "New Chats",
+    "FIND YOUR TEACHERS",
+    "My Chats", //84
+    "Settings",
+    "CHANGE THE LOOKS", //86
+    "Personal Identification",
+    "Date Of Birth : ",
+    "Gender: ",
+    "Blood Group: ",
+    "Mother Tongue: ", //91
+    "Personal Details",
+    "Father's Name: ",
+    "Mother's Name: ",
+    "Occupation: ",
+    "Income: ",
+    "Other Details", //97
+    "Permanent Address : ",
+    "Current Address : ",
+    "Phone No: ",
+    "Email: ", //101
+    'Settings',
+    "Do you want to log out?",
+    "YES",
+    "NO",
+    'Log Out',
+    "Participated",
+    "Winner",
+    "Language"
   ],
   "Tamil": [
-    "உங்கள் மதிப்பெண்களில்",
+    "உங்கள் மதிப்பெண்களில்🏃‍♂️✍",
     "பயனர் பெயர்",
     "கடவுச்சொல்",
     "உள்நுழைய",
@@ -166,7 +246,7 @@ var lang = {
     "தவறானது",
     "ஏய் ",
     "நீங்கள் இதை சரிபார்க்க வேண்டும் 😉",
-    "NAME",
+    "பெயர்",
     "ரோல் எண்",
     "தரநிலை",
     "பாலினம்",
@@ -177,7 +257,7 @@ var lang = {
     "தனி மாணவர் பகுப்பாய்வு",
     'வருகை சதவீதம்',
     "தற்போதைய தேர்வு நிலை",
-    "NAME : ",
+    "பெயர்:",
     "ரோல் எண்:",
     "செயல்திறன்",
     "ஆசிரியர்கள்",
@@ -227,9 +307,50 @@ var lang = {
     "விடுமுறை",
     "சுயவிவரம்",
     "உங்கள் விவரங்கள்",
-    "முகப்பு படம்"
+    "முகப்பு படம்",
+    "ரோல் எண்",
+    "பெயர்",
+    'மாணவர் டாஷ்போர்டு',
+    'எனது வகுப்பு ஆசிரியர்கள்',
+    'எனது தேர்வுகள்',
+    'என் மதிப்பெண்கள்',
+    'என் சிசிஏ',
+    'கால அட்டவணை',
+    'வீட்டு பாடம்',
+    'வருகை',
+    "அரட்டை வரலாறு இல்லை... புதியதைச் சேர்!",
+    "தேடல்",
+    "புதிய அரட்டைகள்",
+    "உங்கள் ஆசிரியர்களைக் கண்டுபிடி",
+    "எனது அரட்டைகள்", //84
+    "அமைப்புகள்",
+    "தோற்றத்தை மாற்றவும்",
+    "தனிப்பட்ட அடையாளம்",
+    "பிறந்த தேதி : ",
+    "பாலினம்: ",
+    "இரத்த வகை: ",
+    "தாய் மொழி:", //91
+    "தனிப்பட்ட விவரங்கள்",
+    "தந்தையின் பெயர்: ",
+    "அம்மாவின் பெயர்: ",
+    "தொழில்:",
+    "வருமானம்:",
+    "பிற விவரங்கள்", //97
+    "நிரந்தர முகவரி : ",
+    "தற்போதைய முகவரி : ",
+    "தொலைபேசி எண்: ",
+    "மின்னஞ்சல்:",
+    'அமைப்புகள்',
+    "நீங்கள் வெளியேற விரும்புகிறீர்களா?",
+    "ஆம்",
+    "இல்லை",
+    'வெளியேறு',
+    "பங்கேற்பு",
+    "வெற்றி",
+    "மொழி"
   ],
   "Marathi": [
+    "तुमच्या गुणांवर🏃‍♂️✍",
     "वापरकर्तानाव",
     "पासवर्ड",
     "लॉग इन",
@@ -237,7 +358,7 @@ var lang = {
     "अवैध",
     "अहो",
     "तुम्हाला हे तपासावे लागेल 😉",
-    "नाम",
+    "नाव",
     "रोल नाही",
     "मानक",
     "GENDER",
@@ -248,7 +369,7 @@ var lang = {
     "वैयक्तिक विद्यार्थी विश्लेषण",
     'उपस्थिती टक्केवारी',
     "वर्तमान परीक्षेची स्थिती",
-    "नाम : ",
+    "नाव:",
     "रोल क्रमांक :",
     "कार्यप्रदर्शन",
     "शिक्षक",
@@ -298,7 +419,47 @@ var lang = {
     "सुट्टी",
     "प्रोफाइल",
     "तुमचा तपशील",
-    "प्रोफाइल चित्र"
+    "प्रोफाइल चित्र",
+    "रोल क्रमांक",
+    "नाव",
+    'विद्यार्थी डॅशबोर्ड',
+    'माझे वर्ग शिक्षक',
+    'माझ्या परीक्षा',
+    'माझे मार्क्स',
+    'माय सीसीए',
+    'वेळापत्रक',
+    'गृहपाठ',
+    'उपस्थिती',
+    "कोणताही चॅट इतिहास नाही... नवीन जोडा!",
+    "शोध",
+    "नवीन गप्पा",
+    "तुमचे शिक्षक शोधा",
+    "माझ्या गप्पा", //84
+    "सेटिंग्ज",
+    "रूप बदला",
+    "वैयक्तिक ओळख",
+    "जन्मतारीख :",
+    "लिंग:",
+    "रक्त गट: ",
+    "मातृभाषा:", //91
+    "वैयक्तिक माहिती",
+    "वडिलांचे नाव: ",
+    "आईचे नाव: ",
+    "व्यवसाय: ",
+    "उत्पन्न:",
+    "इतर तपशील", //97
+    "कायमचा पत्ता : ",
+    "सध्याचा पत्ता : ",
+    "दूरध्वनी क्रमांक: ",
+    "ईमेल:",
+    'सेटिंग्ज',
+    "तुम्हाला लॉग आउट करायचे आहे का?",
+    "हो",
+    "नाही",
+    'बाहेर पडणे',
+    "भाग घेतला",
+    "विजेता",
+    "इंग्रजी"
   ]
 };
 
@@ -310,17 +471,14 @@ Future<String> getToken() async {
 Future<String> getRole() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   var token = preferences.getString("token");
-  if(token == null || token == "null"){
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmVhOTY1ZDY2YmY0ODZiNWQxNDZlYmIiLCJyb2xlIjoiVGVhY2hlciIsImlhdCI6MTY1ODcyMDE0Mn0.YeCwS_gu-rPREQgxU6tuRbZAp3bbUOKx5R53uuXbal4";
+  if (token == null || token == "null") {
+    token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmVhOTY1ZDY2YmY0ODZiNWQxNDZlYmIiLCJyb2xlIjoiVGVhY2hlciIsImlhdCI6MTY1ODcyMDE0Mn0.YeCwS_gu-rPREQgxU6tuRbZAp3bbUOKx5R53uuXbal4";
   }
-  print("token:"+token.toString());
+  print("token:" + token.toString());
 
-  var req = await http.get(
-      Uri.parse(API_LINK+"api/admin/role"),
-      headers: {
-        "x-auth-token" : token
-      }
-  );
+  var req = await http.get(Uri.parse(API_LINK + "api/admin/role"),
+      headers: {"x-auth-token": token});
   return req.body.toString();
 }
 
@@ -341,13 +499,15 @@ Future<UserModel> checkMe(String username, String password) async {
   var req = await http.post(Uri.parse("${API_LINK}api/user/check"),
       headers: {"content-type": "application/json"}, body: body);
 
-  if(req.body.toString() == "Invalid UserName" || req.body.toString() == "Invalid Password"){
+  if (req.body.toString() == "Invalid UserName" ||
+      req.body.toString() == "Invalid Password") {
     toast(req.body.toString());
     return um;
   }
 
   var res = jsonDecode(req.body);
-  um = UserModel(res["username"],res["user_id"],res["isAdmin"],res["isRegistered"]);
+  um = UserModel(
+      res["username"], res["user_id"], res["isAdmin"], res["isRegistered"]);
 
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString("token", req.headers['x-auth-token'].toString());
@@ -355,18 +515,13 @@ Future<UserModel> checkMe(String username, String password) async {
   return um;
 }
 
-Future<bool> changePassword(String username, String newPassword) async{
-  var body = jsonEncode({
-    "newPassword" : newPassword
-  });
+Future<bool> changePassword(String username, String newPassword) async {
+  var body = jsonEncode({"newPassword": newPassword});
 
   var req = await http.put(
       Uri.parse("${API_LINK}api/user/password/${username}"),
-      headers:{
-        "content-type":"application/json"
-      },
-      body: body
-  );
+      headers: {"content-type": "application/json"},
+      body: body);
 
   var res = jsonDecode(req.body);
 
@@ -381,8 +536,7 @@ void toast(message) {
       timeInSecForIosWeb: 2,
       backgroundColor: Colors.red,
       textColor: Colors.white,
-      fontSize: 16.0
-  );
+      fontSize: 16.0);
 }
 
 void popPagesNtimes(BuildContext context, int times) {
@@ -394,17 +548,15 @@ void popPagesNtimes(BuildContext context, int times) {
 
 Future<void> changeLanguage(String language) async {
   // GoogleTranslator translator = GoogleTranslator();
-  if(language == 'Marathi'){
+  if (language == 'Marathi') {
     texts = lang["Marathi"] ?? [];
-  }
-
-  else if(language == 'English'){
+  } else if (language == 'English') {
     texts = lang["English"] ?? [];
-  }
-
-  else{
+  } else {
     texts = lang["Tamil"] ?? [];
   }
+
+  print(texts[107]);
   // var index = 0;
   // for(var i in texts){
   //   var newText = "";
