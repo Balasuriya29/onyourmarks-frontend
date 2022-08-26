@@ -404,27 +404,27 @@ Column getBottomDrawerNavigation(context){
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => SettingPage()));
           },
-          child: getsideCards(Icon(Icons.settings) , 'Settings', context)
+          child: getsideCards(Icon(Icons.settings) , texts[102], context)
       ),
       GestureDetector(
           onTap: (){
             Navigator.pop(context);
             showDialog(context: context, builder: (BuildContext context){
               return AlertDialog(
-                content: Text("Do you want to log out?"),
+                content: Text(texts[103]),
                 actions: [
                   TextButton(onPressed: () async{
                     popPagesNtimes(context,1);
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
-                  }, child: Text("YES")),
+                  }, child: Text(texts[104])),
                   TextButton(onPressed: (){
                     Navigator.of(context).pop();
-                  }, child: Text("NO"))
+                  }, child: Text(texts[105]))
                 ],
               );
             });
           },
-          child: getsideCards(Icon(Icons.logout) , 'Log Out', context)
+          child: getsideCards(Icon(Icons.logout) , texts[106], context)
       ),
     ],
   );

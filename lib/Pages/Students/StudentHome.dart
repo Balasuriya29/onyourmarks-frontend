@@ -155,7 +155,7 @@ class _StudentHomeState extends State<StudentHome> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Hero(
-                              tag: "ProfilePic",
+                              tag: texts[69],
                               child: CircleAvatar(
                                 radius: 40,
                                   child: Icon(
@@ -165,8 +165,8 @@ class _StudentHomeState extends State<StudentHome> {
                                 ),
                             ),
                             placeASizedBoxHere(20),
-                            (isFetching)?Text("Roll No"):getTheStyledTextForExamsList(me["roll_no"], 17.5,Colors.white),
-                            (isFetching)?Text("Name"):getTheStyledTextForExamsList(me["first_name"]+" "+me["last_name"], 17.5,Colors.white),
+                            (isFetching)?Text(texts[70]):getTheStyledTextForExamsList(me["roll_no"], 17.5,Colors.white),
+                            (isFetching)?Text(texts[71]):getTheStyledTextForExamsList(me["first_name"]+" "+me["last_name"], 17.5,Colors.white),
                             placeASizedBoxHere(20),
                           ],
                         ),
@@ -204,7 +204,7 @@ class _StudentHomeState extends State<StudentHome> {
                                   }):null;
                                   Scaffold.of(context).openEndDrawer();
                                 },
-                                child: getsideCards(Icon(Icons.dashboard) , 'Student DashBoard', context)
+                                child: getsideCards(Icon(Icons.dashboard) ,texts[72], context)
                             );
                           }
                         ),
@@ -217,7 +217,7 @@ class _StudentHomeState extends State<StudentHome> {
                                   }):null;
                                   Scaffold.of(context).openEndDrawer();
                                 },
-                                child: getsideCards(Icon(CupertinoIcons.person_crop_rectangle_fill) , 'My Class Teachers', context)
+                                child: getsideCards(Icon(CupertinoIcons.person_crop_rectangle_fill) , texts[73], context)
                             );
                           }
                         ),
@@ -230,7 +230,7 @@ class _StudentHomeState extends State<StudentHome> {
                                   }):null;
                                   Scaffold.of(context).openEndDrawer();
                                 },
-                                child: getsideCards(Icon(CupertinoIcons.pencil) , 'My Exams', context)
+                                child: getsideCards(Icon(CupertinoIcons.pencil) , texts[74], context)
                             );
                           }
                         ),
@@ -243,7 +243,7 @@ class _StudentHomeState extends State<StudentHome> {
                                   }):null;
                                   Scaffold.of(context).openEndDrawer();
                                 },
-                                child: getsideCards(Icon(Icons.check_circle) , 'My Marks', context)
+                                child: getsideCards(Icon(Icons.check_circle) , texts[75], context)
                             );
                           }
                         ),
@@ -256,7 +256,7 @@ class _StudentHomeState extends State<StudentHome> {
                                     }):null;
                                     Scaffold.of(context).openEndDrawer();
                                   },
-                                  child: getsideCards(Icon(Icons.format_list_numbered_rounded) , 'My CCA', context)
+                                  child: getsideCards(Icon(Icons.format_list_numbered_rounded) , texts[76], context)
                               );
                             }
                         ),
@@ -269,7 +269,7 @@ class _StudentHomeState extends State<StudentHome> {
                                     }):null;
                                     Scaffold.of(context).openEndDrawer();
                                   },
-                                  child: getsideCards(Icon(Icons.schedule) , 'TimeTable', context)
+                                  child: getsideCards(Icon(Icons.schedule) ,texts[77] , context)
                               );
                             }
                         ),
@@ -282,7 +282,7 @@ class _StudentHomeState extends State<StudentHome> {
                                     }):null;
                                     Scaffold.of(context).openEndDrawer();
                                   },
-                                  child: getsideCards(Icon(Icons.work) , 'Homework', context)
+                                  child: getsideCards(Icon(Icons.work) ,texts[78], context)
                               );
                             }
                         ),
@@ -293,7 +293,7 @@ class _StudentHomeState extends State<StudentHome> {
                                     Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarForAttendanceView()));
                                     Scaffold.of(context).openEndDrawer();
                                   },
-                                  child: getsideCards(Icon(CupertinoIcons.calendar_today) , 'Attendance', context)
+                                  child: getsideCards(Icon(CupertinoIcons.calendar_today) , texts[79], context)
                               );
                             }
                         ),

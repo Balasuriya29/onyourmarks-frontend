@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../ApiHandler/Student/ChatAPIs.dart';
 import '../../../Models/Student Models/TeacherModel.dart';
 import '../../../Utilities/Components/functional.dart';
+import '../../../Utilities/functions.dart';
 import 'MessageScreen.dart';
 
 class ChatPage extends StatefulWidget {
@@ -59,7 +60,7 @@ class _ChatPageState extends State<ChatPage> {
             },
             cursorColor: Colors.white,
             decoration: InputDecoration(
-              hintText: "Search",
+              hintText: texts[81],
               hintStyle: TextStyle(
                 color: Colors.white
               ),
@@ -98,7 +99,7 @@ class _ChatPageState extends State<ChatPage> {
                                 width: 10,
                               ),
                               Text(
-                                "New Chats",
+                                texts[82],
                                 style: TextStyle(
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold
@@ -109,7 +110,7 @@ class _ChatPageState extends State<ChatPage> {
                           SizedBox(
                             height: 10,
                           ),
-                          Text("FIND YOUR TEACHERS")
+                          Text(texts[83])
                         ],
                       ),
                     ),
@@ -317,7 +318,7 @@ class _mychatsState extends State<mychats> {
             )
                 :Container(
                   height: MediaQuery.of(context).size.height-200,
-                  child: Center(child: Text("No Chat History... Add New!")
+                  child: Center(child: Text(texts[80])
                 )
               )
           ];
@@ -374,7 +375,7 @@ class _mychatsState extends State<mychats> {
                 hintStyle: TextStyle(
                   color: Colors.white
                 ),
-                hintText: "Search",
+                hintText: texts[81],
               ),
              )
             :Text(APP_NAME),
@@ -400,7 +401,7 @@ class _mychatsState extends State<mychats> {
                           width: 10,
                         ),
                         Text(
-                          "My Chats",
+                         texts[84] ,
                           style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold
@@ -411,7 +412,7 @@ class _mychatsState extends State<mychats> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("FIND YOUR TEACHERS")
+                    Text(texts[83])
                   ],
                 ),
               ),
