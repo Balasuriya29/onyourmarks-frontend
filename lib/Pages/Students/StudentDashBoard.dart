@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:onyourmarks/ApiHandler/Student/StudentsAPIs.dart';
 import 'package:onyourmarks/Utilities/functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +11,7 @@ import '../../ApiHandler/Student/CCAAPIs.dart';
 import '../../Models/Student Models/MarksModel.dart';
 import '../../Utilities/Components/class.dart';
 import '../../Utilities/Components/functional.dart';
+import 'Academics/LC.dart';
 
 class StudentDashboard extends StatefulWidget {
   const StudentDashboard({Key? key}) : super(key: key);
@@ -121,9 +123,10 @@ class _StudentDashboardState extends State<StudentDashboard> {
                         ),
                         Text(
                           texts[15],
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
                           ),
                         )
                       ],
@@ -208,7 +211,6 @@ class _StudentDashBoard_1State extends State<StudentDashBoard_1> {
                         child: Image.asset('Images/DashBoard-Image.png')
                       ),
                     ),
-
                   ],
                 )
               ),
@@ -384,16 +386,240 @@ class StudentDashBoard_3 extends StatefulWidget {
 
 class _StudentDashBoard_3State extends State<StudentDashBoard_3> {
 
+  bool? _displayRSquare;
+  bool? _displaySlopeEquation;
+  String _slopeEquation = '';
+  late double? _intercept;
+  List<double>? _slope;
+  late String _rSquare;
+  late int periodMaxValue;
+  List<String>? _trendlineTypeList;
+  late String _selectedTrendLineType;
+  late TrendlineType _type;
+  late int _polynomialOrder;
+  late int _period;
+  TooltipBehavior? _tooltipBehavior;
+  late bool isLegendTapped;
+  Size? slopeTextSize;
+
+  List<ColumnSeries<ChartSampleData, String>> _getTrendLineDefaultSeries() {
+    periodMaxValue = 6; // dataSource.length - 1;
+    return <ColumnSeries<ChartSampleData, String>>[
+      ColumnSeries<ChartSampleData, String>(
+          dataSource: <ChartSampleData>[
+            ChartSampleData(text: 'Sun', yValue: 12500),
+            ChartSampleData(text: 'Mon', yValue: 14000),
+            ChartSampleData(text: 'Tue', yValue: 22000),
+            ChartSampleData(text: 'Wed', yValue: 26000),
+            ChartSampleData(text: 'Thu', yValue: 19000),
+            ChartSampleData(text: 'Fri', yValue: 28000),
+            ChartSampleData(text: 'Sat', yValue: 32000),
+          ],
+          xValueMapper: (ChartSampleData data, _) => data.text,
+          yValueMapper: (ChartSampleData data, _) => data.yValue,
+          name: 'Visitors count',
+          trendlines: <Trendline>[
+            Trendline(
+                type: _type,
+                width: 3,
+                color: const Color.fromRGBO(192, 108, 132, 1),
+                dashArray: <double>[15, 3, 3, 3],
+                polynomialOrder: _polynomialOrder,
+                period: _period,
+                onRenderDetailsUpdate: (TrendlineRenderParams args) {
+                  _rSquare =
+                      double.parse((args.rSquaredValue)!.toStringAsFixed(4))
+                          .toString();
+                  _slope = args.slope;
+                  _intercept = args.intercept;
+                  _getSlopeEquation(_slope, _intercept);
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (_displayRSquare! || _displaySlopeEquation!) {
+                      setState(() {});
+                    }
+                  });
+                })
+          ])
+    ];
+  }
+
+  void _getSlopeEquation(List<double>? slope, double? intercept) {
+    if (_type == TrendlineType.linear) {
+      _slopeEquation =
+      'y = ${double.parse((slope![0]).toStringAsFixed(3))}x + ${double.parse(intercept!.toStringAsFixed(3))}';
+    }
+    if (_type == TrendlineType.exponential) {
+      _slopeEquation =
+      'y = ${double.parse(intercept!.toStringAsFixed(3))}e^${double.parse((slope![0]).toStringAsFixed(3))}x';
+    }
+    if (_type == TrendlineType.logarithmic) {
+      _slopeEquation =
+      'y = ${double.parse(intercept!.toStringAsFixed(3))}ln(x) + ${double.parse((slope![0]).toStringAsFixed(3))}';
+    }
+    if (_type == TrendlineType.polynomial) {
+      if (_polynomialOrder == 2) {
+        _slopeEquation =
+        'y = ${double.parse((slope![1]).toStringAsFixed(3))}x +  ${double.parse((slope[0]).toStringAsFixed(3))}';
+      }
+      if (_polynomialOrder == 3) {
+        _slopeEquation =
+        'y = ${double.parse((slope![2]).toStringAsFixed(3))}x² + ${double.parse((slope[1]).toStringAsFixed(3))}x + ${double.parse((slope[0]).toStringAsFixed(3))}';
+      }
+      if (_polynomialOrder == 4) {
+        _slopeEquation =
+        'y = ${double.parse((slope![3]).toStringAsFixed(3))}x³ + ${double.parse((slope[2]).toStringAsFixed(3))}x²  + ${double.parse((slope[1]).toStringAsFixed(3))}x + ${double.parse((slope[0]).toStringAsFixed(3))}';
+      }
+    }
+    if (_type == TrendlineType.power) {
+      _slopeEquation =
+      'y = ${double.parse(intercept!.toStringAsFixed(3))}x^${double.parse((slope![0]).toStringAsFixed(3))}';
+    }
+    if (_type == TrendlineType.movingAverage) {
+      _slopeEquation = '';
+    }
+
+    slopeTextSize =
+        measureText(_slopeEquation, TextStyle(color: Colors.red));
+  }
+
+  Size measureText(String textValue, TextStyle textStyle, [int? angle]) {
+    Size size;
+    final TextPainter textPainter = TextPainter(
+        textAlign: TextAlign.center,
+        // textDirection: TextDirection.LTR ?? ,
+        text: TextSpan(text: textValue, style: textStyle));
+    textPainter.layout();
+
+    if (angle != null) {
+      // final Rect rect = rotatedTextSize(textPainter.size, angle);
+      size = Size(250, 250);
+    } else {
+      size = Size(textPainter.width, textPainter.height);
+    }
+    return size;
+  }
+
+
+  void _onTrendLineTypeChanged(String item) {
+    _selectedTrendLineType = item;
+    switch (_selectedTrendLineType) {
+      case 'linear':
+        _type = TrendlineType.linear;
+        break;
+      case 'exponential':
+        _type = TrendlineType.exponential;
+        break;
+      case 'power':
+        _type = TrendlineType.power;
+        break;
+      case 'logarithmic':
+        _type = TrendlineType.logarithmic;
+        break;
+      case 'polynomial':
+        _type = TrendlineType.polynomial;
+        break;
+      case 'movingAverage':
+        _type = TrendlineType.movingAverage;
+        break;
+    }
+    setState(() {
+      /// update the trend line  changes
+    });
+  }
+
+  @override
+  void initState() {
+    _displayRSquare = false;
+    _displaySlopeEquation = false;
+    _rSquare = '';
+    periodMaxValue = 0;
+    _selectedTrendLineType = 'linear';
+    _type = TrendlineType.linear;
+    _polynomialOrder = 2;
+    _period = 2;
+    _tooltipBehavior = TooltipBehavior(enable: true);
+    isLegendTapped = false;
+    _trendlineTypeList = <String>[
+      'linear',
+      'exponential',
+      'power',
+      'logarithmic',
+      'polynomial',
+      'movingAverage'
+    ].toList();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        customPaddedRowWidget( Text(texts[21],style: TextStyle(
+        customPaddedRowWidget( Text("PERFORMANCE",style: TextStyle(
           fontSize: 17.5,
           fontWeight: FontWeight.bold
         ),), 10),
-        MultiColoredChartForDashBoard(widget.currentMarks),
+        // MultiColoredChartForDashBoard(widget.currentMarks),
+        SfCartesianChart(
+          plotAreaBorderWidth: 0,
+          // title: ChartTitle(
+          //     text: isCardView ? '' : 'No. of website visitors in a week'),
+          // legend: Legend(isVisible: !isCardView),
+          primaryXAxis: CategoryAxis(
+            majorGridLines: const MajorGridLines(width: 0),
+          ),
+          primaryYAxis: NumericAxis(
+              title: AxisTitle(text: ''),
+              majorTickLines: const MajorTickLines(width: 0),
+              numberFormat: NumberFormat.compact(),
+              axisLine: const AxisLine(width: 0),
+              interval: 10000,
+              labelFormat: '{value}',
+              maximum: 40000),
+          series: _getTrendLineDefaultSeries(),
+          onLegendTapped: (LegendTapArgs args) {
+            setState(() {
+              isLegendTapped = isLegendTapped == true ? false : true;
+            });
+          },
+          tooltipBehavior: _tooltipBehavior,
+          annotations: <CartesianChartAnnotation>[
+            CartesianChartAnnotation(
+                widget: SizedBox(
+                    height: 90,
+                    width: 170,
+                    child: Visibility(
+                      visible: !isLegendTapped,
+                      child: Column(children: <Widget>[
+                        // ignore: prefer_if_elements_to_conditional_expressions
+                        (_displaySlopeEquation != null &&
+                            _displaySlopeEquation! &&
+                            _type != TrendlineType.movingAverage)
+                            ? Text(
+                          _slopeEquation,
+                          style: TextStyle(color: Colors.red),
+                          overflow: TextOverflow.ellipsis,
+                        )
+                            : const Text(''),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        // ignore: prefer_if_elements_to_conditional_expressions
+                        (_displayRSquare != null &&
+                            _displayRSquare! &&
+                            _type != TrendlineType.movingAverage)
+                            ? Text('R² = ' + _rSquare,
+                            style: TextStyle(color: Colors.red))
+                            : const Text('')
+                      ]),
+                    )),
+                coordinateUnit: CoordinateUnit.point,
+                x: slopeTextSize != null && slopeTextSize!.width > 170
+                    ? 'Wed'
+                    : 'Thu',
+                y: 34000),
+          ],
+        ),
         placeASizedBoxHere(20),
         BarChartForCCA(widget.activities),
         placeASizedBoxHere(20),
@@ -402,7 +628,55 @@ class _StudentDashBoard_3State extends State<StudentDashBoard_3> {
   }
 }
 
+class StudentDashBoard_4 extends StatefulWidget {
+  const StudentDashBoard_4({Key? key}) : super(key: key);
 
+  @override
+  State<StudentDashBoard_4> createState() => _StudentDashBoard_4State();
+}
 
-
-
+class _StudentDashBoard_4State extends State<StudentDashBoard_4> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        customPaddedRowWidget( Text("LEARNING OUTCOMES",style: TextStyle(
+          fontSize: 17.5,
+          fontWeight: FontWeight.bold
+        ),), 10),
+        placeASizedBoxHere(10),
+        customPaddedRowWidget(Text("Exam-Wise"), 10),
+        placeASizedBoxHere(30),
+        ListView.separated(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index){
+          return GestureDetector(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LearningOutComes()));
+            },
+            child: customPaddedRowWidget(
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  height: 100,
+                  color: Colors.grey.shade400,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Quarterly Examination")
+                    ],
+                  ),
+                ),
+              )
+            , 5),
+          );
+        }, separatorBuilder: (BuildContext context, int index){
+            return placeASizedBoxHere(20);
+        }, itemCount: 1),
+        placeASizedBoxHere(50)
+      ],
+    );
+  }
+}

@@ -46,7 +46,6 @@ class _MyStudentsState extends State<MyStudents> {
     }):null;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -138,8 +137,7 @@ class _MyStudentsState extends State<MyStudents> {
             ],
           )
               :Text(""),
-          placeASizedBoxHere(10),
-          placeASizedBoxHere(20),
+          placeASizedBoxHere(30),
           (isFetching)
           ?loadingPage()
           :Expanded(

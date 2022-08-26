@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Utilities/Components/functional.dart';
 import '../HomePage.dart';
 import '../Teachers/Chat/ChatPage.dart';
+import 'Academics/Evaluation.dart';
 import 'Academics/HomeWorkUpdate.dart';
 
 class TeacherHomeM extends StatelessWidget {
@@ -40,7 +41,7 @@ class TeacherHome extends StatefulWidget {
 
 class _TeacherHomeState extends State<TeacherHome> {
 
-  var pages = [HomePage(role: "Teacher",), MyStudents(), ExamViewPage(), HomeWorkUpdatePage()];
+  var pages = [HomePage(role: "Teacher",), MyStudents(), ExamViewPage(), HomeWorkUpdatePage(), LearningOutcomeEvaluation()];
   var index;
   var me;
   Map<String, List<dynamic>>? map;
@@ -218,13 +219,24 @@ class _TeacherHomeState extends State<TeacherHome> {
                             );
                           }
                       ),
+                      Builder(
+                        builder: (context) {
+                          return GestureDetector(
+                            onTap: (){
+                              (mounted)?setState(() {
+                                index = 4;
+                              }):null;
+                              Scaffold.of(context).openEndDrawer();
+                            },
+                            child: getsideCards(Icon(CupertinoIcons.book) , 'Evalute LC', context)
+                          );
+                        }
+                      ),
                       getBottomDrawerNavigation(context)
                     ],
                   ),
                 ),
-
               ),
-
             ],
           ),
         ),

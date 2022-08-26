@@ -141,21 +141,6 @@ class _LoginPageState extends State<LoginPage> {
                             }
                           },
                           child: Text(texts[3])),
-                      ElevatedButton(
-                          onPressed: () async {
-                            if (flag) {
-                              await changeLanguage("Tamil");
-                              flag = false;
-                            } else {
-                              await changeLanguage("English");
-                              flag = true;
-                            }
-                            
-                            setState(() {
-
-                            });
-                          },
-                          child: Text("Change Language")),
                       (isChecking)
                           ? Center(
                               child: Column(

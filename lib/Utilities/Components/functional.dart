@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:onyourmarks/Models/Teacher%20Models/ExamModel.dart';
 import 'package:onyourmarks/Pages/LoginPage.dart';
+import 'package:onyourmarks/Pages/Settings.dart';
 import 'package:onyourmarks/Pages/Teachers/MarkUpdationPages.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -401,7 +402,7 @@ Column getBottomDrawerNavigation(context){
     children: [
       GestureDetector(
           onTap: (){
-
+            Navigator.push(context, MaterialPageRoute(builder: (context) => SettingPage()));
           },
           child: getsideCards(Icon(Icons.settings) , 'Settings', context)
       ),
@@ -661,7 +662,6 @@ List<ChartData> getChartDataForGraph2(List<MarksModel> marks, BuildContext conte
   }
   return list;
 }
-
 
 List<LineSeries<ChartData, String>> getMultiColoredLineSeries(List<MarksModel> marks, BuildContext context) {
   return <LineSeries<ChartData, String>>[

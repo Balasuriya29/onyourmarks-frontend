@@ -85,7 +85,7 @@ List<String> texts = [
 ];
 
 var lang = {
-  "english": [
+  "English": [
     APP_NAME,
     "Username",
     "Password",
@@ -157,7 +157,7 @@ var lang = {
     "YOUR DETAILS",
     "ProfilePic"
   ],
-  "tamil": [
+  "Tamil": [
     "உங்கள் மதிப்பெண்களில்",
     "பயனர் பெயர்",
     "கடவுச்சொல்",
@@ -229,7 +229,7 @@ var lang = {
     "உங்கள் விவரங்கள்",
     "முகப்பு படம்"
   ],
-  "marati": [
+  "Marathi": [
     "वापरकर्तानाव",
     "पासवर्ड",
     "लॉग इन",
@@ -309,10 +309,18 @@ Future<String> getToken() async {
 
 Future<String> getRole() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  var token = preferences.getString("token").toString();
+  var token = preferences.getString("token");
+  if(token == null || token == "null"){
+    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmVhOTY1ZDY2YmY0ODZiNWQxNDZlYmIiLCJyb2xlIjoiVGVhY2hlciIsImlhdCI6MTY1ODcyMDE0Mn0.YeCwS_gu-rPREQgxU6tuRbZAp3bbUOKx5R53uuXbal4";
+  }
+  print("token:"+token.toString());
 
-  var req = await http.get(Uri.parse(API_LINK + "api/admin/role"),
-      headers: {"x-auth-token": token});
+  var req = await http.get(
+      Uri.parse(API_LINK+"api/admin/role"),
+      headers: {
+        "x-auth-token" : token
+      }
+  );
   return req.body.toString();
 }
 
@@ -333,15 +341,13 @@ Future<UserModel> checkMe(String username, String password) async {
   var req = await http.post(Uri.parse("${API_LINK}api/user/check"),
       headers: {"content-type": "application/json"}, body: body);
 
-  if (req.body.toString() == "Invalid UserName" ||
-      req.body.toString() == "Invalid Password") {
+  if(req.body.toString() == "Invalid UserName" || req.body.toString() == "Invalid Password"){
     toast(req.body.toString());
     return um;
   }
 
   var res = jsonDecode(req.body);
-  um = UserModel(
-      res["username"], res["user_id"], res["isAdmin"], res["isRegistered"]);
+  um = UserModel(res["username"],res["user_id"],res["isAdmin"],res["isRegistered"]);
 
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString("token", req.headers['x-auth-token'].toString());
@@ -349,13 +355,18 @@ Future<UserModel> checkMe(String username, String password) async {
   return um;
 }
 
-Future<bool> changePassword(String username, String newPassword) async {
-  var body = jsonEncode({"newPassword": newPassword});
+Future<bool> changePassword(String username, String newPassword) async{
+  var body = jsonEncode({
+    "newPassword" : newPassword
+  });
 
   var req = await http.put(
       Uri.parse("${API_LINK}api/user/password/${username}"),
-      headers: {"content-type": "application/json"},
-      body: body);
+      headers:{
+        "content-type":"application/json"
+      },
+      body: body
+  );
 
   var res = jsonDecode(req.body);
 
@@ -370,7 +381,8 @@ void toast(message) {
       timeInSecForIosWeb: 2,
       backgroundColor: Colors.red,
       textColor: Colors.white,
-      fontSize: 16.0);
+      fontSize: 16.0
+  );
 }
 
 void popPagesNtimes(BuildContext context, int times) {
@@ -380,21 +392,30 @@ void popPagesNtimes(BuildContext context, int times) {
   });
 }
 
-Future<void> changeLanguage(String lang) async {
-  GoogleTranslator translator = GoogleTranslator();
-  var index = 0;
-  for (var i in texts) {
-    var newText = "";
-    (lang == "Tamil")
-        ? await translator.translate(i, from: 'en', to: 'ta').then((v) {
-            newText = v.text;
-          })
-        : await translator.translate(i, from: 'ta', to: 'en').then((v) {
-            newText = v.text;
-          });
-    texts[index++] = newText;
-    // print(newText);
-
+Future<void> changeLanguage(String language) async {
+  // GoogleTranslator translator = GoogleTranslator();
+  if(language == 'Marathi'){
+    texts = lang["Marathi"] ?? [];
   }
-  print(texts.getRange(20, texts.length).toString());
+
+  else if(language == 'English'){
+    texts = lang["English"] ?? [];
+  }
+
+  else{
+    texts = lang["Tamil"] ?? [];
+  }
+  // var index = 0;
+  // for(var i in texts){
+  //   var newText = "";
+  //   (lang == "Marathi")
+  //       ?await translator.translate(APP_NAME, from: 'en', to: 'mr').then((v){
+  //         newText = v.text;
+  //       })
+  //       :await translator.translate(APP_NAME, from: 'mr', to: 'en').then((v){
+  //     newText = v.text;
+  //   });
+  //   texts[index++] = newText;
+  // }
+  // print(texts.toString());
 }
