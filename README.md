@@ -40,23 +40,6 @@
 Since, This Repo contains only the FrontEnd Flutter File, This Link will direct you to BackEnd Repo
 [Backend Repo Link](https://github.com/Balasuriya29/onyourmarks)
 
-## API Reference
-
-* We used Heroku to deploy our back-end server.
-
-#### Test API(to check server is running without error)
-
-    https://on-your-marks.herokuapp.com/
-
-* Otherthan this, only few APIs can be accessed others are secured with jwt tokens  
-
-#### Get all teachers in DB
-
-    GET /api/admin/teachers
-
-
-
-
 
 ## Screenshots
 
